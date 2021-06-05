@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hoc.api.output.CategoryOutput;
+import com.hoc.api.output.PagingOutput;
 import com.hoc.dto.CategoryDTO;
 import com.hoc.service.ICategoryService;
 
@@ -28,11 +29,12 @@ public class CategoryAPI {
 								@RequestParam("limit") int limit) {
 		
 		CategoryOutput result = new CategoryOutput();
-		result.setPage(page);
 		Pageable pageable = new PageRequest(page - 1, limit);
-		result.setListResult(categoryService.findAll(pageable));
-		result.setTotalPage((int) Math.ceil((double) (categoryService.totalItem()) / limit));
-		result.setTotalItem(categoryService.totalItem());
+		result.setData(categoryService.findAll(pageable));
+		int totalPage = (int) Math.ceil((double) (categoryService.totalItem()) / limit);
+		int totalItem = categoryService.totalItem();
+		result.setMeta(new PagingOutput(page, totalPage, totalItem));
+
 //		List<NewDTO> result = newService.findAll();
 		return result;
 	}

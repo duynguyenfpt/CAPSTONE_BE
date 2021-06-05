@@ -6,32 +6,26 @@ import java.util.List;
 import com.hoc.dto.CategoryDTO;
 
 public class CategoryOutput {
-	private int page;
-	private int totalPage;
-	private int totalItem;
-	private List<CategoryDTO> listResult = new ArrayList<>();
-	public int getPage() {
-		return page;
+	private List<CategoryDTO> data = new ArrayList<>();
+	private PagingOutput meta = new PagingOutput();
+
+	public PagingOutput getMeta() {
+		return meta;
 	}
-	public List<CategoryDTO> getListResult() {
-		return listResult;
+
+
+	public void setMeta(PagingOutput meta) {
+		this.meta = meta;
 	}
-	public void setListResult(List<CategoryDTO> listResult) {
-		this.listResult = listResult;
+
+
+	public List<CategoryDTO> getData() {
+		return data;
 	}
-	public void setPage(int page) {
-		this.page = page;
+
+
+	public void setData(List<CategoryDTO> data) {
+		this.data = data;
 	}
-	public int getTotalPage() {
-		return totalPage;
-	}
-	public void setTotalPage(int totalPage) {
-		this.totalPage = totalPage;
-	}
-	public long getTotalItem() {
-		return totalItem;
-	}
-	public void setTotalItem(int totalItem) {
-		this.totalItem = totalItem;
-	}
+
 }

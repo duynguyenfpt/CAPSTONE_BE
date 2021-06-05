@@ -22,7 +22,7 @@ public class CategoryConverter {
 		}
 		dto.setCode(entity.getCode());
 		dto.setName(entity.getName());
-		dto.setNews(entity.getNews());
+//		dto.setNews(entity.getNews());
 		dto.setCreatedDate(entity.getCreatedDate());
 		dto.setCreatedBy(entity.getCreatedBy());
 		dto.setModifiedDate(entity.getModifiedDate());

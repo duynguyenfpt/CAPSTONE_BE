@@ -60,7 +60,7 @@ public class CategoryService implements ICategoryService{
 
 	@Override
 	public int totalItem() {
-		return (int) newRepository.count();
+		return (int) categoryRepository.count();
 	}
 
 	@Override
