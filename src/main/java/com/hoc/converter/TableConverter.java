@@ -18,7 +18,7 @@ public class TableConverter {
 		if(entity.getId() != null) {
 			dto.setId(entity.getId());
 		}
-		dto.setDatabase_infor_id(entity.getDatabase_info().getId());
+		dto.setDatabase_infor_id(entity.getDatabaseInfo().getId());
 		dto.setTable_name(entity.getTableName());
 		dto.setCreated_date(entity.getCreated_date());
 		dto.setCreated_by(entity.getCreated_by());

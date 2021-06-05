@@ -6,10 +6,10 @@ import org.springframework.data.domain.Pageable;
 
 import com.hoc.dto.DatabaseInfoDTO;
 
-public interface IDatabaseInfoService {
+public interface IServerInfoService {
 	DatabaseInfoDTO save(DatabaseInfoDTO databaseInfoDTO);
 //	NewDTO update(NewDTO newDTO);
-	void delete(long id);
+	void delete(long[] ids);
 	List<DatabaseInfoDTO> findAll(Pageable pageable);
 //	List<NewDTO> findAll();
 	int totalItem();

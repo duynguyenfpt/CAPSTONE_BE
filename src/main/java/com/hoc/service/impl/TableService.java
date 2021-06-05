@@ -36,17 +36,14 @@ public class TableService implements ITableService {
 			tableEntity = tableConverter.toEntity(tableDTO);
 		}
 		DatabaseInfoEntity databaseInfoEntity = databaseInfoRepository.findOne(tableDTO.getDatabase_infor_id());
-		tableEntity.setDatabase_info(databaseInfoEntity);
+		tableEntity.setDatabaseInfo(databaseInfoEntity);
 		tableEntity = tableRepository.save(tableEntity);
 		return tableConverter.toDTO(tableEntity);
 	}
 
 	@Override
-	public void delete(long[] ids) {
-		for(long item: ids) {
-			tableRepository.delete(item);
-		}
-		
+	public void delete(long id) {
+		tableRepository.delete(id);		
 	}
 
 	@Override
@@ -70,5 +67,17 @@ public class TableService implements ITableService {
 		TableEntity tableEntity = tableRepository.findOne(id);
 		TableDTO tableDTO = tableConverter.toDTO(tableEntity);
 		return tableDTO;
+	}
+
+	@Override
+	public List<TableDTO> findByDatabaseInfoId(long databaseInfoId, Pageable pageable) {
+		List<TableDTO> results = new ArrayList<>();
+		DatabaseInfoEntity databaseInfoEntity = databaseInfoRepository.findOne(databaseInfoId);
+		List<TableEntity> entities = tableRepository.findByDatabaseInfo(databaseInfoEntity, pageable).getContent();
+		for (TableEntity item: entities) {
+			TableDTO tableDTO = tableConverter.toDTO(item);
+			results.add(tableDTO);
+		}
+		return results;
 	}
 }

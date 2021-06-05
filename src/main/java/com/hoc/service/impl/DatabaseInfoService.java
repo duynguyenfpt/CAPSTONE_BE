@@ -37,11 +37,8 @@ public class DatabaseInfoService implements IDatabaseInfoService {
 	}
 
 	@Override
-	public void delete(long[] ids) {
-		for(long item: ids) {
-			databaseInfoRepository.delete(item);
-		}
-		
+	public void delete(long id) {
+		databaseInfoRepository.delete(id);
 	}
 
 	@Override

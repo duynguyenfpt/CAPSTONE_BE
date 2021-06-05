@@ -5,9 +5,12 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -29,8 +32,13 @@ public class DatabaseInfoEntity extends BaseEntity{
 	private String databaseType;
 	
 	@JsonManagedReference
-	@OneToMany(mappedBy = "database_info")
-	private List<TableEntity> tables = new ArrayList<>(); 
+	@OneToMany(mappedBy = "databaseInfo")
+	private List<TableEntity> tables = new ArrayList<>();
+	
+	@JsonBackReference
+	@ManyToOne
+	@JoinColumn(name = "server_info_id", nullable = false)
+	private ServerInfoEntity server_info;
 
 	public String getPort() {
 		return port;

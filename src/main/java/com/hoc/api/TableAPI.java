@@ -37,6 +37,20 @@ public class TableAPI {
 		return result;
 	}
 	
+	@GetMapping(value = "api/database_infors/{database_infor_id}/tables")
+	public TableOutput showTablesByDatabaseInfor(@PathVariable("database_infor_id") int database_infor_id,
+								@RequestParam("page") int page,
+								@RequestParam("limit") int limit) {
+		TableOutput result = new TableOutput();
+		Pageable pageable = new PageRequest(page - 1, limit);
+		result.setData(tableService.findByDatabaseInfoId(database_infor_id, pageable));
+		int totalPage = (int) Math.ceil((double) (tableService.totalItem()) / limit);
+		int totalItem = tableService.totalItem();
+		result.setMeta(new PagingOutput(page, totalPage, totalItem));
+		
+		return result;
+	}
+	
 	@GetMapping(value = "api/tables/{id}")
 	public TableDTO showTable(@PathVariable("id") long id) {
 		return  tableService.getById(id);
@@ -55,7 +69,7 @@ public class TableAPI {
 	}
 	
 	@DeleteMapping(value = "api/tables")
-	public void deleteTable(@RequestBody long[] ids) {
-		tableService.delete(ids);
+	public void deleteTable(@PathVariable("id") long id) {
+		tableService.delete(id);
 	}
 }

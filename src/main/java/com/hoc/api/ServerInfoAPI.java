@@ -20,12 +20,12 @@ import com.hoc.service.IDatabaseInfoService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-public class DatabaseInfoAPI {
+public class ServerInfoAPI {
 	@Autowired
 	private IDatabaseInfoService databaseInfoService;
 
-	@GetMapping(value = "/api/database_infors")
-	public DatabaseInfoOutput showDatabaseInfors(@RequestParam("page") int page,
+	@GetMapping(value = "/api/server_infors")
+	public DatabaseInfoOutput showServerInfors(@RequestParam("page") int page,
 								@RequestParam("limit") int limit) {
 		
 		DatabaseInfoOutput result = new DatabaseInfoOutput();
@@ -38,25 +38,25 @@ public class DatabaseInfoAPI {
 		return result;
 	}
 	
-	@GetMapping(value = "/api/database_infors/{id}")
+	@GetMapping(value = "/api/server_infors/{id}")
 	public DatabaseInfoDTO showDatabaseInfo(@PathVariable("id") long id) {
 		return databaseInfoService.getById(id);
 	}
 	
-	@PostMapping(value = "/api/database_infors")
+	@PostMapping(value = "/api/server_infors")
 	public DatabaseInfoDTO createDatabaseInfo(@RequestBody DatabaseInfoDTO model) {
 		return databaseInfoService.save(model);
 	}
 
-	@PutMapping(value = "/api/database_infors/{id}")
+	@PutMapping(value = "/api/server_infors/{id}")
 	public DatabaseInfoDTO updateDatabaseInfo(@RequestBody DatabaseInfoDTO model, @PathVariable("id") long id) {
 		model.setId(id);
 		
 		return databaseInfoService.save(model);
 	}
 	
-	@DeleteMapping(value = "/api/database_infors/{id}")
-	public void deleteDatabaseInfo(@PathVariable("id") long id) {
-		databaseInfoService.delete(id);
+	@DeleteMapping(value = "/api/server_infors")
+	public void deleteDatabaseInfo(@RequestBody long[] ids) {
+		databaseInfoService.delete(ids);
 	}
 }

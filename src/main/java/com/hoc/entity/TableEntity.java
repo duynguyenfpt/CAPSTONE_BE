@@ -18,7 +18,7 @@ public class TableEntity extends BaseEntity{
 	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "database_info_id", nullable = false)
-	private DatabaseInfoEntity database_info;
+	private DatabaseInfoEntity databaseInfo;
 
 	public String getTableName() {
 		return table_name;
@@ -28,11 +28,22 @@ public class TableEntity extends BaseEntity{
 		this.table_name = table_name;
 	}
 
-	public DatabaseInfoEntity getDatabase_info() {
-		return database_info;
+	public String getTable_name() {
+		return table_name;
 	}
 
-	public void setDatabase_info(DatabaseInfoEntity database_info) {
-		this.database_info = database_info;
+	public void setTable_name(String table_name) {
+		this.table_name = table_name;
 	}
+
+	public DatabaseInfoEntity getDatabaseInfo() {
+		return databaseInfo;
+	}
+
+	public void setDatabaseInfo(DatabaseInfoEntity databaseInfo) {
+		this.databaseInfo = databaseInfo;
+	}
+	
+	
+
 }
