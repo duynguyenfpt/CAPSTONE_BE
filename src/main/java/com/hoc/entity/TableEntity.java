@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 public class TableEntity extends BaseEntity{
 
 	@Column(name = "table_name")
-	private String tableName;
+	private String table_name;
 	
 	@JsonBackReference
 	@ManyToOne
@@ -21,11 +21,11 @@ public class TableEntity extends BaseEntity{
 	private DatabaseInfoEntity database_info;
 
 	public String getTableName() {
-		return tableName;
+		return table_name;
 	}
 
-	public void setTableName(String tableName) {
-		this.tableName = tableName;
+	public void setTableName(String table_name) {
+		this.table_name = table_name;
 	}
 
 	public DatabaseInfoEntity getDatabase_info() {

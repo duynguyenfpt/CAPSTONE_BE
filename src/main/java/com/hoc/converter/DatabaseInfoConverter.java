@@ -11,8 +11,8 @@ public class DatabaseInfoConverter {
 		DatabaseInfoEntity entity = new DatabaseInfoEntity();
 		entity.setPort(dto.getPort());
 		entity.setUsername(dto.getUsername());
-		entity.setDatabaseType(dto.getDatabaseType());
-		entity.setDatabaseName(dto.getDatabaseName());
+		entity.setDatabaseType(dto.getDatabase_type());
+		entity.setDatabaseName(dto.getDatabase_name());
 		return entity;
 	}
 	
@@ -23,13 +23,13 @@ public class DatabaseInfoConverter {
 		}
 		dto.setPort(entity.getPort());
 		dto.setUsername(entity.getUsername());
-		dto.setDatabaseType(entity.getDatabaseName());
-		dto.setDatabaseName(entity.getDatabaseName());
+		dto.setDatabase_type(entity.getDatabaseType());
+		dto.setDatabase_name(entity.getDatabaseName());
 		dto.setTables(entity.getTables());
-		dto.setCreatedDate(entity.getCreatedDate());
-		dto.setCreatedBy(entity.getCreatedBy());
-		dto.setModifiedDate(entity.getModifiedDate());
-		dto.setModifiedBy(entity.getModifiedBy());
+		dto.setCreated_date(entity.getCreated_date());
+		dto.setCreated_by(entity.getCreated_by());
+		dto.setModified_date(entity.getModified_date());
+		dto.setModified_by(entity.getModified_by());
 		return dto;
 	}
 	
@@ -47,8 +47,8 @@ public class DatabaseInfoConverter {
 	public DatabaseInfoEntity toEntity(DatabaseInfoDTO dto, DatabaseInfoEntity entity) {
 		entity.setPort(dto.getPort());
 		entity.setUsername(dto.getUsername());
-		entity.setDatabaseType(dto.getDatabaseType());
-		entity.setDatabaseName(dto.getDatabaseName());
+		entity.setDatabaseType(dto.getDatabase_type());
+		entity.setDatabaseName(dto.getDatabase_name());
 		return entity;
 	}
 }

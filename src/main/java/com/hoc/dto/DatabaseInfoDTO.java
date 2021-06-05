@@ -12,9 +12,9 @@ public class DatabaseInfoDTO extends AbstractDTO<DatabaseInfoDTO> {
 	
 	private String password;
 	
-	private String databaseName;
+	private String database_name;
 	
-	private String databaseType;
+	private String database_type;
 	
 	private List<TableEntity> tables = new ArrayList<>();
 
@@ -42,20 +42,20 @@ public class DatabaseInfoDTO extends AbstractDTO<DatabaseInfoDTO> {
 		this.password = password;
 	}
 
-	public String getDatabaseName() {
-		return databaseName;
+	public String getDatabase_name() {
+		return database_name;
 	}
 
-	public void setDatabaseName(String databaseName) {
-		this.databaseName = databaseName;
+	public void setDatabase_name(String database_name) {
+		this.database_name = database_name;
 	}
 
-	public String getDatabaseType() {
-		return databaseType;
+	public String getDatabase_type() {
+		return database_type;
 	}
 
-	public void setDatabaseType(String databaseType) {
-		this.databaseType = databaseType;
+	public void setDatabase_type(String database_type) {
+		this.database_type = database_type;
 	}
 
 	public List<TableEntity> getTables() {

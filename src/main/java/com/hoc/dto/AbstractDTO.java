@@ -1,17 +1,14 @@
 package com.hoc.dto;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class AbstractDTO<T> {
 
 	private Long id;
-	private String createdBy;
-	private Date createdDate;
-	private String modifiedBy;
-	private Date modifiedDate;
-	private List<T> listResult = new ArrayList<>();
+	private String created_by;
+	private Date created_date;
+	private String modified_by;
+	private Date modified_date;
 	
 	public Long getId() {
 		return id;
@@ -19,36 +16,28 @@ public class AbstractDTO<T> {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public List<T> getListResult() {
-		return listResult;
+	public String getCreated_by() {
+		return created_by;
 	}
-	public void setListResult(List<T> listResult) {
-		this.listResult = listResult;
+	public void setCreated_by(String created_by) {
+		this.created_by = created_by;
 	}
-	public String getCreatedBy() {
-		return createdBy;
+	public Date getCreated_date() {
+		return created_date;
 	}
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
+	public void setCreated_date(Date created_date) {
+		this.created_date = created_date;
 	}
-	public Date getCreatedDate() {
-		return createdDate;
+	public String getModified_by() {
+		return modified_by;
 	}
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
+	public void setModified_by(String modified_by) {
+		this.modified_by = modified_by;
 	}
-	public String getModifiedBy() {
-		return modifiedBy;
+	public Date getModified_date() {
+		return modified_date;
 	}
-	public void setModifiedBy(String modifiedBy) {
-		this.modifiedBy = modifiedBy;
+	public void setModified_date(Date modified_date) {
+		this.modified_date = modified_date;
 	}
-	public Date getModifiedDate() {
-		return modifiedDate;
-	}
-	public void setModifiedDate(Date modifiedDate) {
-		this.modifiedDate = modifiedDate;
-	}
-	
-	
 }

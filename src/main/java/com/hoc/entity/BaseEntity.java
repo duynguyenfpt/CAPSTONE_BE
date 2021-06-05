@@ -25,55 +25,61 @@ public abstract class BaseEntity {
 	
 	@Column
 	@CreatedBy
-	private String createdBy;
+	private String created_by;
 	
 	@Column
 	@CreatedDate
-	private Date createdDate;
+	private Date created_date;
 	
 	@Column
 	@LastModifiedBy
-	private String modifiedBy;
+	private String modified_by;
 	
 	@Column
 	@LastModifiedDate
-	private Date modifiedDate;
+	private Date modified_date;
 	
 	public Long getId() {
 		return id;
 	}
 
-	public String getCreatedBy() {
-		return createdBy;
+	public String getCreated_by() {
+		return created_by;
 	}
 
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
+	public void setCreated_by(String created_by) {
+		this.created_by = created_by;
 	}
 
-	public Date getCreatedDate() {
-		return createdDate;
+	public Date getCreated_date() {
+		return created_date;
 	}
 
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
+	public void setCreated_date(Date created_date) {
+		this.created_date = created_date;
 	}
 
-	public String getModifiedBy() {
-		return modifiedBy;
+	public String getModified_by() {
+		return modified_by;
 	}
 
-	public void setModifiedBy(String modifiedBy) {
-		this.modifiedBy = modifiedBy;
+	public void setModified_by(String modified_by) {
+		this.modified_by = modified_by;
 	}
 
-	public Date getModifiedDate() {
-		return modifiedDate;
+	public Date getModified_date() {
+		return modified_date;
 	}
 
-	public void setModifiedDate(Date modifiedDate) {
-		this.modifiedDate = modifiedDate;
+	public void setModified_date(Date modified_date) {
+		this.modified_date = modified_date;
 	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	
 	
 	
 }

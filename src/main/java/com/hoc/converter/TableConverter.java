@@ -20,10 +20,10 @@ public class TableConverter {
 		}
 		dto.setDatabase_infor_id(entity.getDatabase_info().getId());
 		dto.setTable_name(entity.getTableName());
-		dto.setCreatedDate(entity.getCreatedDate());
-		dto.setCreatedBy(entity.getCreatedBy());
-		dto.setModifiedDate(entity.getModifiedDate());
-		dto.setModifiedBy(entity.getModifiedBy());
+		dto.setCreated_date(entity.getCreated_date());
+		dto.setCreated_by(entity.getCreated_by());
+		dto.setModified_date(entity.getModified_date());
+		dto.setModified_by(entity.getModified_by());
 		return dto;
 	}
 	public TableEntity toEntity(TableDTO dto, TableEntity entity) {
