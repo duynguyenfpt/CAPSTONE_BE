@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 
-import com.hoc.dto.NewDTO;
 import com.hoc.dto.TableDTO;
 
 public interface ITableService {

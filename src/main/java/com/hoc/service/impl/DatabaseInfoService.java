@@ -8,15 +8,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.hoc.converter.DatabaseInfoConverter;
-import com.hoc.converter.NewConverter;
 import com.hoc.dto.DatabaseInfoDTO;
-import com.hoc.dto.NewDTO;
-import com.hoc.entity.CategoryEntity;
 import com.hoc.entity.DatabaseInfoEntity;
-import com.hoc.entity.NewEntity;
-import com.hoc.repository.CategoryRepository;
 import com.hoc.repository.DatabaseInfoRepository;
-import com.hoc.repository.NewRepository;
 import com.hoc.service.IDatabaseInfoService;
 
 @Service

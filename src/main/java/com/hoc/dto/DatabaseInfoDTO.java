@@ -3,10 +3,6 @@ package com.hoc.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.OneToMany;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.hoc.entity.TableEntity;
 
 public class DatabaseInfoDTO extends AbstractDTO<DatabaseInfoDTO> {

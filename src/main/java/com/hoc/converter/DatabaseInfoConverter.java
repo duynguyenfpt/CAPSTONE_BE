@@ -2,9 +2,7 @@ package com.hoc.converter;
 
 import org.springframework.stereotype.Component;
 
-import com.hoc.dto.CategoryDTO;
 import com.hoc.dto.DatabaseInfoDTO;
-import com.hoc.entity.CategoryEntity;
 import com.hoc.entity.DatabaseInfoEntity;
 
 @Component
@@ -27,7 +25,7 @@ public class DatabaseInfoConverter {
 		dto.setUsername(entity.getUsername());
 		dto.setDatabaseType(entity.getDatabaseName());
 		dto.setDatabaseName(entity.getDatabaseName());
-//		dto.setNews(entity.getNews());
+		dto.setTables(entity.getTables());
 		dto.setCreatedDate(entity.getCreatedDate());
 		dto.setCreatedBy(entity.getCreatedBy());
 		dto.setModifiedDate(entity.getModifiedDate());
