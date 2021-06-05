@@ -24,7 +24,7 @@ public class DatabaseInfoAPI {
 	@Autowired
 	private IDatabaseInfoService databaseInfoService;
 
-	@GetMapping(value = "/api/database_infors/")
+	@GetMapping(value = "/api/database_infors")
 	public DatabaseInfoOutput showDatabaseInfors(@RequestParam("page") int page,
 								@RequestParam("limit") int limit) {
 		
