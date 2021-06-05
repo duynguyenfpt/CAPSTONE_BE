@@ -25,18 +25,18 @@ public class NewAPI {
 	@Autowired
 	private INewService newService;
 
-	@GetMapping(value = "/new")
-	public NewOutput showNews(@RequestParam("page") int page,
-								@RequestParam("limit") int limit) {
-		NewOutput result = new NewOutput();
-		result.setPage(page);
-		Pageable pageable = new PageRequest(page - 1, limit);
-		result.setListResult(newService.findAll(pageable));
-		result.setTotalPage((int) Math.ceil((double) (newService.totalItem()) / limit));
-		result.setTotalItem(newService.totalItem());
-//		List<NewDTO> result = newService.findAll();
-		return result;
-	}
+//	@GetMapping(value = "/new")
+////	public NewOutput showNews(@RequestParam("page") int page,
+////								@RequestParam("limit") int limit) {
+////		NewOutput result = new NewOutput();
+////		result.setPage(page);
+////		Pageable pageable = new PageRequest(page - 1, limit);
+////		result.setListResult(newService.findAll(pageable));
+////		result.setTotalPage((int) Math.ceil((double) (newService.totalItem()) / limit));
+////		result.setTotalItem(newService.totalItem());
+//////		List<NewDTO> result = newService.findAll();
+////		return result;
+////	}
 	
 	@GetMapping(value = "/new/{id}")
 	public NewDTO showNew(@PathVariable("id") long id) {
