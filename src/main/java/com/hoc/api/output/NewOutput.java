@@ -10,6 +10,7 @@ public class NewOutput {
 	private int totalPage;
 	private int totalItem;
 	private List<NewDTO> listResult = new ArrayList<>();
+	
 	public int getPage() {
 		return page;
 	}

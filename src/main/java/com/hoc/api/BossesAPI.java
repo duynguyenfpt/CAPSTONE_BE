@@ -24,7 +24,7 @@ public class BossesAPI {
 	private BossesRepository repository;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public List getAllBosses() {
+	public List<Bosses> getAllBosses() {
 		return repository.findAll();
 	}
 	
