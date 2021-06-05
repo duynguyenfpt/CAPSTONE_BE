@@ -68,7 +68,7 @@ public class TableAPI {
 		return tableService.save(model);
 	}
 	
-	@DeleteMapping(value = "api/tables")
+	@DeleteMapping(value = "api/tables/{id}")
 	public void deleteTable(@PathVariable("id") long id) {
 		tableService.delete(id);
 	}
