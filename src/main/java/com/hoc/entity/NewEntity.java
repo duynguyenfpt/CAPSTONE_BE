@@ -6,6 +6,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "new")
 public class NewEntity extends BaseEntity {
@@ -22,6 +24,7 @@ public class NewEntity extends BaseEntity {
 	@Column
 	private String content;
 	
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "category_id")
 	private CategoryEntity category;

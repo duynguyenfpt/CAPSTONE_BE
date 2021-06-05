@@ -1,27 +1,15 @@
-package com.hoc.entity;
+package com.hoc.dto;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import com.hoc.entity.NewEntity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
-@Entity
-@Table(name = "category")
-public class CategoryEntity extends BaseEntity {
-
-	@Column(name = "code")
+public class CategoryDTO extends AbstractDTO<CategoryDTO>{
 	private String code;
 	
-	@Column(name = "name")
 	private String name;
 	
-	@JsonManagedReference
-	@OneToMany(mappedBy = "category")
 	private List<NewEntity> news = new ArrayList<>(); 
 
 	public String getCode() {
@@ -47,6 +35,4 @@ public class CategoryEntity extends BaseEntity {
 	public void setNews(List<NewEntity> news) {
 		this.news = news;
 	}
-	
-	
 }
