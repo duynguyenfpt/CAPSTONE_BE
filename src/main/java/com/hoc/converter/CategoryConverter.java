@@ -29,6 +29,18 @@ public class CategoryConverter {
 		dto.setModifiedBy(entity.getModifiedBy());
 		return dto;
 	}
+	
+	public CategoryDTO includeNewView(CategoryEntity entity) {
+		CategoryDTO dto = toDTO(entity);
+		if(entity.getId() != null) {
+			dto.setId(entity.getId());
+		}
+		dto.setNews(entity.getNews());
+	
+		return dto;
+	}
+	
+	
 	public CategoryEntity toEntity(CategoryDTO dto, CategoryEntity entity) {
 		entity.setCode(dto.getCode());
 		entity.setName(dto.getName());

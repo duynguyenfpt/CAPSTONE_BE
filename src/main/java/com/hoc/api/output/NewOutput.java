@@ -9,16 +9,9 @@ public class NewOutput {
 	private int page;
 	private int totalPage;
 	private int totalItem;
-	private List<NewDTO> listResult = new ArrayList<>();
 	
 	public int getPage() {
 		return page;
-	}
-	public List<NewDTO> getListResult() {
-		return listResult;
-	}
-	public void setListResult(List<NewDTO> listResult) {
-		this.listResult = listResult;
 	}
 	public void setPage(int page) {
 		this.page = page;
