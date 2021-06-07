@@ -6,6 +6,8 @@ import java.util.List;
 import com.hoc.entity.TableEntity;
 
 public class DatabaseInfoDTO extends AbstractDTO<DatabaseInfoDTO> {
+	private String host;
+	
 	private String port;
 	
 	private String username;
@@ -64,8 +66,13 @@ public class DatabaseInfoDTO extends AbstractDTO<DatabaseInfoDTO> {
 
 	public void setTables(List<TableEntity> tables) {
 		this.tables = tables;
-	} 
-	
-	
+	}
 
+	public String getHost() {
+		return host;
+	}
+
+	public void setHost(String host) {
+		this.host = host;
+	} 
 }

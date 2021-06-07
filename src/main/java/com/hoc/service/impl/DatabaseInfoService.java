@@ -1,10 +1,18 @@
 package com.hoc.service.impl;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.hoc.converter.DatabaseInfoConverter;
@@ -62,6 +70,30 @@ public class DatabaseInfoService implements IDatabaseInfoService {
 		DatabaseInfoEntity databaseInfoEntity = databaseInfoRepository.findOne(id);
 		DatabaseInfoDTO databaseInfoDTO = databaseInfoConverter.toDTO(databaseInfoEntity);
 		return databaseInfoDTO;
+	}
+
+	@Override
+	public ResponseEntity<Map<String,Object>> trackingConnection(DatabaseInfoDTO databaseInfoDTO) {
+		String URL = "jdbc:mysql://" + databaseInfoDTO.getHost() + ":" + databaseInfoDTO.getPort() + "/" + databaseInfoDTO.getDatabase_name();
+		String USER = databaseInfoDTO.getUsername();
+		String PASS = databaseInfoDTO.getPassword();
+		boolean trackingConnection;
+		Map<String, Object> response = new LinkedHashMap<>();
+		
+		try {
+			Connection conn = DriverManager.getConnection(URL, USER, PASS);
+			trackingConnection = true;
+			conn.close();
+		} catch (SQLException e) {
+			trackingConnection = false;
+		}
+		response.put("success: ", trackingConnection);
+		
+		if(trackingConnection) {
+			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<Map<String,Object>>(response, HttpStatus.BAD_REQUEST);
 	}
 
 }
