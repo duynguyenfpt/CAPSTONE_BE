@@ -3,16 +3,16 @@ package com.hoc.api.output;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.hoc.dto.ServerInfoDTO;
+import com.hoc.dto.SchemaChangeHistoryDTO;
 
-public class ServerOutput {
-	private List<ServerInfoDTO> data = new ArrayList<>();
+public class SchemaChangeHistoryOutput {
+	private List<SchemaChangeHistoryDTO> data = new ArrayList<>();
 	private PagingOutput meta = new PagingOutput();
 	
-	public List<ServerInfoDTO> getData() {
+	public List<SchemaChangeHistoryDTO> getData() {
 		return data;
 	}
-	public void setData(List<ServerInfoDTO> data) {
+	public void setData(List<SchemaChangeHistoryDTO> data) {
 		this.data = data;
 	}
 	public PagingOutput getMeta() {
