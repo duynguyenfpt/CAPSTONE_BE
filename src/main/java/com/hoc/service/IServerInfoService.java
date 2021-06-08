@@ -5,13 +5,14 @@ import java.util.List;
 import org.springframework.data.domain.Pageable;
 
 import com.hoc.dto.DatabaseInfoDTO;
+import com.hoc.dto.ServerInfoDTO;
 
 public interface IServerInfoService {
-	DatabaseInfoDTO save(DatabaseInfoDTO databaseInfoDTO);
+	ServerInfoDTO save(ServerInfoDTO serverInfoDTO);
 //	NewDTO update(NewDTO newDTO);
-	void delete(long[] ids);
-	List<DatabaseInfoDTO> findAll(Pageable pageable);
+	void delete(long id);
+	List<ServerInfoDTO> findAll(Pageable pageable);
 //	List<NewDTO> findAll();
 	int totalItem();
-	DatabaseInfoDTO getById(long id);
+	ServerInfoDTO getById(long id);
 }
