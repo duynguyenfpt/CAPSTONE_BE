@@ -87,6 +87,14 @@ public class DatabaseInfoEntity extends BaseEntity{
 	public void setTables(List<TableEntity> tables) {
 		this.tables = tables;
 	}
+
+	public ServerInfoEntity getServerInfo() {
+		return serverInfo;
+	}
+
+	public void setServerInfo(ServerInfoEntity serverInfo) {
+		this.serverInfo = serverInfo;
+	}
 	
 	
 }

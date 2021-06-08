@@ -16,6 +16,8 @@ public class DatabaseInfoDTO extends AbstractDTO<DatabaseInfoDTO> {
 	
 	private String database_type;
 	
+	private Long server_infor_id;
+	
 	private List<TableEntity> tables = new ArrayList<>();
 
 	public String getPort() {
@@ -64,8 +66,14 @@ public class DatabaseInfoDTO extends AbstractDTO<DatabaseInfoDTO> {
 
 	public void setTables(List<TableEntity> tables) {
 		this.tables = tables;
+	}
+
+	public Long getServer_infor_id() {
+		return server_infor_id;
+	}
+
+	public void setServer_infor_id(Long server_infor_id) {
+		this.server_infor_id = server_infor_id;
 	} 
-	
-	
 
 }

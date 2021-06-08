@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import com.hoc.converter.DatabaseInfoConverter;
 import com.hoc.dto.DatabaseInfoDTO;
 import com.hoc.entity.DatabaseInfoEntity;
+import com.hoc.entity.ServerInfoEntity;
 import com.hoc.repository.DatabaseInfoRepository;
+import com.hoc.repository.ServerInfoRepository;
 import com.hoc.service.IDatabaseInfoService;
 
 @Service
@@ -18,6 +20,10 @@ public class DatabaseInfoService implements IDatabaseInfoService {
 	
 	@Autowired
 	private DatabaseInfoRepository databaseInfoRepository;
+	
+	
+	@Autowired
+	private ServerInfoRepository serverInfoRepository;
 	
 	@Autowired
 	private DatabaseInfoConverter databaseInfoConverter;
@@ -31,7 +37,9 @@ public class DatabaseInfoService implements IDatabaseInfoService {
 		} else {
 			databaseInfoEntity = databaseInfoConverter.toEntity(databaseInfoDTO);
 		}
-
+		
+		ServerInfoEntity serverInfoEntity = serverInfoRepository.findOne(databaseInfoDTO.getServer_infor_id());
+		databaseInfoEntity.setServerInfo(serverInfoEntity);
 		databaseInfoEntity = databaseInfoRepository.save(databaseInfoEntity);
 		return databaseInfoConverter.toDTO(databaseInfoEntity);
 	}
