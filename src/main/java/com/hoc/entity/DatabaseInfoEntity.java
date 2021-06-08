@@ -35,10 +35,10 @@ public class DatabaseInfoEntity extends BaseEntity{
 	@OneToMany(mappedBy = "databaseInfo")
 	private List<TableEntity> tables = new ArrayList<>();
 	
-//	@JsonBackReference
-//	@ManyToOne
-//	@JoinColumn(name = "server_info_id", nullable = false)
-//	private ServerInfoEntity server_info;
+	@JsonBackReference
+	@ManyToOne
+	@JoinColumn(name = "server_info_id", nullable = false)
+	private ServerInfoEntity serverInfo;
 
 	public String getPort() {
 		return port;
