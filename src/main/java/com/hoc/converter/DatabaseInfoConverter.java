@@ -26,6 +26,7 @@ public class DatabaseInfoConverter {
 		dto.setDatabase_type(entity.getDatabaseType());
 		dto.setDatabase_name(entity.getDatabaseName());
 		dto.setTables(entity.getTables());
+		dto.setServer_infor(entity.getServerInfo());
 		dto.setCreated_date(entity.getCreated_date());
 		dto.setCreated_by(entity.getCreated_by());
 		dto.setModified_date(entity.getModified_date());
