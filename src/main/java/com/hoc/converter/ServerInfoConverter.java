@@ -3,9 +3,7 @@ package com.hoc.converter;
 import org.springframework.stereotype.Component;
 
 import com.hoc.dto.ServerInfoDTO;
-import com.hoc.dto.TableDTO;
 import com.hoc.entity.ServerInfoEntity;
-import com.hoc.entity.TableEntity;
 
 @Component
 public class ServerInfoConverter {
@@ -14,6 +12,15 @@ public class ServerInfoConverter {
 		entity.setServer_domain(dto.getServer_domain());
 		entity.setServer_host(dto.getServer_host());
 		return entity;
+	}
+	
+	public ServerInfoDTO toDTODefault(ServerInfoEntity entity) {
+		ServerInfoDTO dto = new ServerInfoDTO();
+
+		dto.setId(entity.getId());
+		dto.setServer_domain(entity.getServer_domain());
+		dto.setServer_host(entity.getServer_host());
+		return dto;
 	}
 	
 	public ServerInfoDTO toDTO(ServerInfoEntity entity) {

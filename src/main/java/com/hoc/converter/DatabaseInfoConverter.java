@@ -21,12 +21,13 @@ public class DatabaseInfoConverter {
 		if(entity.getId() != null) {
 			dto.setId(entity.getId());
 		}
+		ServerInfoConverter serverInfoConverter = new ServerInfoConverter();
 		dto.setPort(entity.getPort());
 		dto.setUsername(entity.getUsername());
 		dto.setDatabase_type(entity.getDatabaseType());
 		dto.setDatabase_name(entity.getDatabaseName());
 		dto.setTables(entity.getTables());
-		dto.setServer_infor(entity.getServerInfo());
+		dto.setServer_infor(serverInfoConverter.toDTODefault(entity.getServerInfo()));
 		dto.setCreated_date(entity.getCreated_date());
 		dto.setCreated_by(entity.getCreated_by());
 		dto.setModified_date(entity.getModified_date());
