@@ -26,11 +26,13 @@ public class DatabaseInfoAPI {
 
 	@GetMapping(value = "/api/database_infors")
 	public DatabaseInfoOutput showDatabaseInfors(@RequestParam("page") int page,
-								@RequestParam("limit") int limit) {
+								@RequestParam("limit") int limit, @RequestParam(required = false) String keyword) {
+		
+		if (keyword == null || keyword.isEmpty()) keyword = "";
 		
 		DatabaseInfoOutput result = new DatabaseInfoOutput();
 		Pageable pageable = new PageRequest(page - 1, limit);
-		result.setData(databaseInfoService.findAll(pageable));
+		result.setData(databaseInfoService.findAll(pageable, keyword));
 		int totalPage = (int) Math.ceil((double) (databaseInfoService.totalItem()) / limit);
 		int totalItem = databaseInfoService.totalItem();
 		result.setMeta(new PagingOutput(page, totalPage, totalItem));

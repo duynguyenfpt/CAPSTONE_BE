@@ -10,7 +10,7 @@ public interface IDatabaseInfoService {
 	DatabaseInfoDTO save(DatabaseInfoDTO databaseInfoDTO);
 //	NewDTO update(NewDTO newDTO);
 	void delete(long id);
-	List<DatabaseInfoDTO> findAll(Pageable pageable);
+	List<DatabaseInfoDTO> findAll(Pageable pageable, String keyword);
 //	List<NewDTO> findAll();
 	int totalItem();
 	DatabaseInfoDTO getById(long id);
