@@ -20,15 +20,16 @@ public class CurrentTableSchemaAPI {
 	@Autowired
 	private ICurrentTableSchemaService currentTableSchemaService;
 
-	@GetMapping(value = "/api/current_table_schemas")
+	@GetMapping(value = "/api/tables/{table_id}/current_table_schemas")
 	public CurrentTableSchemaOutput showCurrentTableSchema(@RequestParam("page") int page,
-								@RequestParam("limit") int limit) {
+								@RequestParam("limit") int limit,
+								@PathVariable("table_id") long tableId) {
 		
 		CurrentTableSchemaOutput result = new CurrentTableSchemaOutput();
 		Pageable pageable = new PageRequest(page - 1, limit);
-		result.setData(currentTableSchemaService.findAll(pageable));
-		int totalPage = (int) Math.ceil((double) (currentTableSchemaService.totalItem()) / limit);
-		int totalItem = currentTableSchemaService.totalItem();
+		result.setData(currentTableSchemaService.findAll(pageable, tableId));
+		int totalPage = (int) Math.ceil((double) (currentTableSchemaService.totalItem(tableId)) / limit);
+		int totalItem = currentTableSchemaService.totalItem(tableId);
 		result.setMeta(new PagingOutput(page, totalPage, totalItem));
 
 		return result;

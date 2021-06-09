@@ -8,7 +8,7 @@ import com.hoc.dto.CurrentTableSchemaDTO;
 import com.hoc.dto.SchemaChangeHistoryDTO;
 
 public interface ICurrentTableSchemaService {
-	List<CurrentTableSchemaDTO> findAll(Pageable pageable);
-	int totalItem();
+	List<CurrentTableSchemaDTO> findAll(Pageable pageable, long tableId);
+	int totalItem(long tableId);
 	CurrentTableSchemaDTO getById(long id);
 }

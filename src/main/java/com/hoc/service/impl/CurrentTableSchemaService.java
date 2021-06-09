@@ -28,9 +28,9 @@ public class CurrentTableSchemaService implements ICurrentTableSchemaService {
 	
 
 	@Override
-	public List<CurrentTableSchemaDTO> findAll(Pageable pageable) {
+	public List<CurrentTableSchemaDTO> findAll(Pageable pageable, long tableId) {
 		List<CurrentTableSchemaDTO> results = new ArrayList<>();
-		List<CurrentTableSchemaEntity> entities = currentTableSchemaRepository.findAll(pageable).getContent();
+		List<CurrentTableSchemaEntity> entities = currentTableSchemaRepository.findByTableInfoId(tableId, pageable).getContent();
 		for (CurrentTableSchemaEntity item: entities) {
 			CurrentTableSchemaDTO currentTableSchemaDTO = currentTableSchemaConverter.toDTO(item);
 			results.add(currentTableSchemaDTO);
@@ -39,8 +39,8 @@ public class CurrentTableSchemaService implements ICurrentTableSchemaService {
 	}
 
 	@Override
-	public int totalItem() {
-		return (int) currentTableSchemaRepository.count();
+	public int totalItem(long tableId) {
+		return (int) currentTableSchemaRepository.countByTableInfoId(tableId).size();
 	}
 
 	@Override
