@@ -1,8 +1,11 @@
 package com.hoc.api;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,5 +63,10 @@ public class DatabaseInfoAPI {
 	@DeleteMapping(value = "/api/database_infors/{id}")
 	public void deleteDatabaseInfo(@PathVariable("id") long id) {
 		databaseInfoService.delete(id);
+	}
+	
+	@PostMapping(value = "/api/database_infors/test_connection")
+	public ResponseEntity<Map<String,Object>> checkingConnection(@RequestBody DatabaseInfoDTO model) {
+		 return databaseInfoService.trackingConnection(model);
 	}
 }
