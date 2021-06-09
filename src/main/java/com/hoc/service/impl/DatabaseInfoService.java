@@ -8,7 +8,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -88,9 +87,20 @@ public class DatabaseInfoService implements IDatabaseInfoService {
 
 	@Override
 	public ResponseEntity<Map<String,Object>> trackingConnection(DatabaseInfoDTO databaseInfoDTO) {
-		String URL = "jdbc:mysql://" + databaseInfoDTO.getHost() + ":" + databaseInfoDTO.getPort() + "/" + databaseInfoDTO.getDatabase_name();
 		String USER = databaseInfoDTO.getUsername();
 		String PASS = databaseInfoDTO.getPassword();
+		String URL = "";
+		switch(databaseInfoDTO.getDatabase_type()) {
+		  case "mysql":
+		    URL = "jdbc:mysql://" + databaseInfoDTO.getHost() + ":" + databaseInfoDTO.getPort() + "/" + databaseInfoDTO.getDatabase_name();
+		    
+		    break;
+		  case "postgresql":
+			URL = "jdbc:postgresql://" + databaseInfoDTO.getHost() + ":" + databaseInfoDTO.getPort() + "/" + databaseInfoDTO.getDatabase_name();
+
+		    break;
+		}
+		
 		boolean trackingConnection;
 		Map<String, Object> response = new LinkedHashMap<>();
 		

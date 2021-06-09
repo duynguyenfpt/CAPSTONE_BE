@@ -79,6 +79,7 @@ public class DatabaseInfoDTO extends AbstractDTO<DatabaseInfoDTO> {
 
 	public void setHost(String host) {
 		this.host = host;
+	}
 
 	public Long getServer_infor_id() {
 		return server_infor_id;
