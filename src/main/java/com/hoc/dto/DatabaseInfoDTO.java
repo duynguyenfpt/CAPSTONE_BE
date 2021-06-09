@@ -3,6 +3,7 @@ package com.hoc.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.hoc.entity.ServerInfoEntity;
 import com.hoc.entity.TableEntity;
 
 public class DatabaseInfoDTO extends AbstractDTO<DatabaseInfoDTO> {
@@ -18,7 +19,11 @@ public class DatabaseInfoDTO extends AbstractDTO<DatabaseInfoDTO> {
 	
 	private String database_type;
 	
+	private Long server_infor_id;
+	
 	private List<TableEntity> tables = new ArrayList<>();
+	
+	private ServerInfoDTO server_infor;
 
 	public String getPort() {
 		return port;
@@ -74,5 +79,20 @@ public class DatabaseInfoDTO extends AbstractDTO<DatabaseInfoDTO> {
 
 	public void setHost(String host) {
 		this.host = host;
+
+	public Long getServer_infor_id() {
+		return server_infor_id;
+	}
+
+	public void setServer_infor_id(Long server_infor_id) {
+		this.server_infor_id = server_infor_id;
+	}
+
+	public ServerInfoDTO getServer_infor() {
+		return server_infor;
+	}
+
+	public void setServer_infor(ServerInfoDTO server_infor) {
+		this.server_infor = server_infor;
 	} 
 }

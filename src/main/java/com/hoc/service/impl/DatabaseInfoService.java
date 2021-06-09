@@ -18,7 +18,9 @@ import org.springframework.stereotype.Service;
 import com.hoc.converter.DatabaseInfoConverter;
 import com.hoc.dto.DatabaseInfoDTO;
 import com.hoc.entity.DatabaseInfoEntity;
+import com.hoc.entity.ServerInfoEntity;
 import com.hoc.repository.DatabaseInfoRepository;
+import com.hoc.repository.ServerInfoRepository;
 import com.hoc.service.IDatabaseInfoService;
 
 @Service
@@ -26,6 +28,10 @@ public class DatabaseInfoService implements IDatabaseInfoService {
 	
 	@Autowired
 	private DatabaseInfoRepository databaseInfoRepository;
+	
+	
+	@Autowired
+	private ServerInfoRepository serverInfoRepository;
 	
 	@Autowired
 	private DatabaseInfoConverter databaseInfoConverter;
@@ -39,7 +45,9 @@ public class DatabaseInfoService implements IDatabaseInfoService {
 		} else {
 			databaseInfoEntity = databaseInfoConverter.toEntity(databaseInfoDTO);
 		}
-
+		
+		ServerInfoEntity serverInfoEntity = serverInfoRepository.findOne(databaseInfoDTO.getServer_infor_id());
+		databaseInfoEntity.setServerInfo(serverInfoEntity);
 		databaseInfoEntity = databaseInfoRepository.save(databaseInfoEntity);
 		return databaseInfoConverter.toDTO(databaseInfoEntity);
 	}
@@ -50,9 +58,15 @@ public class DatabaseInfoService implements IDatabaseInfoService {
 	}
 
 	@Override
-	public List<DatabaseInfoDTO> findAll(Pageable pageable) {
+	public List<DatabaseInfoDTO> findAll(Pageable pageable, String keyword) {
 		List<DatabaseInfoDTO> results = new ArrayList<>();
-		List<DatabaseInfoEntity> entities = databaseInfoRepository.findAll(pageable).getContent();
+		List<DatabaseInfoEntity> entities;
+		if(keyword.isEmpty()) {
+			entities = databaseInfoRepository.findAll(pageable).getContent();
+		}else {
+//			entities = databaseInfoRepository.findAll(pageable).getContent();
+			entities = databaseInfoRepository.search(keyword, pageable).getContent();
+		}
 		for (DatabaseInfoEntity item: entities) {
 			DatabaseInfoDTO databaseInfoDTO = databaseInfoConverter.toDTO(item);
 			results.add(databaseInfoDTO);
