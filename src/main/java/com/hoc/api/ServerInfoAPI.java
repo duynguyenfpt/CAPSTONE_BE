@@ -13,12 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.hoc.api.output.DatabaseInfoOutput;
 import com.hoc.api.output.PagingOutput;
 import com.hoc.api.output.ServerOutput;
-import com.hoc.dto.DatabaseInfoDTO;
 import com.hoc.dto.ServerInfoDTO;
-import com.hoc.service.IDatabaseInfoService;
 import com.hoc.service.IServerInfoService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
