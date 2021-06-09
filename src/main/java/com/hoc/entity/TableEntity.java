@@ -28,6 +28,10 @@ public class TableEntity extends BaseEntity{
 	@JsonManagedReference
 	@OneToMany(mappedBy = "tableInfo")
 	private List<SchemaChangeHistoryEntity> schemaChangeHistories = new ArrayList<>();
+	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "tableInfo")
+	private List<CurrentTableSchemaEntity> currentTableSchemaEntities  = new ArrayList<>();
 
 	public String getTableName() {
 		return table_name;
@@ -59,6 +63,14 @@ public class TableEntity extends BaseEntity{
 
 	public void setSchemaChangeHistories(List<SchemaChangeHistoryEntity> schemaChangeHistories) {
 		this.schemaChangeHistories = schemaChangeHistories;
+	}
+
+	public List<CurrentTableSchemaEntity> getCurrentTableSchemaEntities() {
+		return currentTableSchemaEntities;
+	}
+
+	public void setCurrentTableSchemaEntities(List<CurrentTableSchemaEntity> currentTableSchemaEntities) {
+		this.currentTableSchemaEntities = currentTableSchemaEntities;
 	}
 	
 	
