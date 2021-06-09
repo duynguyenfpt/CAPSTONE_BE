@@ -20,6 +20,7 @@ public class TableConverter {
 		}
 		dto.setDatabase_infor_id(entity.getDatabaseInfo().getId());
 		dto.setTable_name(entity.getTableName());
+		dto.setCurrent_table_schemas(entity.getCurrentTableSchemaEntities());
 		dto.setCreated_date(entity.getCreated_date());
 		dto.setCreated_by(entity.getCreated_by());
 		dto.setModified_date(entity.getModified_date());
