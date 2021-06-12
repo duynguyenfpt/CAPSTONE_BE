@@ -1,45 +1,43 @@
 package com.web_service.dto;
 
 public class SchemaChangeHistoryDTO extends AbstractDTO<SchemaChangeHistoryDTO> {
-	private String change_type;
+	private String changeType;
 	
-	private String field_change;
+	private String fieldChange;
 	
-	private String old_value;
+	private String oldValue;
 	
-	private String new_value;
+	private String newValue;
 
-	public String getChange_type() {
-		return change_type;
+	public String getChangeType() {
+		return changeType;
 	}
 
-	public void setChange_type(String change_type) {
-		this.change_type = change_type;
+	public void setChangeType(String changeType) {
+		this.changeType = changeType;
 	}
 
-	public String getField_change() {
-		return field_change;
+	public String getFieldChange() {
+		return fieldChange;
 	}
 
-	public void setField_change(String field_change) {
-		this.field_change = field_change;
+	public void setFieldChange(String fieldChange) {
+		this.fieldChange = fieldChange;
 	}
 
-	public String getOld_value() {
-		return old_value;
+	public String getOldValue() {
+		return oldValue;
 	}
 
-	public void setOld_value(String old_value) {
-		this.old_value = old_value;
+	public void setOldValue(String oldValue) {
+		this.oldValue = oldValue;
 	}
 
-	public String getNew_value() {
-		return new_value;
+	public String getNewValue() {
+		return newValue;
 	}
 
-	public void setNew_value(String new_value) {
-		this.new_value = new_value;
+	public void setNewValue(String newValue) {
+		this.newValue = newValue;
 	}
-	
-	
 }

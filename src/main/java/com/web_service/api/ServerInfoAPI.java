@@ -3,6 +3,8 @@ package com.web_service.api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.web_service.api.output.BaseOutput;
 import com.web_service.api.output.PagingOutput;
-import com.web_service.api.output.ServerOutput;
 import com.web_service.dto.ServerInfoDTO;
 import com.web_service.services.IServerInfoService;
 
@@ -25,17 +27,18 @@ public class ServerInfoAPI {
 	private IServerInfoService serverInfoService;
 
 	@GetMapping(value = "/api/server_infors")
-	public ServerOutput showServerInfors(@RequestParam("page") int page,
+	public ResponseEntity<BaseOutput<ServerInfoDTO>> showServerInfors(@RequestParam("page") int page,
 								@RequestParam("limit") int limit) {
 		
-		ServerOutput result = new ServerOutput();
+		BaseOutput<ServerInfoDTO> result = new BaseOutput<ServerInfoDTO>();
 		Pageable pageable = new PageRequest(page - 1, limit);
 		result.setData(serverInfoService.findAll(pageable));
 		int totalPage = (int) Math.ceil((double) (serverInfoService.totalItem()) / limit);
 		int totalItem = serverInfoService.totalItem();
-		result.setMeta(new PagingOutput(page, totalPage, totalItem));
+		result.setMetaData(new PagingOutput(totalPage, totalItem));
+		result.setCode("200");
 
-		return result;
+		return new ResponseEntity<BaseOutput<ServerInfoDTO>>(result, HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/api/server_infors/{id}")

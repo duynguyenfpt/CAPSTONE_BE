@@ -25,58 +25,58 @@ public abstract class BaseEntity {
 	
 	@Column
 	@CreatedBy
-	private String created_by;
+	private String createdBy;
 	
 	@Column
 	@CreatedDate
-	private Date created_date;
+	private Date createdDate;
 	
 	@Column
 	@LastModifiedBy
-	private String modified_by;
+	private String modifiedBy;
 	
 	@Column
 	@LastModifiedDate
-	private Date modified_date;
+	private Date modifiedDate;
 	
 	public Long getId() {
 		return id;
 	}
 
-	public String getCreated_by() {
-		return created_by;
-	}
-
-	public void setCreated_by(String created_by) {
-		this.created_by = created_by;
-	}
-
-	public Date getCreated_date() {
-		return created_date;
-	}
-
-	public void setCreated_date(Date created_date) {
-		this.created_date = created_date;
-	}
-
-	public String getModified_by() {
-		return modified_by;
-	}
-
-	public void setModified_by(String modified_by) {
-		this.modified_by = modified_by;
-	}
-
-	public Date getModified_date() {
-		return modified_date;
-	}
-
-	public void setModified_date(Date modified_date) {
-		this.modified_date = modified_date;
-	}
-
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public Date getModifiedDate() {
+		return modifiedDate;
+	}
+
+	public void setModifiedDate(Date modifiedDate) {
+		this.modifiedDate = modifiedDate;
 	}
 
 	

@@ -14,38 +14,37 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Table(name = "server_infos")
 public class ServerInfoEntity extends BaseEntity {
 	@Column(name = "server_host")
-	private String server_host;
+	private String serverHost;
 	
 	@Column(name = "server_domain")
-	private String server_domain;
+	private String serverDomain;
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy = "serverInfo")
-	private List<DatabaseInfoEntity> database_infoes = new ArrayList<>();
+	private List<DatabaseInfoEntity> databaseInfoes = new ArrayList<>();
 
-	public String getServer_host() {
-		return server_host;
-	}
-
-	public void setServer_host(String server_host) {
-		this.server_host = server_host;
-	}
-
-	public String getServer_domain() {
-		return server_domain;
-	}
-
-	public void setServer_domain(String server_domain) {
-		this.server_domain = server_domain;
-	}
-
-	public List<DatabaseInfoEntity> getDatabase_infoes() {
-		return database_infoes;
-	}
-
-	public void setDatabase_infoes(List<DatabaseInfoEntity> database_infoes) {
-		this.database_infoes = database_infoes;
-	} 
 	
-	
+	public String getServerHost() {
+		return serverHost;
+	}
+
+	public void setServerHost(String serverHost) {
+		this.serverHost = serverHost;
+	}
+
+	public String getServerDomain() {
+		return serverDomain;
+	}
+
+	public void setServerDomain(String serverDomain) {
+		this.serverDomain = serverDomain;
+	}
+
+	public List<DatabaseInfoEntity> getDatabaseInfoes() {
+		return databaseInfoes;
+	}
+
+	public void setDatabaseInfoes(List<DatabaseInfoEntity> databaseInfoes) {
+		this.databaseInfoes = databaseInfoes;
+	}
 }

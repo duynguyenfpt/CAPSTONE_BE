@@ -38,7 +38,7 @@ public class DatabaseInfoAPI {
 		result.setData(databaseInfoService.findAll(pageable, keyword));
 		int totalPage = (int) Math.ceil((double) (databaseInfoService.totalItem()) / limit);
 		int totalItem = databaseInfoService.totalItem();
-		result.setMeta(new PagingOutput(page, totalPage, totalItem));
+		result.setMeta(new PagingOutput(totalPage, totalItem));
 
 		return result;
 	}

@@ -9,8 +9,8 @@ import com.web_service.entity.ServerInfoEntity;
 public class ServerInfoConverter {
 	public ServerInfoEntity toEntity(ServerInfoDTO dto) {
 		ServerInfoEntity entity = new ServerInfoEntity();
-		entity.setServer_domain(dto.getServer_domain());
-		entity.setServer_host(dto.getServer_host());
+		entity.setServerDomain(dto.getServerDomain());
+		entity.setServerHost(dto.getServerHost());
 		return entity;
 	}
 	
@@ -18,8 +18,8 @@ public class ServerInfoConverter {
 		ServerInfoDTO dto = new ServerInfoDTO();
 
 		dto.setId(entity.getId());
-		dto.setServer_domain(entity.getServer_domain());
-		dto.setServer_host(entity.getServer_host());
+		dto.setServerDomain(entity.getServerDomain());
+		dto.setServerHost(entity.getServerHost());
 		return dto;
 	}
 	
@@ -28,17 +28,17 @@ public class ServerInfoConverter {
 		if(entity.getId() != null) {
 			dto.setId(entity.getId());
 		}
-		dto.setServer_domain(entity.getServer_domain());
-		dto.setServer_host(entity.getServer_host());
-		dto.setCreated_date(entity.getCreated_date());
-		dto.setCreated_by(entity.getCreated_by());
-		dto.setModified_date(entity.getModified_date());
-		dto.setModified_by(entity.getModified_by());
+		dto.setServerDomain(entity.getServerDomain());
+		dto.setServerHost(entity.getServerHost());
+		dto.setCreatedDate(entity.getCreatedDate());
+		dto.setCreatedBy(entity.getCreatedBy());
+		dto.setModifiedDate(entity.getModifiedDate());
+		dto.setModifiedBy(entity.getModifiedBy());
 		return dto;
 	}
 	public ServerInfoEntity toEntity(ServerInfoDTO dto, ServerInfoEntity entity) {
-		entity.setServer_domain(dto.getServer_domain());
-		entity.setServer_host(dto.getServer_host());
+		entity.setServerDomain(dto.getServerDomain());
+		entity.setServerHost(dto.getServerHost());
 		return entity;
 	}
 }

@@ -14,15 +14,15 @@ public class DatabaseInfoDTO extends AbstractDTO<DatabaseInfoDTO> {
 	
 	private String password;
 	
-	private String database_name;
+	private String databaseName;
 	
-	private String database_type;
+	private String databaseType;
 	
-	private Long server_infor_id;
+	private Long serverInforId;
 	
 	private List<TableEntity> tables = new ArrayList<>();
 	
-	private ServerInfoDTO server_infor;
+	private ServerInfoDTO serverInfor;
 
 	public String getPort() {
 		return port;
@@ -48,22 +48,6 @@ public class DatabaseInfoDTO extends AbstractDTO<DatabaseInfoDTO> {
 		this.password = password;
 	}
 
-	public String getDatabase_name() {
-		return database_name;
-	}
-
-	public void setDatabase_name(String database_name) {
-		this.database_name = database_name;
-	}
-
-	public String getDatabase_type() {
-		return database_type;
-	}
-
-	public void setDatabase_type(String database_type) {
-		this.database_type = database_type;
-	}
-
 	public List<TableEntity> getTables() {
 		return tables;
 	}
@@ -80,19 +64,37 @@ public class DatabaseInfoDTO extends AbstractDTO<DatabaseInfoDTO> {
 		this.host = host;
 	}
 
-	public Long getServer_infor_id() {
-		return server_infor_id;
+	public String getDatabaseName() {
+		return databaseName;
 	}
 
-	public void setServer_infor_id(Long server_infor_id) {
-		this.server_infor_id = server_infor_id;
+	public void setDatabaseName(String databaseName) {
+		this.databaseName = databaseName;
 	}
 
-	public ServerInfoDTO getServer_infor() {
-		return server_infor;
+	public String getDatabaseType() {
+		return databaseType;
 	}
 
-	public void setServer_infor(ServerInfoDTO server_infor) {
-		this.server_infor = server_infor;
-	} 
+	public void setDatabaseType(String databaseType) {
+		this.databaseType = databaseType;
+	}
+
+	public Long getServerInforId() {
+		return serverInforId;
+	}
+
+	public void setServerInforId(Long serverInforId) {
+		this.serverInforId = serverInforId;
+	}
+
+	public ServerInfoDTO getServerInfor() {
+		return serverInfor;
+	}
+
+	public void setServerInfor(ServerInfoDTO serverInfor) {
+		this.serverInfor = serverInfor;
+	}
+
+	
 }

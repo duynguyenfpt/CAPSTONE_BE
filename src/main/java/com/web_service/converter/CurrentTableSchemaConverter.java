@@ -9,11 +9,11 @@ import com.web_service.entity.CurrentTableSchemaEntity;
 public class CurrentTableSchemaConverter {
 	public CurrentTableSchemaEntity toEntity(CurrentTableSchemaDTO dto) {
 		CurrentTableSchemaEntity entity = new CurrentTableSchemaEntity();
-		entity.setRow_name(dto.getRow_name());
-		entity.setRow_type(dto.getRow_type());
-		entity.setType_size(dto.getType_size());
-		entity.setDefault_value(dto.getDefault_value());
-		entity.setPossible_value(dto.getPossible_value());
+		entity.setRowName(dto.getRowName());
+		entity.setRowType(dto.getRowType());
+		entity.setTypeSize(dto.getTypeSize());
+		entity.setDefaultValue(dto.getDefaultValue());
+		entity.setPossibleValue(dto.getPossibleValue());
 		
 		return entity;
 	}
@@ -23,23 +23,23 @@ public class CurrentTableSchemaConverter {
 		if(entity.getId() != null) {
 			dto.setId(entity.getId());
 		}
-		dto.setRow_name(entity.getRow_name());
-		dto.setRow_type(entity.getRow_type());
-		dto.setType_size(entity.getType_size());
-		dto.setDefault_value(entity.getDefault_value());
-		dto.setPossible_value(entity.getPossible_value());
-		dto.setCreated_date(entity.getCreated_date());
-		dto.setCreated_by(entity.getCreated_by());
-		dto.setModified_date(entity.getModified_date());
-		dto.setModified_by(entity.getModified_by());
+		dto.setRowName(entity.getRowName());
+		dto.setRowType(entity.getRowType());
+		dto.setTypeSize(entity.getTypeSize());
+		dto.setDefaultValue(entity.getDefaultValue());
+		dto.setPossibleValue(entity.getPossibleValue());
+		dto.setCreatedDate(entity.getCreatedDate());
+		dto.setCreatedBy(entity.getCreatedBy());
+		dto.setModifiedDate(entity.getModifiedDate());
+		dto.setModifiedBy(entity.getModifiedBy());
 		return dto;
 	}
 	public CurrentTableSchemaEntity toEntity(CurrentTableSchemaDTO dto, CurrentTableSchemaEntity entity) {
-		entity.setRow_name(dto.getRow_name());
-		entity.setRow_type(dto.getRow_type());
-		entity.setType_size(dto.getType_size());
-		entity.setDefault_value(dto.getDefault_value());
-		entity.setPossible_value(dto.getPossible_value());
+		entity.setRowName(dto.getRowName());
+		entity.setRowType(dto.getRowType());
+		entity.setTypeSize(dto.getTypeSize());
+		entity.setDefaultValue(dto.getDefaultValue());
+		entity.setPossibleValue(dto.getPossibleValue());
 
 		return entity;
 	}

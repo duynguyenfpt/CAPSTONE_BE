@@ -5,35 +5,26 @@ import java.util.List;
 import com.web_service.entity.CurrentTableSchemaEntity;
 
 public class TableDTO extends AbstractDTO<TableDTO>{
-	private String table_name;
-	private Long database_infor_id;
-	private List<CurrentTableSchemaEntity> current_table_schemas;
-
-	public String getTable_name() {
-		return table_name;
+	private String tableName;
+	private Long databaseInforId;
+	private List<CurrentTableSchemaEntity> currentTableSchemas;
+	public String getTableName() {
+		return tableName;
 	}
-
-	public void setTable_name(String table_name) {
-		this.table_name = table_name;
+	public void setTableName(String tableName) {
+		this.tableName = tableName;
 	}
-
-	public Long getDatabase_infor_id() {
-		return database_infor_id;
+	public Long getDatabaseInforId() {
+		return databaseInforId;
 	}
-
-	public void setDatabase_infor_id(Long database_infor_id) {
-		this.database_infor_id = database_infor_id;
+	public void setDatabaseInforId(Long databaseInforId) {
+		this.databaseInforId = databaseInforId;
 	}
-
-	public List<CurrentTableSchemaEntity> getCurrent_table_schemas() {
-		return current_table_schemas;
+	public List<CurrentTableSchemaEntity> getCurrentTableSchemas() {
+		return currentTableSchemas;
 	}
-
-	public void setCurrent_table_schemas(List<CurrentTableSchemaEntity> current_table_schemas) {
-		this.current_table_schemas = current_table_schemas;
+	public void setCurrentTableSchemas(List<CurrentTableSchemaEntity> currentTableSchemas) {
+		this.currentTableSchemas = currentTableSchemas;
 	}
-
-
-
 
 }

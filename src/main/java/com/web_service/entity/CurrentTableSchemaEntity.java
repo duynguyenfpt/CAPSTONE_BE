@@ -12,62 +12,72 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Table(name = "current_table_schemas")
 public class CurrentTableSchemaEntity extends BaseEntity {
 	@Column
-	private String row_name;
+	private String rowName;
 	
 	@Column
-	private String row_type;
+	private String rowType;
 	
 	@Column
-	private String type_size;
+	private String typeSize;
 	
 	@Column
-	private String default_value;
+	private String defaultValue;
 	
 	@Column
-	private String possible_value;
+	private String possibleValue;
 	
 	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "table_info_id", nullable = false)
 	private TableEntity tableInfo;
 
-	public String getRow_name() {
-		return row_name;
+	public String getRowName() {
+		return rowName;
 	}
 
-	public void setRow_name(String row_name) {
-		this.row_name = row_name;
+	public void setRowName(String rowName) {
+		this.rowName = rowName;
 	}
 
-	public String getRow_type() {
-		return row_type;
+	public String getRowType() {
+		return rowType;
 	}
 
-	public void setRow_type(String row_type) {
-		this.row_type = row_type;
+	public void setRowType(String rowType) {
+		this.rowType = rowType;
 	}
 
-	public String getType_size() {
-		return type_size;
+	public String getTypeSize() {
+		return typeSize;
 	}
 
-	public void setType_size(String type_size) {
-		this.type_size = type_size;
+	public void setTypeSize(String typeSize) {
+		this.typeSize = typeSize;
 	}
 
-	public String getDefault_value() {
-		return default_value;
+	public String getDefaultValue() {
+		return defaultValue;
 	}
 
-	public void setDefault_value(String default_value) {
-		this.default_value = default_value;
+	public void setDefaultValue(String defaultValue) {
+		this.defaultValue = defaultValue;
 	}
 
-	public String getPossible_value() {
-		return possible_value;
+	public String getPossibleValue() {
+		return possibleValue;
 	}
 
-	public void setPossible_value(String possible_value) {
-		this.possible_value = possible_value;
+	public void setPossibleValue(String possibleValue) {
+		this.possibleValue = possibleValue;
 	}
+
+	public TableEntity getTableInfo() {
+		return tableInfo;
+	}
+
+	public void setTableInfo(TableEntity tableInfo) {
+		this.tableInfo = tableInfo;
+	}
+
+	
 }
