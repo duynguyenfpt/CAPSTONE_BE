@@ -29,7 +29,7 @@ public class SchemaChangeHistoryAPI {
 		result.setData(schemaChangeHistoryService.findAll(pageable));
 		int totalPage = (int) Math.ceil((double) (schemaChangeHistoryService.totalItem()) / limit);
 		int totalItem = schemaChangeHistoryService.totalItem();
-		result.setMeta(new PagingOutput(page, totalPage, totalItem));
+		result.setMeta(new PagingOutput(totalPage, totalItem));
 
 		return result;
 	}

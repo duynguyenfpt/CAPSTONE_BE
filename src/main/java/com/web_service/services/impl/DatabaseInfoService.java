@@ -45,7 +45,7 @@ public class DatabaseInfoService implements IDatabaseInfoService {
 			databaseInfoEntity = databaseInfoConverter.toEntity(databaseInfoDTO);
 		}
 		
-		ServerInfoEntity serverInfoEntity = serverInfoRepository.findOne(databaseInfoDTO.getServer_infor_id());
+		ServerInfoEntity serverInfoEntity = serverInfoRepository.findOne(databaseInfoDTO.getServerInforId());
 		databaseInfoEntity.setServerInfo(serverInfoEntity);
 		databaseInfoEntity = databaseInfoRepository.save(databaseInfoEntity);
 		return databaseInfoConverter.toDTO(databaseInfoEntity);
@@ -90,13 +90,13 @@ public class DatabaseInfoService implements IDatabaseInfoService {
 		String USER = databaseInfoDTO.getUsername();
 		String PASS = databaseInfoDTO.getPassword();
 		String URL = "";
-		switch(databaseInfoDTO.getDatabase_type()) {
+		switch(databaseInfoDTO.getDatabaseType()) {
 		  case "mysql":
-		    URL = "jdbc:mysql://" + databaseInfoDTO.getHost() + ":" + databaseInfoDTO.getPort() + "/" + databaseInfoDTO.getDatabase_name();
+		    URL = "jdbc:mysql://" + databaseInfoDTO.getHost() + ":" + databaseInfoDTO.getPort() + "/" + databaseInfoDTO.getDatabaseName();
 		    
 		    break;
 		  case "postgresql":
-			URL = "jdbc:postgresql://" + databaseInfoDTO.getHost() + ":" + databaseInfoDTO.getPort() + "/" + databaseInfoDTO.getDatabase_name();
+			URL = "jdbc:postgresql://" + databaseInfoDTO.getHost() + ":" + databaseInfoDTO.getPort() + "/" + databaseInfoDTO.getDatabaseName();
 
 		    break;
 		}

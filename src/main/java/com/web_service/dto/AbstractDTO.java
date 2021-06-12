@@ -5,10 +5,10 @@ import java.util.Date;
 public class AbstractDTO<T> {
 
 	private Long id;
-	private String created_by;
-	private Date created_date;
-	private String modified_by;
-	private Date modified_date;
+	private String createdBy;
+	private Date createdDate;
+	private String modifiedBy;
+	private Date modifiedDate;
 	
 	public Long getId() {
 		return id;
@@ -16,28 +16,29 @@ public class AbstractDTO<T> {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getCreated_by() {
-		return created_by;
+	public String getCreatedBy() {
+		return createdBy;
 	}
-	public void setCreated_by(String created_by) {
-		this.created_by = created_by;
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
 	}
-	public Date getCreated_date() {
-		return created_date;
+	public Date getCreatedDate() {
+		return createdDate;
 	}
-	public void setCreated_date(Date created_date) {
-		this.created_date = created_date;
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
 	}
-	public String getModified_by() {
-		return modified_by;
+	public String getModifiedBy() {
+		return modifiedBy;
 	}
-	public void setModified_by(String modified_by) {
-		this.modified_by = modified_by;
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
 	}
-	public Date getModified_date() {
-		return modified_date;
+	public Date getModifiedDate() {
+		return modifiedDate;
 	}
-	public void setModified_date(Date modified_date) {
-		this.modified_date = modified_date;
+	public void setModifiedDate(Date modifiedDate) {
+		this.modifiedDate = modifiedDate;
 	}
+	
 }

@@ -32,7 +32,7 @@ public class TableAPI {
 		result.setData(tableService.findAll(pageable));
 		int totalPage = (int) Math.ceil((double) (tableService.totalItem()) / limit);
 		int totalItem = tableService.totalItem();
-		result.setMeta(new PagingOutput(page, totalPage, totalItem));
+		result.setMeta(new PagingOutput(totalPage, totalItem));
 		
 		return result;
 	}
@@ -46,7 +46,7 @@ public class TableAPI {
 		result.setData(tableService.findByDatabaseInfoId(database_infor_id, pageable));
 		int totalPage = (int) Math.ceil((double) (tableService.totalItem()) / limit);
 		int totalItem = tableService.totalItem();
-		result.setMeta(new PagingOutput(page, totalPage, totalItem));
+		result.setMeta(new PagingOutput(totalPage, totalItem));
 		
 		return result;
 	}

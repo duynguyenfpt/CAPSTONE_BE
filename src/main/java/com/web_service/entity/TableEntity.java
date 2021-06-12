@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 public class TableEntity extends BaseEntity{
 
 	@Column(name = "table_name")
-	private String table_name;
+	private String tableName;
 	
 	@JsonBackReference
 	@ManyToOne
@@ -32,22 +32,6 @@ public class TableEntity extends BaseEntity{
 	@JsonManagedReference
 	@OneToMany(mappedBy = "tableInfo")
 	private List<CurrentTableSchemaEntity> currentTableSchemaEntities  = new ArrayList<>();
-
-	public String getTableName() {
-		return table_name;
-	}
-
-	public void setTableName(String table_name) {
-		this.table_name = table_name;
-	}
-
-	public String getTable_name() {
-		return table_name;
-	}
-
-	public void setTable_name(String table_name) {
-		this.table_name = table_name;
-	}
 
 	public DatabaseInfoEntity getDatabaseInfo() {
 		return databaseInfo;
@@ -71,6 +55,14 @@ public class TableEntity extends BaseEntity{
 
 	public void setCurrentTableSchemaEntities(List<CurrentTableSchemaEntity> currentTableSchemaEntities) {
 		this.currentTableSchemaEntities = currentTableSchemaEntities;
+	}
+
+	public String getTableName() {
+		return tableName;
+	}
+
+	public void setTableName(String tableName) {
+		this.tableName = tableName;
 	}
 	
 	

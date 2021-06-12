@@ -13,16 +13,16 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 public class SchemaChangeHistoryEntity extends BaseEntity{
 	
 	@Column(name = "change_type")
-	private String change_type;
+	private String changeType;
 	
 	@Column(name = "field_change")
-	private String field_change;
+	private String fieldChange;
 	
 	@Column(name = "old_value")
-	private String old_value;
+	private String oldValue;
 	
 	@Column(name = "new_value")
-	private String new_value;
+	private String newValue;
 	
 	
 	@JsonBackReference
@@ -30,46 +30,37 @@ public class SchemaChangeHistoryEntity extends BaseEntity{
 	@JoinColumn(name = "table_info_id", nullable = false)
 	private TableEntity tableInfo;
 
-
-	public String getChange_type() {
-		return change_type;
+	public String getChangeType() {
+		return changeType;
 	}
 
-
-	public void setChange_type(String change_type) {
-		this.change_type = change_type;
+	public void setChangeType(String changeType) {
+		this.changeType = changeType;
 	}
 
-
-	public String getField_change() {
-		return field_change;
+	public String getFieldChange() {
+		return fieldChange;
 	}
 
-
-	public void setField_change(String field_change) {
-		this.field_change = field_change;
+	public void setFieldChange(String fieldChange) {
+		this.fieldChange = fieldChange;
 	}
 
-
-	public String getOld_value() {
-		return old_value;
+	public String getOldValue() {
+		return oldValue;
 	}
 
-
-	public void setOld_value(String old_value) {
-		this.old_value = old_value;
+	public void setOldValue(String oldValue) {
+		this.oldValue = oldValue;
 	}
 
-
-	public String getNew_value() {
-		return new_value;
+	public String getNewValue() {
+		return newValue;
 	}
 
-
-	public void setNew_value(String new_value) {
-		this.new_value = new_value;
+	public void setNewValue(String newValue) {
+		this.newValue = newValue;
 	}
-
 
 	public TableEntity getTableInfo() {
 		return tableInfo;

@@ -9,7 +9,7 @@ import com.web_service.entity.TableEntity;
 public class TableConverter {
 	public TableEntity toEntity(TableDTO dto) {
 		TableEntity entity = new TableEntity();
-		entity.setTableName(dto.getTable_name());
+		entity.setTableName(dto.getTableName());
 		return entity;
 	}
 	
@@ -18,17 +18,17 @@ public class TableConverter {
 		if(entity.getId() != null) {
 			dto.setId(entity.getId());
 		}
-		dto.setDatabase_infor_id(entity.getDatabaseInfo().getId());
-		dto.setTable_name(entity.getTableName());
-		dto.setCurrent_table_schemas(entity.getCurrentTableSchemaEntities());
-		dto.setCreated_date(entity.getCreated_date());
-		dto.setCreated_by(entity.getCreated_by());
-		dto.setModified_date(entity.getModified_date());
-		dto.setModified_by(entity.getModified_by());
+		dto.setDatabaseInforId(entity.getDatabaseInfo().getId());
+		dto.setTableName(entity.getTableName());
+		dto.setCurrentTableSchemas(entity.getCurrentTableSchemaEntities());
+		dto.setCreatedDate(entity.getCreatedDate());
+		dto.setCreatedBy(entity.getCreatedBy());
+		dto.setModifiedDate(entity.getModifiedDate());
+		dto.setModifiedBy(entity.getModifiedBy());
 		return dto;
 	}
 	public TableEntity toEntity(TableDTO dto, TableEntity entity) {
-		entity.setTableName(dto.getTable_name());
+		entity.setTableName(dto.getTableName());
 		return entity;
 	}
 }

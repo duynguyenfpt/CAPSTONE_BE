@@ -1,25 +1,23 @@
 package com.web_service.dto;
 
 public class ServerInfoDTO extends AbstractDTO<ServerInfoDTO>{
-	private String server_host;
+	private String serverHost;
 	
-	private String server_domain;
+	private String serverDomain;
 
-	public String getServer_host() {
-		return server_host;
+	public String getServerHost() {
+		return serverHost;
 	}
 
-	public void setServer_host(String server_host) {
-		this.server_host = server_host;
+	public void setServerHost(String serverHost) {
+		this.serverHost = serverHost;
 	}
 
-	public String getServer_domain() {
-		return server_domain;
+	public String getServerDomain() {
+		return serverDomain;
 	}
 
-	public void setServer_domain(String server_domain) {
-		this.server_domain = server_domain;
+	public void setServerDomain(String serverDomain) {
+		this.serverDomain = serverDomain;
 	}
-	
-	
 }
