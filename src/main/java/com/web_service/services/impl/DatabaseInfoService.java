@@ -98,29 +98,30 @@ public class DatabaseInfoService implements IDatabaseInfoService {
 		boolean trackingConnection;
 		Map<String, Object> response = new LinkedHashMap<>();
 		try {
-			switch(databaseInfoDTO.getDatabaseType()) {
-			  case "mysql":
-					URL = "jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASENAME;
-					conn = DriverManager.getConnection(URL, USER, PASS);
-			      
-			    break;
-			  case "postgresql":
-				  URL = "jdbc:postgresql://" + HOST + ":" + PORT + "/" + DATABASENAME;
-				  conn = DriverManager.getConnection(URL, USER, PASS);
-						  
-			    break;
-			  case "sql":
-				  URL = "jdbc:sqlserver://" + HOST + ":" + PORT + ";databaseName=" + DATABASENAME + ";integratedSecurity=true";
-				  conn = DriverManager.getConnection(URL, USER, PASS);
-		
-				  break;
-			  case "oracal":
-				  URL = "jdbc:oracal:thin:" + USER + "/" + PASS + "@" + HOST + ":" + PORT + ":" + DATABASENAME;
-				  conn = DriverManager.getConnection(URL);
-				  
-			    break;
-			  default:
-				  trackingConnection = false; 
+			switch (databaseInfoDTO.getDatabaseType()) {
+			case "mysql":
+				URL = "jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASENAME;
+				conn = DriverManager.getConnection(URL, USER, PASS);
+
+				break;
+			case "postgresql":
+				URL = "jdbc:postgresql://" + HOST + ":" + PORT + "/" + DATABASENAME;
+				conn = DriverManager.getConnection(URL, USER, PASS);
+
+				break;
+			case "sql":
+				URL = "jdbc:sqlserver://" + HOST + ":" + PORT + ";databaseName=" + DATABASENAME
+						+ ";integratedSecurity=true";
+				conn = DriverManager.getConnection(URL, USER, PASS);
+
+				break;
+			case "oracal":
+				URL = "jdbc:oracal:thin:" + USER + "/" + PASS + "@" + HOST + ":" + PORT + ":" + DATABASENAME;
+				conn = DriverManager.getConnection(URL);
+
+				break;
+			default:
+				trackingConnection = false;
 			}
 			conn = DriverManager.getConnection(URL, USER, PASS);
 			trackingConnection = true;
