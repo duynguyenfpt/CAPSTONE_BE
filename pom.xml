@@ -66,11 +66,6 @@
 			<groupId>com.microsoft.sqlserver</groupId>
 			<artifactId>mssql-jdbc</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>com.oracle</groupId>
-			<artifactId>ojdbc8</artifactId>
-			<version>1.0</version>
-		</dependency>
 	</dependencies>
 	<repositories>
 		<repository>
