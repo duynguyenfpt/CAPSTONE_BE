@@ -87,25 +87,42 @@ public class DatabaseInfoService implements IDatabaseInfoService {
 
 	@Override
 	public ResponseEntity<Map<String,Object>> trackingConnection(DatabaseInfoDTO databaseInfoDTO) {
+		ServerInfoEntity serverInfoEntity = serverInfoRepository.findOne(databaseInfoDTO.getServerInforId());
 		String USER = databaseInfoDTO.getUsername();
 		String PASS = databaseInfoDTO.getPassword();
+		String HOST = serverInfoEntity.getServerHost();
+		String PORT = databaseInfoDTO.getPort();
+		String DATABASENAME = databaseInfoDTO.getDatabaseName();
 		String URL = "";
-		switch(databaseInfoDTO.getDatabaseType()) {
-		  case "mysql":
-		    URL = "jdbc:mysql://" + databaseInfoDTO.getHost() + ":" + databaseInfoDTO.getPort() + "/" + databaseInfoDTO.getDatabaseName();
-		    
-		    break;
-		  case "postgresql":
-			URL = "jdbc:postgresql://" + databaseInfoDTO.getHost() + ":" + databaseInfoDTO.getPort() + "/" + databaseInfoDTO.getDatabaseName();
-
-		    break;
-		}
-		
+		Connection conn;
 		boolean trackingConnection;
 		Map<String, Object> response = new LinkedHashMap<>();
-		
 		try {
-			Connection conn = DriverManager.getConnection(URL, USER, PASS);
+			switch(databaseInfoDTO.getDatabaseType()) {
+			  case "mysql":
+			      URL = "jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASENAME;
+			      conn = DriverManager.getConnection(URL, USER, PASS);
+			      
+			      break;
+			  case "postgresql":
+				  URL = "jdbc:postgresql://" + HOST + ":" + PORT + "/" + DATABASENAME;
+				  conn = DriverManager.getConnection(URL, USER, PASS);
+						  
+			      break;
+			  case "sql":
+				  URL = "jdbc:sqlserver://" + HOST + ":" + PORT + ";databaseName=" + DATABASENAME + ";integratedSecurity=true";
+				  conn = DriverManager.getConnection(URL, USER, PASS);
+		
+				  break;
+			  case "oracal":
+				  URL = "jdbc:oracal:thin:" + USER + "/" + PASS + "@" + HOST + ":" + PORT + ":" + DATABASENAME;
+				  conn = DriverManager.getConnection(URL);
+				  
+			      break;
+			  default:
+				  trackingConnection = false; 
+			}
+			conn = DriverManager.getConnection(URL, USER, PASS);
 			trackingConnection = true;
 			conn.close();
 		} catch (SQLException e) {
