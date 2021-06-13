@@ -3,14 +3,17 @@ package com.web_service.api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.web_service.api.output.ListObjOutput;
+import com.web_service.api.output.ObjectOuput;
 import com.web_service.api.output.PagingOutput;
-import com.web_service.api.output.SchemaChangeHistoryOutput;
 import com.web_service.dto.SchemaChangeHistoryDTO;
 import com.web_service.services.ISchemaChangeHistoryService;
 
@@ -21,23 +24,27 @@ public class SchemaChangeHistoryAPI {
 	private ISchemaChangeHistoryService schemaChangeHistoryService;
 
 	@GetMapping(value = "/api/schema_change_history")
-	public SchemaChangeHistoryOutput showSchemaChangeHistory(@RequestParam("page") int page,
+	public ResponseEntity<ListObjOutput<SchemaChangeHistoryDTO>> showSchemaChangeHistory(@RequestParam("page") int page,
 								@RequestParam("limit") int limit) {
 		
-		SchemaChangeHistoryOutput result = new SchemaChangeHistoryOutput();
+		ListObjOutput<SchemaChangeHistoryDTO> result = new ListObjOutput<SchemaChangeHistoryDTO>();
 		Pageable pageable = new PageRequest(page - 1, limit);
 		result.setData(schemaChangeHistoryService.findAll(pageable));
 		int totalPage = (int) Math.ceil((double) (schemaChangeHistoryService.totalItem()) / limit);
 		int totalItem = schemaChangeHistoryService.totalItem();
-		result.setMeta(new PagingOutput(totalPage, totalItem));
+		result.setMetaData(new PagingOutput(totalPage, totalItem));
+		result.setCode("200");
 
-		return result;
+		return new ResponseEntity<ListObjOutput<SchemaChangeHistoryDTO>>(result, HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/api/schema_change_history/{id}")
-	public SchemaChangeHistoryDTO showServerInfo(@PathVariable("id") long id) {
-		return schemaChangeHistoryService.getById(id);
+	public ResponseEntity<ObjectOuput<SchemaChangeHistoryDTO>> showServerInfo(@PathVariable("id") long id) {
+		SchemaChangeHistoryDTO schemaChangeHistoryDTO =  schemaChangeHistoryService.getById(id);
+		ObjectOuput<SchemaChangeHistoryDTO> result = new ObjectOuput<SchemaChangeHistoryDTO>();
+		result.setData(schemaChangeHistoryDTO);
+		result.setCode("200");
+		
+		return new ResponseEntity<ObjectOuput<SchemaChangeHistoryDTO>>(result, HttpStatus.OK);		
 	}
-
-
 }

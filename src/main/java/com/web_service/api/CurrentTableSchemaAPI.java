@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.web_service.api.output.BaseOutput;
+import com.web_service.api.output.ListObjOutput;
+import com.web_service.api.output.ObjectOuput;
 import com.web_service.api.output.PagingOutput;
 import com.web_service.dto.CurrentTableSchemaDTO;
-import com.web_service.dto.ServerInfoDTO;
 import com.web_service.services.ICurrentTableSchemaService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -24,11 +24,11 @@ public class CurrentTableSchemaAPI {
 	private ICurrentTableSchemaService currentTableSchemaService;
 
 	@GetMapping(value = "/api/tables/{table_id}/current_table_schemas")
-	public ResponseEntity<BaseOutput<CurrentTableSchemaDTO>> showCurrentTableSchema(@RequestParam("page") int page,
+	public ResponseEntity<ListObjOutput<CurrentTableSchemaDTO>> showCurrentTableSchema(@RequestParam("page") int page,
 								@RequestParam("limit") int limit,
 								@PathVariable("table_id") long tableId) {
 		
-		BaseOutput<CurrentTableSchemaDTO> result = new BaseOutput<CurrentTableSchemaDTO>();
+		ListObjOutput<CurrentTableSchemaDTO> result = new ListObjOutput<CurrentTableSchemaDTO>();
 		Pageable pageable = new PageRequest(page - 1, limit);
 		result.setData(currentTableSchemaService.findAll(pageable, tableId));
 		int totalPage = (int) Math.ceil((double) (currentTableSchemaService.totalItem(tableId)) / limit);
@@ -36,11 +36,16 @@ public class CurrentTableSchemaAPI {
 		result.setMetaData(new PagingOutput(totalPage, totalItem));
 		result.setCode("200");
 
-		return new ResponseEntity<BaseOutput<CurrentTableSchemaDTO>>(result, HttpStatus.OK);
+		return new ResponseEntity<ListObjOutput<CurrentTableSchemaDTO>>(result, HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/api/current_table_schemas/{id}")
-	public CurrentTableSchemaDTO showCurrentTableSchema(@PathVariable("id") long id) {
-		return currentTableSchemaService.getById(id);
+	public ResponseEntity<ObjectOuput<CurrentTableSchemaDTO>> showCurrentTableSchema(@PathVariable("id") long id) {
+		CurrentTableSchemaDTO currentTableSchemaDTO =  currentTableSchemaService.getById(id);
+		ObjectOuput<CurrentTableSchemaDTO> result =  new ObjectOuput<CurrentTableSchemaDTO>();
+		result.setData(currentTableSchemaDTO);
+		result.setCode("200");
+		
+		return new ResponseEntity<ObjectOuput<CurrentTableSchemaDTO>>(result, HttpStatus.OK);
 	}
 }
