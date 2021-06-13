@@ -115,7 +115,7 @@ public class DatabaseInfoService implements IDatabaseInfoService {
 				conn = DriverManager.getConnection(URL, USER, PASS);
 
 				break;
-			case "oracal":
+			case "oracle":
 				URL = "jdbc:oracal:thin:" + USER + "/" + PASS + "@" + HOST + ":" + PORT + ":" + DATABASENAME;
 				conn = DriverManager.getConnection(URL);
 
