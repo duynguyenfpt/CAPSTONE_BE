@@ -5,6 +5,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,7 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.web_service.api.output.DatabaseInfoOutput;
+import com.web_service.api.output.ListObjOutput;
+import com.web_service.api.output.ObjectOuput;
 import com.web_service.api.output.PagingOutput;
 import com.web_service.dto.DatabaseInfoDTO;
 import com.web_service.services.IDatabaseInfoService;
@@ -28,41 +30,63 @@ public class DatabaseInfoAPI {
 	private IDatabaseInfoService databaseInfoService;
 
 	@GetMapping(value = "/api/database_infors")
-	public DatabaseInfoOutput showDatabaseInfors(@RequestParam("page") int page,
+	public ResponseEntity<ListObjOutput<DatabaseInfoDTO>> showDatabaseInfors(@RequestParam("page") int page,
 								@RequestParam("limit") int limit, @RequestParam(required = false) String keyword) {
 		
 		if (keyword == null || keyword.isEmpty()) keyword = "";
 		
-		DatabaseInfoOutput result = new DatabaseInfoOutput();
+		ListObjOutput<DatabaseInfoDTO> result = new ListObjOutput<DatabaseInfoDTO>();
 		Pageable pageable = new PageRequest(page - 1, limit);
 		result.setData(databaseInfoService.findAll(pageable, keyword));
 		int totalPage = (int) Math.ceil((double) (databaseInfoService.totalItem()) / limit);
 		int totalItem = databaseInfoService.totalItem();
-		result.setMeta(new PagingOutput(totalPage, totalItem));
+		result.setMetaData(new PagingOutput(totalPage, totalItem));
+		
+		result.setCode("200");
 
-		return result;
+		return new ResponseEntity<ListObjOutput<DatabaseInfoDTO>>(result, HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/api/database_infors/{id}")
-	public DatabaseInfoDTO showDatabaseInfo(@PathVariable("id") long id) {
-		return databaseInfoService.getById(id);
+	public ResponseEntity<ObjectOuput<DatabaseInfoDTO>> showDatabaseInfo(@PathVariable("id") long id) {
+		DatabaseInfoDTO databaseInfoDTO =  databaseInfoService.getById(id);
+		ObjectOuput<DatabaseInfoDTO> result = new ObjectOuput<DatabaseInfoDTO>();
+		result.setData(databaseInfoDTO);
+		result.setCode("200");
+		
+		return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.OK);
 	}
 	
 	@PostMapping(value = "/api/database_infors")
-	public DatabaseInfoDTO createDatabaseInfo(@RequestBody DatabaseInfoDTO model) {
-		return databaseInfoService.save(model);
+	public ResponseEntity<ObjectOuput<DatabaseInfoDTO>> createDatabaseInfo(@RequestBody DatabaseInfoDTO model) {
+		databaseInfoService.save(model);
+		
+		ObjectOuput<DatabaseInfoDTO> result = new ObjectOuput<DatabaseInfoDTO>();
+		result.setCode("201");
+		
+		return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.CREATED);
 	}
 
 	@PutMapping(value = "/api/database_infors/{id}")
-	public DatabaseInfoDTO updateDatabaseInfo(@RequestBody DatabaseInfoDTO model, @PathVariable("id") long id) {
+	public ResponseEntity<ObjectOuput<DatabaseInfoDTO>> updateDatabaseInfo(@RequestBody DatabaseInfoDTO model, @PathVariable("id") long id) {
 		model.setId(id);
+		databaseInfoService.save(model);
 		
-		return databaseInfoService.save(model);
+		ObjectOuput<DatabaseInfoDTO> result = new ObjectOuput<DatabaseInfoDTO>();
+		result.setCode("200");
+		
+		return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.OK);
 	}
 	
 	@DeleteMapping(value = "/api/database_infors/{id}")
-	public void deleteDatabaseInfo(@PathVariable("id") long id) {
+	public ResponseEntity<ObjectOuput<DatabaseInfoDTO>> deleteDatabaseInfo(@PathVariable("id") long id) {
 		databaseInfoService.delete(id);
+		
+		ObjectOuput<DatabaseInfoDTO> result = new ObjectOuput<DatabaseInfoDTO>();
+		result.setCode("200");
+		
+		return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.OK);
+
 	}
 	
 	@PostMapping(value = "/api/database_infors/test_connection")
