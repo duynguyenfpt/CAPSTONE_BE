@@ -100,15 +100,15 @@ public class DatabaseInfoService implements IDatabaseInfoService {
 		try {
 			switch(databaseInfoDTO.getDatabaseType()) {
 			  case "mysql":
-			      URL = "jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASENAME;
-			      conn = DriverManager.getConnection(URL, USER, PASS);
+					URL = "jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASENAME;
+					conn = DriverManager.getConnection(URL, USER, PASS);
 			      
-			      break;
+			    break;
 			  case "postgresql":
 				  URL = "jdbc:postgresql://" + HOST + ":" + PORT + "/" + DATABASENAME;
 				  conn = DriverManager.getConnection(URL, USER, PASS);
 						  
-			      break;
+			    break;
 			  case "sql":
 				  URL = "jdbc:sqlserver://" + HOST + ":" + PORT + ";databaseName=" + DATABASENAME + ";integratedSecurity=true";
 				  conn = DriverManager.getConnection(URL, USER, PASS);
@@ -118,7 +118,7 @@ public class DatabaseInfoService implements IDatabaseInfoService {
 				  URL = "jdbc:oracal:thin:" + USER + "/" + PASS + "@" + HOST + ":" + PORT + ":" + DATABASENAME;
 				  conn = DriverManager.getConnection(URL);
 				  
-			      break;
+			    break;
 			  default:
 				  trackingConnection = false; 
 			}
