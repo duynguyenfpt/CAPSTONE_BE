@@ -1,8 +1,13 @@
 package com.web_service.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -30,6 +35,9 @@ public class CurrentTableSchemaEntity extends BaseEntity {
 	@ManyToOne
 	@JoinColumn(name = "table_info_id", nullable = false)
 	private TableEntity tableInfo;
+	
+//	@ManyToMany(mappedBy = "currentTableSchemas", fetch = FetchType.LAZY)
+//	private List<AddColumnTableRequestEntity> addColumnTableRequests = new ArrayList<>();
 
 	public String getRowName() {
 		return rowName;

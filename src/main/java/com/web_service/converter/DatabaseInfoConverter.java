@@ -32,6 +32,7 @@ public class DatabaseInfoConverter {
 		dto.setCreatedBy(entity.getCreatedBy());
 		dto.setModifiedDate(entity.getModifiedDate());
 		dto.setModifiedBy(entity.getModifiedBy());
+		
 		return dto;
 	}
 	

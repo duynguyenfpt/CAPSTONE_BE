@@ -1,13 +1,13 @@
 package com.web_service.dto;
 
-public class UserDTO extends AbstractDTO<UserDTO>{
+public class AccountDTO extends AbstractDTO<AccountDTO>{
 	private String userName;
 	
 	private String email;
 		
-	private String fullName;
+	private String role;
 	
-	private Integer status;
+	private String phone;
 
 	public String getUserName() {
 		return userName;
@@ -25,20 +25,22 @@ public class UserDTO extends AbstractDTO<UserDTO>{
 		this.email = email;
 	}
 
-	public String getFullName() {
-		return fullName;
+	public String getRole() {
+		return role;
 	}
 
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
+	public void setRole(String role) {
+		this.role = role;
 	}
 
-	public Integer getStatus() {
-		return status;
+	public String getPhone() {
+		return phone;
 	}
 
-	public void setStatus(Integer status) {
-		this.status = status;
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
+
+	
 	
 }
