@@ -1,11 +1,10 @@
 package com.web_service.services;
 
-import com.web_service.dto.UserDTO;
-
+import com.web_service.dto.AccountDTO;
 
 public interface IUserService {
-	UserDTO save(UserDTO newDTO);
+	AccountDTO save(AccountDTO newDTO);
 	void delete(long[] ids);
 	int totalItem();
-	UserDTO getById(long id);
+	AccountDTO getById(long id);
 }

@@ -5,13 +5,15 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
-@Table(name = "server_infos")
+@Table(name = "server_infors")
 public class ServerInfoEntity extends BaseEntity {
 	@Column(name = "server_host")
 	private String serverHost;
@@ -20,10 +22,9 @@ public class ServerInfoEntity extends BaseEntity {
 	private String serverDomain;
 	
 	@JsonManagedReference
-	@OneToMany(mappedBy = "serverInfo")
+	@OneToMany(mappedBy = "serverInfo", fetch=FetchType.EAGER)
 	private List<DatabaseInfoEntity> databaseInfoes = new ArrayList<>();
 
-	
 	public String getServerHost() {
 		return serverHost;
 	}
