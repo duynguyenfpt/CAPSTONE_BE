@@ -9,9 +9,11 @@ import org.springframework.stereotype.Service;
 
 import com.web_service.converter.RequestConvertor;
 import com.web_service.dto.RequestDTO;
+import com.web_service.entity.AccountEntity;
 import com.web_service.entity.DatabaseInfoEntity;
 import com.web_service.entity.RequestEntity;
 import com.web_service.entity.ServerInfoEntity;
+import com.web_service.repository.AccountRepository;
 import com.web_service.repository.RequestRepository;
 import com.web_service.services.IRequestService;
 
@@ -22,6 +24,9 @@ public class RequestService implements IRequestService {
 	
 	@Autowired
 	private RequestConvertor requestConvertor;
+	
+	@Autowired
+	private AccountRepository accountRepository;
 	
 	@Override
 	public List<RequestDTO> findAll(Pageable pageable) {
@@ -56,6 +61,16 @@ public class RequestService implements IRequestService {
 			requestEntity = requestConvertor.toEntity(requestDTO);
 		}
 		
+		if(requestDTO.getCreatorId() != null) {
+			AccountEntity creator =  accountRepository.findOne(requestDTO.getCreatorId());
+			requestEntity.setCreator(creator);
+		}
+		
+		if(requestDTO.getApprovedById() != null) {
+			AccountEntity approvedBy =  accountRepository.findOne(requestDTO.getCreatorId());
+			requestEntity.setApprovedBy(approvedBy);
+		}
+			
 		requestEntity = requestRepository.save(requestEntity);
 		return requestConvertor.toDTO(requestEntity);
 	}

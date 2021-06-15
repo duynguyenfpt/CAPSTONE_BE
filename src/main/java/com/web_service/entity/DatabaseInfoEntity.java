@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
-@Table(name = "database_infors")
+@Table(name = "database_infos")
 public class DatabaseInfoEntity extends BaseEntity{
 	@Column
 	private String port;

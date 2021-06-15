@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.web_service.api.output.ListObjOutput;
 import com.web_service.api.output.ObjectOuput;
 import com.web_service.api.output.PagingOutput;
+import com.web_service.dto.DatabaseInfoDTO;
 import com.web_service.dto.RequestDTO;
 import com.web_service.services.IRequestService;
 
@@ -61,5 +63,14 @@ public class RequestAPI {
 		
 		return new ResponseEntity<ObjectOuput<RequestDTO>>(result, HttpStatus.OK);
 
+	}
+	
+	@PostMapping(value = "/api/requests")
+	public ResponseEntity<ObjectOuput<RequestDTO>> createRequest(@RequestBody RequestDTO model) {
+		ObjectOuput<RequestDTO> result = new ObjectOuput<RequestDTO>();
+		result.setData(requestService.save(model));
+		result.setCode("201");
+		
+		return new ResponseEntity<ObjectOuput<RequestDTO>>(result, HttpStatus.CREATED);
 	}
 }

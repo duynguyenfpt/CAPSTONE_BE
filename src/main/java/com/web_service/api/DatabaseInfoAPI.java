@@ -59,9 +59,8 @@ public class DatabaseInfoAPI {
 	
 	@PostMapping(value = "/api/database_infors")
 	public ResponseEntity<ObjectOuput<DatabaseInfoDTO>> createDatabaseInfo(@RequestBody DatabaseInfoDTO model) {
-		databaseInfoService.save(model);
-		
 		ObjectOuput<DatabaseInfoDTO> result = new ObjectOuput<DatabaseInfoDTO>();
+		result.setData(databaseInfoService.save(model));
 		result.setCode("201");
 		
 		return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.CREATED);

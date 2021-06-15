@@ -48,6 +48,8 @@ public class DatabaseInfoService implements IDatabaseInfoService {
 		ServerInfoEntity serverInfoEntity = serverInfoRepository.findOne(databaseInfoDTO.getServerInforId());
 		databaseInfoEntity.setServerInfo(serverInfoEntity);
 		databaseInfoEntity = databaseInfoRepository.save(databaseInfoEntity);
+		databaseInfoRepository.flush();
+		
 		return databaseInfoConverter.toDTO(databaseInfoEntity);
 	}
 

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
-@Table(name = "server_infors")
+@Table(name = "server_infos")
 public class ServerInfoEntity extends BaseEntity {
 	@Column(name = "server_host")
 	private String serverHost;

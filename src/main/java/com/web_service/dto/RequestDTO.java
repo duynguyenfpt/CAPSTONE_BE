@@ -5,6 +5,9 @@ public class RequestDTO extends AbstractDTO<RequestDTO>{
 	private AccountDTO creator;
 	private AccountDTO approvedBy;
 	private String requestType;
+	private Long creatorId;
+	private Long approvedById;
+	
 	public String getStatus() {
 		return status;
 	}
@@ -28,5 +31,17 @@ public class RequestDTO extends AbstractDTO<RequestDTO>{
 	}
 	public void setRequestType(String requestType) {
 		this.requestType = requestType;
+	}
+	public Long getCreatorId() {
+		return creatorId;
+	}
+	public void setCreatorId(Long creatorId) {
+		this.creatorId = creatorId;
+	}
+	public Long getApprovedById() {
+		return approvedById;
+	}
+	public void setApprovedById(Long approvedById) {
+		this.approvedById = approvedById;
 	}
 }

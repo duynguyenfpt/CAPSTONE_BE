@@ -33,13 +33,13 @@ public class TableEntity extends BaseEntity{
 	@OneToMany(mappedBy = "tableInfo")
 	private List<CurrentTableSchemaEntity> currentTableSchemaEntities  = new ArrayList<>();
 	
-	@JsonManagedReference
-	@OneToMany(mappedBy = "tableInfo")
-	private List<SyncTableRequestEntity> syncTableRequestEntities = new ArrayList<>();
+//	@JsonManagedReference
+//	@OneToMany(mappedBy = "tableInfo")
+//	private List<SyncTableRequestEntity> syncTableRequestEntities = new ArrayList<>();
 	
-	@JsonManagedReference
-	@OneToMany(mappedBy = "tableInfo")
-	private List<AddColumnTableRequestEntity> addColumnTableRequestEntities = new ArrayList<>();
+//	@JsonManagedReference
+//	@OneToMany(mappedBy = "tableInfo")
+//	private List<AddColumnTableRequestEntity> addColumnTableRequestEntities = new ArrayList<>();
 	
 	public DatabaseInfoEntity getDatabaseInfo() {
 		return databaseInfo;
@@ -73,19 +73,19 @@ public class TableEntity extends BaseEntity{
 		this.tableName = tableName;
 	}
 
-	public List<SyncTableRequestEntity> getSyncTableRequestEntities() {
-		return syncTableRequestEntities;
-	}
+//	public List<SyncTableRequestEntity> getSyncTableRequestEntities() {
+//		return syncTableRequestEntities;
+//	}
+//
+//	public void setSyncTableRequestEntities(List<SyncTableRequestEntity> syncTableRequestEntities) {
+//		this.syncTableRequestEntities = syncTableRequestEntities;
+//	}
 
-	public void setSyncTableRequestEntities(List<SyncTableRequestEntity> syncTableRequestEntities) {
-		this.syncTableRequestEntities = syncTableRequestEntities;
-	}
-
-	public List<AddColumnTableRequestEntity> getAddColumnTableRequestEntities() {
-		return addColumnTableRequestEntities;
-	}
-
-	public void setAddColumnTableRequestEntities(List<AddColumnTableRequestEntity> addColumnTableRequestEntities) {
-		this.addColumnTableRequestEntities = addColumnTableRequestEntities;
-	}
+//	public List<AddColumnTableRequestEntity> getAddColumnTableRequestEntities() {
+//		return addColumnTableRequestEntities;
+//	}
+//
+//	public void setAddColumnTableRequestEntities(List<AddColumnTableRequestEntity> addColumnTableRequestEntities) {
+//		this.addColumnTableRequestEntities = addColumnTableRequestEntities;
+//	}
 }
