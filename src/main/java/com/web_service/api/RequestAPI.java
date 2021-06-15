@@ -65,6 +65,16 @@ public class RequestAPI {
 
 	}
 	
+	@GetMapping(value = "/api/requests/{id}")
+	public ResponseEntity<ObjectOuput<RequestDTO>> showRequest(@PathVariable("id") long id) {
+		RequestDTO requestDTO =  requestService.getById(id);
+		ObjectOuput<RequestDTO> result = new ObjectOuput<RequestDTO>();
+		result.setData(requestDTO);
+		result.setCode("200");
+		
+		return new ResponseEntity<ObjectOuput<RequestDTO>>(result, HttpStatus.OK);
+	}
+	
 	@PostMapping(value = "/api/requests")
 	public ResponseEntity<ObjectOuput<RequestDTO>> createRequest(@RequestBody RequestDTO model) {
 		ObjectOuput<RequestDTO> result = new ObjectOuput<RequestDTO>();
