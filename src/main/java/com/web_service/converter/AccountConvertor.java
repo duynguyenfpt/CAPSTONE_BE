@@ -1,8 +1,11 @@
 package com.web_service.converter;
 
+import org.springframework.stereotype.Component;
+
 import com.web_service.dto.AccountDTO;
 import com.web_service.entity.AccountEntity;
 
+@Component
 public class AccountConvertor {
 	public AccountEntity toEntity(AccountDTO dto) {
 		AccountEntity entity = new AccountEntity();
