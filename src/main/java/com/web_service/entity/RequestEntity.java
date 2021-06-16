@@ -1,13 +1,18 @@
 package com.web_service.entity;
 
-import javax.persistence.CascadeType;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
 @Entity
@@ -20,15 +25,19 @@ public class RequestEntity extends BaseEntity {
 	private String requestType;
 	
 	@JsonBackReference
-	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "creator_id", referencedColumnName = "id")
+	@ManyToOne
+    @JoinColumn(name = "creator_id")
     private AccountEntity creator;
 	
 	@JsonBackReference
-	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "approved_by_id", referencedColumnName = "id")
+	@ManyToOne
+    @JoinColumn(name = "approved_by_id", nullable = true)
     private AccountEntity approvedBy;
-	
+//	
+//	@JsonManagedReference
+//	@OneToMany(mappedBy = "requestAddColumn", fetch=FetchType.EAGER)
+//	private List<AddColumnTableRequestEntity> listAddColumnTableRequests = new ArrayList<>();
+
 
 	public AccountEntity getCreator() {
 		return creator;

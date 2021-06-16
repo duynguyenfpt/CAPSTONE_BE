@@ -23,8 +23,13 @@ public class RequestConvertor {
 			dto.setId(entity.getId());
 		}
 		dto.setStatus(entity.getStatus());
-		dto.setCreator(accountConvertor.toDTO(entity.getCreator()));
-		dto.setApprovedBy(accountConvertor.toDTO(entity.getApprovedBy()));
+		if(entity.getCreator() != null) {
+			dto.setCreator(accountConvertor.toDTO(entity.getCreator()));
+		}
+		if(entity.getApprovedBy() != null) {
+			dto.setApprovedBy(accountConvertor.toDTO(entity.getApprovedBy()));
+		}
+		
 		dto.setRequestType(entity.getRequestType());
 		dto.setCreatedDate(entity.getCreatedDate());
 		dto.setCreatedBy(entity.getCreatedBy());

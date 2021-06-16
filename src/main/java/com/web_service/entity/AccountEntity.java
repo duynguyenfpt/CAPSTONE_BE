@@ -2,8 +2,13 @@ package com.web_service.entity;
 
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -44,28 +49,27 @@ public class AccountEntity extends BaseEntity {
 	private String role;
 	
 	@JsonManagedReference
-    @OneToOne(mappedBy = "creator")
-    private RequestEntity requestCreator;
+	@OneToMany(mappedBy = "creator")
+    private List<RequestEntity> listRequestCreator;
     
 	@JsonManagedReference
-    @OneToOne(mappedBy = "approvedBy")
-    private RequestEntity requestApprovedBy;
-    
-
-	public RequestEntity getRequestCreator() {
-		return requestCreator;
+	@OneToMany(mappedBy = "approvedBy")
+    private List<RequestEntity> listRequestApproved;
+	
+	public List<RequestEntity> getListRequestCreator() {
+		return listRequestCreator;
 	}
 
-	public void setRequestCreator(RequestEntity requestCreator) {
-		this.requestCreator = requestCreator;
+	public void setListRequestCreator(List<RequestEntity> listRequestCreator) {
+		this.listRequestCreator = listRequestCreator;
 	}
 
-	public RequestEntity getRequestApprovedBy() {
-		return requestApprovedBy;
+	public List<RequestEntity> getListRequestApproved() {
+		return listRequestApproved;
 	}
 
-	public void setRequestApprovedBy(RequestEntity requestApprovedBy) {
-		this.requestApprovedBy = requestApprovedBy;
+	public void setListRequestApproved(List<RequestEntity> listRequestApproved) {
+		this.listRequestApproved = listRequestApproved;
 	}
 
 	public String getUserName() {

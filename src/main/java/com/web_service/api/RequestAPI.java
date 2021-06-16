@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.web_service.api.output.ListObjOutput;
 import com.web_service.api.output.ObjectOuput;
 import com.web_service.api.output.PagingOutput;
-import com.web_service.dto.DatabaseInfoDTO;
 import com.web_service.dto.RequestDTO;
 import com.web_service.services.IRequestService;
 
@@ -62,7 +61,6 @@ public class RequestAPI {
 		result.setCode("200");
 		
 		return new ResponseEntity<ObjectOuput<RequestDTO>>(result, HttpStatus.OK);
-
 	}
 	
 	@GetMapping(value = "/api/requests/{id}")

@@ -57,18 +57,19 @@ public class RequestService implements IRequestService {
 		if (requestDTO.getId() != null) {
 			RequestEntity oldreRequestEntity = requestRepository.findOne(requestDTO.getId());
 			requestEntity = requestConvertor.toEntity(requestDTO, oldreRequestEntity);
+			
+			if(requestDTO.getApprovedById() != null) {
+				AccountEntity approvedBy =  accountRepository.findOne(requestDTO.getApprovedById());
+				requestEntity.setApprovedBy(approvedBy);
+			}
 		} else {
 			requestEntity = requestConvertor.toEntity(requestDTO);
-		}
-		
-		if(requestDTO.getCreatorId() != null) {
-			AccountEntity creator =  accountRepository.findOne(requestDTO.getCreatorId());
-			requestEntity.setCreator(creator);
-		}
-		
-		if(requestDTO.getApprovedById() != null) {
-			AccountEntity approvedBy =  accountRepository.findOne(requestDTO.getCreatorId());
-			requestEntity.setApprovedBy(approvedBy);
+			
+			if(requestDTO.getCreatorId() != null) {
+				AccountEntity creator =  accountRepository.findOne(requestDTO.getCreatorId());
+				requestEntity.setCreator(creator);
+			}
+			
 		}
 			
 		requestEntity = requestRepository.save(requestEntity);

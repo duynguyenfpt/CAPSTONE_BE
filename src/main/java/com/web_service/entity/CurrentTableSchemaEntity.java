@@ -9,9 +9,11 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "current_table_schemas")
@@ -36,8 +38,18 @@ public class CurrentTableSchemaEntity extends BaseEntity {
 	@JoinColumn(name = "table_info_id", nullable = false)
 	private TableEntity tableInfo;
 	
-//	@ManyToMany(mappedBy = "currentTableSchemas", fetch = FetchType.LAZY)
-//	private List<AddColumnTableRequestEntity> addColumnTableRequests = new ArrayList<>();
+//	@JsonManagedReference
+//	@OneToMany(mappedBy = "currentTableSchema")
+//	private List<AddColumnDetailEntity> addColumnDetails = new ArrayList<>();
+//
+//	
+//	public List<AddColumnDetailEntity> getAddColumnDetails() {
+//		return addColumnDetails;
+//	}
+//
+//	public void setAddColumnDetails(List<AddColumnDetailEntity> addColumnDetails) {
+//		this.addColumnDetails = addColumnDetails;
+//	}
 
 	public String getRowName() {
 		return rowName;
