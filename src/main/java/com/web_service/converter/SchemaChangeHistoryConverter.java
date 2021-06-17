@@ -18,6 +18,7 @@ public class SchemaChangeHistoryConverter {
 	}
 	
 	public SchemaChangeHistoryDTO toDTO(SchemaChangeHistoryEntity entity) {
+		TableConverter tableConverter = new TableConverter();
 		SchemaChangeHistoryDTO dto = new SchemaChangeHistoryDTO();
 		if(entity.getId() != null) {
 			dto.setId(entity.getId());
@@ -26,6 +27,7 @@ public class SchemaChangeHistoryConverter {
 		dto.setNewValue(entity.getNewValue());
 		dto.setFieldChange(entity.getFieldChange());
 		dto.setOldValue(entity.getOldValue());
+		dto.setTableInfo(tableConverter.toDTO(entity.getTableInfo()));
 		dto.setCreatedDate(entity.getCreatedDate());
 		dto.setCreatedBy(entity.getCreatedBy());
 		dto.setModifiedDate(entity.getModifiedDate());

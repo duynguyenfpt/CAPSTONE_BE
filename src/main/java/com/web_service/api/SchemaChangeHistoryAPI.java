@@ -38,6 +38,21 @@ public class SchemaChangeHistoryAPI {
 		return new ResponseEntity<ListObjOutput<SchemaChangeHistoryDTO>>(result, HttpStatus.OK);
 	}
 	
+	@GetMapping(value = "/api/schema_change_history/search")
+	public ResponseEntity<ListObjOutput<SchemaChangeHistoryDTO>> searchSchemaChangeHistory(@RequestParam("page") int page,
+								@RequestParam("limit") int limit, @RequestParam(required = false) long tableId,
+								@RequestParam(required = false) String typeChange) {
+		
+		ListObjOutput<SchemaChangeHistoryDTO> result = new ListObjOutput<SchemaChangeHistoryDTO>();
+		result.setData(schemaChangeHistoryService.search(tableId, typeChange, page, limit));
+		int totalPage = (int) Math.ceil((double) (schemaChangeHistoryService.totalItemSearch(tableId, typeChange)) / limit);
+		int totalItem = schemaChangeHistoryService.totalItemSearch(tableId, typeChange);
+		result.setMetaData(new PagingOutput(totalPage, totalItem));
+		result.setCode("200");
+
+		return new ResponseEntity<ListObjOutput<SchemaChangeHistoryDTO>>(result, HttpStatus.OK);
+	}
+	
 	@GetMapping(value = "/api/schema_change_history/{id}")
 	public ResponseEntity<ObjectOuput<SchemaChangeHistoryDTO>> showServerInfo(@PathVariable("id") long id) {
 		SchemaChangeHistoryDTO schemaChangeHistoryDTO =  schemaChangeHistoryService.getById(id);

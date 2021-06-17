@@ -14,6 +14,7 @@ public class TableConverter {
 	}
 	
 	public TableDTO toDTO(TableEntity entity) {
+		DatabaseInfoConverter databaseInfoConverter = new DatabaseInfoConverter();
 		TableDTO dto = new TableDTO();
 		if(entity.getId() != null) {
 			dto.setId(entity.getId());
@@ -21,6 +22,7 @@ public class TableConverter {
 		dto.setDatabaseInforId(entity.getDatabaseInfo().getId());
 		dto.setTableName(entity.getTableName());
 		dto.setCurrentTableSchemas(entity.getCurrentTableSchemaEntities());
+		dto.setDatabaseInfo(databaseInfoConverter.toDTO(entity.getDatabaseInfo()));
 		dto.setCreatedDate(entity.getCreatedDate());
 		dto.setCreatedBy(entity.getCreatedBy());
 		dto.setModifiedDate(entity.getModifiedDate());

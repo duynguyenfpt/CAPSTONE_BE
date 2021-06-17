@@ -8,6 +8,7 @@ public class TableDTO extends AbstractDTO<TableDTO>{
 	private String tableName;
 	private Long databaseInforId;
 	private List<CurrentTableSchemaEntity> currentTableSchemas;
+	private DatabaseInfoDTO databaseInfo;
 	public String getTableName() {
 		return tableName;
 	}
@@ -26,5 +27,10 @@ public class TableDTO extends AbstractDTO<TableDTO>{
 	public void setCurrentTableSchemas(List<CurrentTableSchemaEntity> currentTableSchemas) {
 		this.currentTableSchemas = currentTableSchemas;
 	}
-
+	public DatabaseInfoDTO getDatabaseInfo() {
+		return databaseInfo;
+	}
+	public void setDatabaseInfo(DatabaseInfoDTO databaseInfo) {
+		this.databaseInfo = databaseInfo;
+	}
 }
