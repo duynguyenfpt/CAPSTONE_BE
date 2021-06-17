@@ -8,6 +8,8 @@ public class SchemaChangeHistoryDTO extends AbstractDTO<SchemaChangeHistoryDTO> 
 	private String oldValue;
 	
 	private String newValue;
+	
+	private TableDTO tableInfo;
 
 	public String getChangeType() {
 		return changeType;
@@ -40,4 +42,16 @@ public class SchemaChangeHistoryDTO extends AbstractDTO<SchemaChangeHistoryDTO> 
 	public void setNewValue(String newValue) {
 		this.newValue = newValue;
 	}
+
+	public TableDTO getTableInfo() {
+		return tableInfo;
+	}
+
+	public void setTableInfo(TableDTO tableInfo) {
+		this.tableInfo = tableInfo;
+	}
+
+	
+	
+	
 }
