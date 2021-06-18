@@ -52,22 +52,19 @@ public class SchemaChangeHistoryService implements ISchemaChangeHistoryService {
 
 	@Override
 	public List<SchemaChangeHistoryDTO> search(Long tableId, String changeType, int page, int limit) {
-		String query = "select * from schema_change_histories where ";
-//		        "where (table_info_id is null or table_info_id = ?1 ) " +
-//		        "and (change_type is null or change_type LIKE %?2% ) " +
-		if (tableId != null) {
-			query += "table_info_id = " + tableId;
-		}
+		if (changeType == null) changeType = "";
+		String query = "select * from schema_change_histories where LOWER(change_type) LIKE '%"
+				+ changeType.toLowerCase() + "%'";
 
-		if (changeType != null) {
-			if (tableId != null)
-				query += " and ";
-			query += "change_type LIKE" + changeType;
+		if (tableId != null) {
+			query += " and table_info_id = " + tableId;
 		}
 
 		List<SchemaChangeHistoryEntity> schemaChangeHistoryEntities = em
-				.createNativeQuery(query, SchemaChangeHistoryEntity.class).setFirstResult(limit)
-				.setMaxResults(page * limit).getResultList();
+				.createNativeQuery(query, SchemaChangeHistoryEntity.class)
+				.setFirstResult((page - 1) * limit)
+				.setMaxResults(limit)
+				.getResultList();
 		List<SchemaChangeHistoryDTO> results = new ArrayList<>();
 		for (SchemaChangeHistoryEntity item : schemaChangeHistoryEntities) {
 			SchemaChangeHistoryDTO schemaChangeHistoryDTO = schemaChangeHistoryConverter.toDTO(item);
@@ -79,22 +76,17 @@ public class SchemaChangeHistoryService implements ISchemaChangeHistoryService {
 
 	@Override
 	public int totalItemSearch(Long tableId, String changeType) {
-		String query = "select * from schema_change_histories where ";
+		if (changeType == null) changeType = "";
+		String query = "select * from schema_change_histories where LOWER(change_type) LIKE '%"
+				+ changeType.toLowerCase() + "%'";
 
 		if (tableId != null) {
-			query += "table_info_id = " + tableId;
-		}
-
-		if (changeType != null) {
-			if (tableId != null)
-				query += " and ";
-			query += "change_type LIKE" + changeType;
+			query += " and table_info_id = " + tableId;
 		}
 
 		List<SchemaChangeHistoryEntity> schemaChangeHistoryEntities = em
-				.createNativeQuery(query, SchemaChangeHistoryEntity.class)
-				.getResultList();
-		
+				.createNativeQuery(query, SchemaChangeHistoryEntity.class).getResultList();
+
 		return schemaChangeHistoryEntities.size();
 	}
 }
