@@ -40,7 +40,7 @@ public class SchemaChangeHistoryAPI {
 	
 	@GetMapping(value = "/api/schema_change_history/search")
 	public ResponseEntity<ListObjOutput<SchemaChangeHistoryDTO>> searchSchemaChangeHistory(@RequestParam("page") int page,
-								@RequestParam("limit") int limit, @RequestParam(required = false) long tableId,
+								@RequestParam("limit") int limit, @RequestParam(required = false) Long tableId,
 								@RequestParam(required = false) String typeChange) {
 		
 		ListObjOutput<SchemaChangeHistoryDTO> result = new ListObjOutput<SchemaChangeHistoryDTO>();
