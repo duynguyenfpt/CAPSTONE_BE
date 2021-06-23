@@ -11,10 +11,10 @@ import com.web_service.entity.TableEntity;
 import com.web_service.repository.RequestRepository;
 import com.web_service.repository.SyncTableRequestRepository;
 import com.web_service.repository.TableRepository;
-import com.web_service.services.ISyncTableRequest;
+import com.web_service.services.ISyncTableRequestService;
 
 @Service
-public class SyncTableRequestService implements ISyncTableRequest{
+public class SyncTableRequestService implements ISyncTableRequestService{
 	@Autowired
 	private SyncTableRequestRepository syncTableRequestRepository;
 	

@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.web_service.api.output.ObjectOuput;
 import com.web_service.dto.SyncTableRequestDTO;
-import com.web_service.services.ISyncTableRequest;
+import com.web_service.services.ISyncTableRequestService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class SyncTableRequestAPI {
 	@Autowired
-	private ISyncTableRequest syncTableRequest;
+	private ISyncTableRequestService syncTableRequest;
 	
 	@PostMapping(value = "/api/sync_table_requests")
 	public ResponseEntity<ObjectOuput<SyncTableRequestDTO>> createSyncTableRequest(@RequestBody SyncTableRequestDTO model) {

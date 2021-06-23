@@ -80,4 +80,11 @@ public class TableService implements ITableService {
 		}
 		return results;
 	}
+	
+	@Override
+	public int totalItemByDatabaseId(long databaseId) {
+		DatabaseInfoEntity databaseInfoEntity = databaseInfoRepository.findOne(databaseId);
+		
+		return databaseInfoEntity.getTables().size();
+	}
 }
