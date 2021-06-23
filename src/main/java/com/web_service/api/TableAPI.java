@@ -42,14 +42,14 @@ public class TableAPI {
 	}
 	
 	@GetMapping(value = "api/database_infors/{database_infor_id}/tables")
-	public ResponseEntity<ListObjOutput<TableDTO>> showTablesByDatabaseInfor(@PathVariable("database_infor_id") int database_infor_id,
+	public ResponseEntity<ListObjOutput<TableDTO>> showTablesByDatabaseInfor(@PathVariable("database_infor_id") long database_infor_id,
 								@RequestParam("page") int page,
 								@RequestParam("limit") int limit) {
 		ListObjOutput<TableDTO> result = new ListObjOutput<TableDTO>();
 		Pageable pageable = new PageRequest(page - 1, limit);
 		result.setData(tableService.findByDatabaseInfoId(database_infor_id, pageable));
-		int totalPage = (int) Math.ceil((double) (tableService.totalItem()) / limit);
-		int totalItem = tableService.totalItem();
+		int totalPage = (int) Math.ceil((double) (tableService.totalItemByDatabaseId(database_infor_id)) / limit);
+		int totalItem = tableService.totalItemByDatabaseId(database_infor_id);
 		result.setMetaData(new PagingOutput(totalPage, totalItem));
 		
 		return new ResponseEntity<ListObjOutput<TableDTO>>(result, HttpStatus.OK);
