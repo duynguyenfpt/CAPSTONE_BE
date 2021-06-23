@@ -25,7 +25,7 @@ public class SchemaChangeHistoryService implements ISchemaChangeHistoryService {
 	private SchemaChangeHistoryConverter schemaChangeHistoryConverter;
 
 	@PersistenceContext
-	EntityManager em;
+	private EntityManager em;
 
 	@Override
 	public List<SchemaChangeHistoryDTO> findAll(Pageable pageable) {

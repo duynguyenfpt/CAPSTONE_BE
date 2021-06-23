@@ -13,5 +13,6 @@ public interface ITableService {
 	int totalItem();
 	TableDTO getById(long id);
 	List<TableDTO> findByDatabaseInfoId(long databaseInfoId, Pageable pageable);
+	int totalItemByDatabaseId(long databaseId);
 
 }

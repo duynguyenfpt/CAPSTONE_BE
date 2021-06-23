@@ -35,13 +35,13 @@ public class AddColumnTableRequestService implements IAddColumnTableRequestServi
 	private TableRepository tableRepository ;
 	
 	@Autowired
-	private RequestRepository repository;
+	private RequestRepository requestRepository;
 	
 	@Override
 	public AddColumnTableRequestEntity save(AddColumnTableRequestDTO addColumnTableRequestDTO) {
 		AddColumnTableRequestEntity addColumnTableRequestEntity = new AddColumnTableRequestEntity();
 		
-		RequestEntity requestEntity = repository.findOne(addColumnTableRequestDTO.getRequestTypeId());
+		RequestEntity requestEntity = requestRepository.findOne(addColumnTableRequestDTO.getRequestTypeId());
 		addColumnTableRequestEntity.setRequestAddColumn(requestEntity);
 		
 		TableEntity tableEntity = tableRepository.findOne(addColumnTableRequestDTO.getTableId());
