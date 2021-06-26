@@ -14,6 +14,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -28,7 +29,7 @@ public class AccountEntity extends BaseEntity {
 	@NotBlank
 	@Size(max = 20)
 	@Column(name = "username")
-	private String userName;
+	private String username;
 	
 	@NotBlank
 	@Size(max = 50)
@@ -36,6 +37,7 @@ public class AccountEntity extends BaseEntity {
 	private String email;
 	
 	@NotBlank
+	@JsonIgnore
 	@Size(max = 120)
 	private String password;
 	
@@ -70,11 +72,11 @@ public class AccountEntity extends BaseEntity {
 	}
 
 	public String getUserName() {
-		return userName;
+		return username;
 	}
 
 	public void setUserName(String userName) {
-		this.userName = userName;
+		this.username = userName;
 	}
 
 	public String getEmail() {
