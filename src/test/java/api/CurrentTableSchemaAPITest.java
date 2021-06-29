@@ -5,9 +5,13 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import com.web_service.entity.CurrentTableSchemaEntity;
+import com.web_service.repository.CurrentTableSchemaRepository;
 
 public class CurrentTableSchemaAPITest extends AbstractTest{
 	@Override
@@ -15,6 +19,9 @@ public class CurrentTableSchemaAPITest extends AbstractTest{
 	public void setUp() {
 		super.setUp();
 	}
+	
+	@Autowired
+	private CurrentTableSchemaRepository currentTableSchemaRepository;
 	
 	@Test
 	public void getCurrentTableSchemaByTable() throws Exception {
@@ -33,7 +40,8 @@ public class CurrentTableSchemaAPITest extends AbstractTest{
 	
 	@Test
 	public void getCurrentTableDetail() throws Exception {
-		int currentTableDetailId = 1;
+		long currentTableDetailId = 1;
+		CurrentTableSchemaEntity currentTableSchemaEntity = currentTableSchemaRepository.findOne(currentTableDetailId);
 		String uri = "/api/current_table_schemas/" + currentTableDetailId;
 		
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
@@ -41,6 +49,11 @@ public class CurrentTableSchemaAPITest extends AbstractTest{
 		
 		int status = mvcResult.getResponse().getStatus();
 		
-		assertEquals(status, 200);
+		if(currentTableSchemaEntity != null) {
+			assertEquals(status, 200);
+		}else {
+			assertEquals(status, 404);
+		}
+		
 	}
 }

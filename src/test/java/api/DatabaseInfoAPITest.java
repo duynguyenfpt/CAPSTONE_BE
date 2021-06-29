@@ -5,12 +5,16 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.web_service.dto.AddColumnTableRequestDTO;
 import com.web_service.dto.DatabaseInfoDTO;
+import com.web_service.entity.DatabaseInfoEntity;
+import com.web_service.repository.CurrentTableSchemaRepository;
+import com.web_service.repository.DatabaseInfoRepository;
 
 public class DatabaseInfoAPITest extends AbstractTest{
 	@Override
@@ -18,6 +22,9 @@ public class DatabaseInfoAPITest extends AbstractTest{
 	public void setUp() {
 		super.setUp();
 	}
+	
+	@Autowired
+	private DatabaseInfoRepository databaseInfoRepository;
 	
 	@Test
 	public void getDatabaseInfoExcludeKeyword() throws Exception {
@@ -106,12 +113,18 @@ public class DatabaseInfoAPITest extends AbstractTest{
 	
 	@Test
 	public void deleteDatabaseInfo() throws Exception {
-		int databaseInfoId = 18;
+		long databaseInfoId = 18;
+		DatabaseInfoEntity databaseInfoEntity = databaseInfoRepository.findOne(databaseInfoId);
 		String uri = "/api/database_infors/" + databaseInfoId;
 				
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)).andReturn();
 		
 		int status = mvcResult.getResponse().getStatus();
-		assertEquals(200, status);
+		if(databaseInfoEntity != null) {
+			assertEquals(200, status);
+		}else {
+			assertEquals(404, status);
+		}
+		
 	}
 }

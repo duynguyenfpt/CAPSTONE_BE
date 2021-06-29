@@ -50,7 +50,6 @@ public class SchemaChangeHistoryService implements ISchemaChangeHistoryService {
 		return schemaChangeHistoryDTO;
 	}
 
-	@Override
 	public List<SchemaChangeHistoryDTO> search(Long tableId, String changeType, int page, int limit) {
 		if (changeType == null) changeType = "";
 		String query = "select * from schema_change_histories where LOWER(change_type) LIKE '%"
