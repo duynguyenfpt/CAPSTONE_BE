@@ -49,12 +49,18 @@ public class DatabaseInfoAPI {
 	
 	@GetMapping(value = "/api/database_infors/{id}")
 	public ResponseEntity<ObjectOuput<DatabaseInfoDTO>> showDatabaseInfo(@PathVariable("id") long id) {
-		DatabaseInfoDTO databaseInfoDTO =  databaseInfoService.getById(id);
 		ObjectOuput<DatabaseInfoDTO> result = new ObjectOuput<DatabaseInfoDTO>();
-		result.setData(databaseInfoDTO);
-		result.setCode("200");
+		try{
+			DatabaseInfoDTO databaseInfoDTO =  databaseInfoService.getById(id);
+			result.setData(databaseInfoDTO);
+			result.setCode("200");
+			return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.OK);
+		}catch (NullPointerException e) {
+			result.setMessage("Not found record");
+			result.setCode("404");
+			return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.NOT_FOUND);
+		}
 		
-		return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.OK);
 	}
 	
 	@PostMapping(value = "/api/database_infors")
