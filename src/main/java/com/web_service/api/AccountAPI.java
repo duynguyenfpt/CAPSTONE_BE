@@ -51,7 +51,7 @@ public class AccountAPI {
 
 		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
-		final UserDetails userDetails = userDetailsService.loadUserByUserName(authenticationRequest.getUsername());
+		final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 
 		final String token = JwtTokenUtil.generateToken(userDetails);
 
@@ -85,6 +85,9 @@ public class AccountAPI {
 			throw new Exception("USER_DISABLED", e);
 		} catch (BadCredentialsException e) {
 			throw new Exception("INVALID_CREDENTIALS", e);
+		} catch (Exception e) {
+			String a = e.getMessage();
+			String b = a;
 		}
 	}
 }

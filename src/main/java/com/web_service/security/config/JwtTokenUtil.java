@@ -1,5 +1,6 @@
 package com.web_service.security.config;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +15,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
-public class JwtTokenUtil {
+public class JwtTokenUtil implements Serializable{
 	private static final long serialVersionUID = -2550185165626007488L;
 	public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
 

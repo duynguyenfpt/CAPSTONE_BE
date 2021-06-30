@@ -23,7 +23,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 	private PasswordEncoder bcryptEncoder;
 
 	@Override
-	public UserDetails loadUserByUserName(String username) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		AccountEntity account = accountRepository.findByUsername(username);
 		if(account == null) {
 			throw new UsernameNotFoundException("User not found with username: " + username);
@@ -33,8 +33,11 @@ public class JwtUserDetailsService implements UserDetailsService {
 	
 	public AccountEntity save(AccountDTO account) {
 		AccountEntity newAcc = new AccountEntity();
-		newAcc.setUserName(account.getUserName());
+		newAcc.setUserName(account.getUsername());
 		newAcc.setPassword(bcryptEncoder.encode(account.getPassword()));
+		newAcc.setEmail(account.getEmail());
+		newAcc.setPhone(account.getPhone());
+		newAcc.setRole(account.getRole());
 		return accountRepository.save(newAcc);
 	}
 

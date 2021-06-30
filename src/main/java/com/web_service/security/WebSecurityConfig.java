@@ -50,6 +50,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		return super.authenticationManagerBean();
 	}
 	
+	@Bean
+	public UserDetailsService userDetailsService() {
+	    return super.userDetailsService();
+	}
+	
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		// We don't need CSRF for this example
@@ -66,4 +71,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		// Add a filter to validate the tokens with every request
 		httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 	}
+	
+
 }
