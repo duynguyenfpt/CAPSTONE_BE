@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 
 import com.web_service.converter.AccountConvertor;
 import com.web_service.dto.AccountDTO;
-
 import com.web_service.entity.AccountEntity;
+import com.web_service.entity.ServerInfoEntity;
 import com.web_service.repository.AccountRepository;
 import com.web_service.services.IAccountService;
 
@@ -40,8 +40,23 @@ public class AccountService implements IAccountService {
 
 	@Override
 	public AccountDTO getById(long id) {
-		// TODO Auto-generated method stub
-		return null;
+		AccountEntity accountEntity = accountRepository.findOne(id);
+		AccountDTO accountDTO = accountConvertor.toDTO(accountEntity);
+		return accountDTO;
+	}
+
+	@Override
+	public AccountDTO save(AccountDTO accountDTO) {
+		AccountEntity accountEntity = new AccountEntity();
+		if (accountDTO.getId() != null) {
+			AccountEntity oldAccountEntity = accountRepository.findOne(accountDTO.getId());
+			accountEntity = accountConvertor.toEntity(accountDTO, oldAccountEntity);
+		} else {
+			accountEntity = accountConvertor.toEntity(accountDTO);
+		}
+
+		accountEntity = accountRepository.save(accountEntity);
+		return accountConvertor.toDTO(accountEntity);
 	}
 
 }

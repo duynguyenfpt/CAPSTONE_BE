@@ -2,6 +2,7 @@ package com.web_service.entity;
 
 
 
+import java.awt.JobAttributes;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -53,6 +54,18 @@ public class AccountEntity extends BaseEntity {
 	@OneToMany(mappedBy = "approvedBy")
     private List<RequestEntity> listRequestApproved;
 	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "executedBy")
+    private List<JobEntity> listJob;
+	
+	public List<JobEntity> getListJob() {
+		return listJob;
+	}
+
+	public void setListJob(List<JobEntity> listJob) {
+		this.listJob = listJob;
+	}
+
 	public List<RequestEntity> getListRequestCreator() {
 		return listRequestCreator;
 	}

@@ -33,11 +33,23 @@ public class RequestEntity extends BaseEntity {
 	@ManyToOne
     @JoinColumn(name = "approved_by_id", nullable = true)
     private AccountEntity approvedBy;
+	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "request")
+    private List<JobEntity> listJob;
 //	
 //	@JsonManagedReference
 //	@OneToMany(mappedBy = "requestAddColumn", fetch=FetchType.EAGER)
 //	private List<AddColumnTableRequestEntity> listAddColumnTableRequests = new ArrayList<>();
 
+
+	public List<JobEntity> getListJob() {
+		return listJob;
+	}
+
+	public void setListJob(List<JobEntity> listJob) {
+		this.listJob = listJob;
+	}
 
 	public AccountEntity getCreator() {
 		return creator;
