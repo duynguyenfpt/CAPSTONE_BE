@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Table(name = "request")
 public class RequestEntity extends BaseEntity {
 	@Column
-	private String status;
+	private String status = "0";
 	
 	@Column
 	private String requestType;

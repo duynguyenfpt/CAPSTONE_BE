@@ -5,9 +5,7 @@ import java.sql.Time;
 
 public class SyncTableRequestDTO extends AbstractDTO<SyncTableRequestDTO> {
 	private long tableId;
-	
-	private long requestId;
-	
+		
 	private boolean isAll;
 	
 	private Date fromDate;
@@ -15,6 +13,9 @@ public class SyncTableRequestDTO extends AbstractDTO<SyncTableRequestDTO> {
 	private Date toDate;
 	
 	private Time timeRequest;
+	
+	
+
 
 	public long getTableId() {
 		return tableId;
@@ -54,14 +55,6 @@ public class SyncTableRequestDTO extends AbstractDTO<SyncTableRequestDTO> {
 
 	public void setTimeRequest(Time timeRequest) {
 		this.timeRequest = timeRequest;
-	}
-
-	public long getRequestId() {
-		return requestId;
-	}
-
-	public void setRequestId(long requestId) {
-		this.requestId = requestId;
 	}
 	
 	

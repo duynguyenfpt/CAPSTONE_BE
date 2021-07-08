@@ -22,6 +22,7 @@ import com.web_service.Application;
 @WebAppConfiguration
 public abstract class AbstractTest {
 	protected MockMvc mvc;
+	
 	@Autowired
 	WebApplicationContext webApplicationContext;
 	
