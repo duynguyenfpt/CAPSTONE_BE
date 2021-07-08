@@ -12,4 +12,5 @@ public interface IAccountService {
 	int totalItem();
 	AccountDTO getById(long id);
 	AccountDTO save(AccountDTO accountDTO);
+	void resetPassword(long id);
 }

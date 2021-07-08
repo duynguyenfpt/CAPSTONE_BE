@@ -1,11 +1,6 @@
 package com.web_service.dto;
 
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 public class JobDTO extends AbstractDTO<JobDTO>{
 	 
 	private long requestId;
@@ -14,7 +9,15 @@ public class JobDTO extends AbstractDTO<JobDTO>{
 	private boolean isActive;
 	private int maxRetry;
 	private AccountDTO excutedBy;
+	private RequestDTO request;
 	
+	
+	public RequestDTO getRequest() {
+		return request;
+	}
+	public void setRequest(RequestDTO request) {
+		this.request = request;
+	}
 	public AccountDTO getExcutedBy() {
 		return excutedBy;
 	}
