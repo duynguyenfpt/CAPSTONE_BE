@@ -9,7 +9,6 @@ import com.web_service.entity.RequestEntity;
 public class RequestConvertor {
 	public RequestEntity toEntity(RequestDTO dto) {
 		RequestEntity entity = new RequestEntity();
-		entity.setStatus(dto.getStatus());
 		entity.setRequestType(dto.getRequestType());
 		
 		return entity;
@@ -39,7 +38,6 @@ public class RequestConvertor {
 	}
 	
 	public RequestEntity toEntity(RequestDTO dto, RequestEntity entity) {
-		entity.setStatus(dto.getStatus());
 		entity.setRequestType(dto.getRequestType());
 		
 		return entity;

@@ -1,8 +1,5 @@
 package com.web_service.entity;
 
-
-
-import java.awt.JobAttributes;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -29,7 +26,7 @@ public class AccountEntity extends BaseEntity {
 	@NotBlank
 	@Size(max = 20)
 	@Column(name = "username")
-	private String userName;
+	private String username;
 	
 	@NotBlank
 	@Size(max = 50)
@@ -82,12 +79,12 @@ public class AccountEntity extends BaseEntity {
 		this.listRequestApproved = listRequestApproved;
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getEmail() {

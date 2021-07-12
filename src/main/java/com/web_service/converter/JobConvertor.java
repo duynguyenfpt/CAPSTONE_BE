@@ -27,14 +27,22 @@ public class JobConvertor {
 	
 	public JobDTO toDTO(JobEntity entity) {
 		AccountConvertor accountConvertor = new AccountConvertor();
+		RequestConvertor requestConvertor = new RequestConvertor();
 		
 		JobDTO dto = new JobDTO();
 		if(entity.getId() != null) {
 			dto.setId(entity.getId());
 		}
-		dto.setJobSchedule(entity.getJobSchedule().toString());
+		if(entity.getJobSchedule() != null) {
+			dto.setJobSchedule(dateFormat.format(entity.getJobSchedule()).toString());
+		}
+
 		if(entity.getExecutedBy() != null) {
 			dto.setExcutedBy(accountConvertor.toDTO(entity.getExecutedBy()));
+		}
+		
+		if(entity.getRequest() != null) {
+			dto.setRequest(requestConvertor.toDTO(entity.getRequest()));
 		}
 		
 		dto.setActive(entity.isActive());

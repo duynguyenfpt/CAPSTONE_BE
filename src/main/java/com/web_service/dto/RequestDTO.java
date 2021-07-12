@@ -1,5 +1,8 @@
 package com.web_service.dto;
 
+import java.sql.Date;
+import java.sql.Time;
+
 public class RequestDTO extends AbstractDTO<RequestDTO>{
 	private String status;
 	private AccountDTO creator;
@@ -7,6 +10,50 @@ public class RequestDTO extends AbstractDTO<RequestDTO>{
 	private String requestType;
 	private Long creatorId;
 	private Long approvedById;
+	private long tableId;
+	private boolean isAll;
+	private Date fromDate;
+	private Date toDate;
+	private long[] rowIds;
+
+	public long[] getRowIds() {
+		return rowIds;
+	}
+	public void setRowIds(long[] rowIds) {
+		this.rowIds = rowIds;
+	}
+	public long getTableId() {
+		return tableId;
+	}
+	public void setTableId(long tableId) {
+		this.tableId = tableId;
+	}
+	public boolean isAll() {
+		return isAll;
+	}
+	public void setAll(boolean isAll) {
+		this.isAll = isAll;
+	}
+	public Date getFromDate() {
+		return fromDate;
+	}
+	public void setFromDate(Date fromDate) {
+		this.fromDate = fromDate;
+	}
+	public Date getToDate() {
+		return toDate;
+	}
+	public void setToDate(Date toDate) {
+		this.toDate = toDate;
+	}
+	public Time getTimeRequest() {
+		return timeRequest;
+	}
+	public void setTimeRequest(Time timeRequest) {
+		this.timeRequest = timeRequest;
+	}
+	private Time timeRequest;
+	
 	
 	public String getStatus() {
 		return status;
@@ -44,4 +91,5 @@ public class RequestDTO extends AbstractDTO<RequestDTO>{
 	public void setApprovedById(Long approvedById) {
 		this.approvedById = approvedById;
 	}
+	
 }

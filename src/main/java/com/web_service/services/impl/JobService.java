@@ -8,14 +8,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.web_service.converter.JobConvertor;
-import com.web_service.converter.RequestConvertor;
 import com.web_service.dto.JobDTO;
-import com.web_service.dto.RequestDTO;
-import com.web_service.dto.ServerInfoDTO;
 import com.web_service.entity.AccountEntity;
 import com.web_service.entity.JobEntity;
 import com.web_service.entity.RequestEntity;
-import com.web_service.entity.ServerInfoEntity;
 import com.web_service.repository.AccountRepository;
 import com.web_service.repository.JobRepository;
 import com.web_service.repository.RequestRepository;
