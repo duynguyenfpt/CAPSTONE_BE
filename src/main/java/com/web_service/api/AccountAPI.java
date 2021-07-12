@@ -22,7 +22,6 @@ import com.web_service.api.output.ListObjOutput;
 import com.web_service.api.output.ObjectOuput;
 import com.web_service.api.output.PagingOutput;
 import com.web_service.dto.AccountDTO;
-import com.web_service.dto.ServerInfoDTO;
 import com.web_service.services.IAccountService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
