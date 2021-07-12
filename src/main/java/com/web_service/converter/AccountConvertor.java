@@ -12,6 +12,7 @@ public class AccountConvertor {
 		entity.setUserName(dto.getUsername());
 		entity.setEmail(dto.getEmail());
 		entity.setPhone(dto.getPhone());
+		entity.setRole(dto.getRole());
 		
 		return entity;
 	}

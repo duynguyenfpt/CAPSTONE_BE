@@ -8,11 +8,18 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.web_service.converter.RequestConvertor;
+import com.web_service.converter.SyncTableConverter;
 import com.web_service.dto.RequestDTO;
+import com.web_service.dto.SyncTableRequestDTO;
 import com.web_service.entity.AccountEntity;
 import com.web_service.entity.RequestEntity;
 import com.web_service.repository.AccountRepository;
+import com.web_service.repository.AddColumnDetailRepository;
+import com.web_service.repository.AddColumnTableRequestRepository;
+import com.web_service.repository.CurrentTableSchemaRepository;
 import com.web_service.repository.RequestRepository;
+import com.web_service.repository.SyncTableRequestRepository;
+import com.web_service.repository.TableRepository;
 import com.web_service.services.IRequestService;
 
 @Service
@@ -25,6 +32,24 @@ public class RequestService implements IRequestService {
 	
 	@Autowired
 	private AccountRepository accountRepository;
+	
+	@Autowired
+	private TableRepository tableRepository;
+	
+	@Autowired
+	private SyncTableConverter syncTableConverter;
+	
+	@Autowired
+	private SyncTableRequestRepository syncTableRequestRepository;
+	
+	@Autowired
+	private AddColumnTableRequestRepository addColumnTableRequestRepository;
+	
+	@Autowired
+	private CurrentTableSchemaRepository currentTableSchemaRepository;
+	
+	@Autowired
+	private AddColumnDetailRepository addColumnDetailRepository;
 	
 	@Override
 	public List<RequestDTO> findAll(Pageable pageable) {
@@ -71,6 +96,16 @@ public class RequestService implements IRequestService {
 		}
 			
 		requestEntity = requestRepository.save(requestEntity);
+		
+		if(requestDTO.getId() != null) {
+			if(requestDTO.getRequestType().equals("SyncTable")) {			
+				createSyncTableRequest(requestDTO, requestEntity);
+			}
+			if(requestDTO.getRequestType().equals("AddColumn")) {			
+				createAddColumnRequest(requestDTO, requestEntity);
+			} 
+			
+		}
 		return requestConvertor.toDTO(requestEntity);
 	}
 
@@ -78,5 +113,44 @@ public class RequestService implements IRequestService {
 	public void delete(long id) {
 		requestRepository.delete(id);
 	}
-
+	
+	private void createSyncTableRequest(RequestDTO requestDTO, RequestEntity requestEntity) {
+		SyncTableRequestEntity syncTableRequestEntity = new SyncTableRequestEntity();
+		TableEntity tableEntity = getTable(requestDTO.getTableId());
+		
+		syncTableRequestEntity.setIsAll(requestDTO.isAll());
+		syncTableRequestEntity.setFromDate(requestDTO.getFromDate());
+		syncTableRequestEntity.setToDate(requestDTO.getToDate());
+		syncTableRequestEntity.setTimeRequest(requestDTO.getTimeRequest());
+		syncTableRequestEntity.setRequest(requestEntity);
+		syncTableRequestEntity.setTableInfo(tableEntity);
+		
+		syncTableRequestRepository.save(syncTableRequestEntity);
+	}
+	
+	private TableEntity getTable(long id) {
+		TableEntity tableEntity = tableRepository.findOne(id);
+		
+		return tableEntity;
+	}
+	
+	private void createAddColumnRequest(RequestDTO requestDTO, RequestEntity requestEntity) {
+		AddColumnTableRequestEntity addColumnTableRequestEntity = new AddColumnTableRequestEntity();
+		
+		addColumnTableRequestEntity.setRequestAddColumn(requestEntity);
+		addColumnTableRequestEntity.setTableInfo(getTable(requestDTO.getTableId()));
+		
+		addColumnTableRequestEntity = addColumnTableRequestRepository.save(addColumnTableRequestEntity);
+		
+		for(Long rowId : requestDTO.getRowIds()) {
+			AddColumnDetailEntity addColumnDetailEntity = new AddColumnDetailEntity();
+			addColumnDetailEntity.setAddColumnTableRequest(addColumnTableRequestEntity);
+			
+			CurrentTableSchemaEntity currentTableSchemaEntity = currentTableSchemaRepository.findOne(rowId);
+			addColumnDetailEntity.setCurrentTableSchema(currentTableSchemaEntity);
+			
+			addColumnDetailRepository.save(addColumnDetailEntity);
+			
+		};
+	}
 }
