@@ -9,6 +9,8 @@ public class AccountDTO extends AbstractDTO<AccountDTO>{
 	
 	private String phone;
 
+	private String password;
+
 	public String getUsername() {
 		return username;
 	}
@@ -41,6 +43,13 @@ public class AccountDTO extends AbstractDTO<AccountDTO>{
 		this.phone = phone;
 	}
 
-	
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	
 }

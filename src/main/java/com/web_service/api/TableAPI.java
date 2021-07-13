@@ -51,6 +51,7 @@ public class TableAPI {
 		int totalPage = (int) Math.ceil((double) (tableService.totalItemByDatabaseId(database_infor_id)) / limit);
 		int totalItem = tableService.totalItemByDatabaseId(database_infor_id);
 		result.setMetaData(new PagingOutput(totalPage, totalItem));
+		result.setCode("200");
 		
 		return new ResponseEntity<ListObjOutput<TableDTO>>(result, HttpStatus.OK);
 	}

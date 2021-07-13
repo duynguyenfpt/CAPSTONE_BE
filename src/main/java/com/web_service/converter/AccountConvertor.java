@@ -9,7 +9,7 @@ import com.web_service.entity.AccountEntity;
 public class AccountConvertor {
 	public AccountEntity toEntity(AccountDTO dto) {
 		AccountEntity entity = new AccountEntity();
-		entity.setUsername(dto.getUsername());
+		entity.setUserName(dto.getUsername());
 		entity.setEmail(dto.getEmail());
 		entity.setPhone(dto.getPhone());
 		entity.setRole(dto.getRole());
@@ -22,7 +22,7 @@ public class AccountConvertor {
 		if(entity.getId() != null) {
 			dto.setId(entity.getId());
 		}
-		dto.setUsername(entity.getUsername());
+		dto.setUsername(entity.getUserName());
 		dto.setEmail(entity.getEmail());
 		dto.setPhone(entity.getPhone());
 		dto.setRole(entity.getRole());
@@ -30,19 +30,9 @@ public class AccountConvertor {
 		return dto;
 	}
 	public AccountEntity toEntity(AccountDTO dto, AccountEntity entity) {
-		if(dto.getUsername() != null) {
-			entity.setUsername(dto.getUsername());
-		}
-		if(dto.getEmail() != null) {
-			entity.setEmail(dto.getEmail());
-		}
-		if(dto.getPhone() != null) {
-			entity.setPhone(dto.getPhone());
-		}
-		
-		if(dto.getRole() != null) {
-			entity.setRole(dto.getRole());
-		}
+		entity.setUserName(dto.getUsername());
+		entity.setEmail(dto.getEmail());
+		entity.setPhone(dto.getPhone());
 		
 		return entity;
 	}
