@@ -88,9 +88,6 @@ public class AccountAPI {
 			throw new Exception("USER_DISABLED", e);
 		} catch (BadCredentialsException e) {
 			throw new Exception("INVALID_CREDENTIALS", e);
-		} catch (Exception e) {
-			String a = e.getMessage();
-			String b = a;
 		}
 	}
 }
