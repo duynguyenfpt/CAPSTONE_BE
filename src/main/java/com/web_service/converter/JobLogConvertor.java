@@ -17,7 +17,6 @@ public class JobLogConvertor {
 	}
 	
 	public JobLogDTO toDTO(JobLogEntity entity) {
-		AccountConvertor accountConvertor = new AccountConvertor();
 		
 		JobLogDTO dto = new JobLogDTO();
 		if(entity.getId() != null) {
