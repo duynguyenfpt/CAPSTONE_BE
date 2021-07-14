@@ -13,6 +13,8 @@ public class SyncTableConverter {
 		entity.setFromDate(dto.getFromDate());
 		entity.setToDate(dto.getToDate());
 		entity.setTimeRequest(dto.getTimeRequest());
+		entity.setPartitionBy(dto.getPartitionBy());
+		entity.setIdentityId(dto.getIdentityId());
 		
 		return entity;
 	}
@@ -24,6 +26,8 @@ public class SyncTableConverter {
 		dto.setFromDate(entity.getFromDate());
 		dto.setToDate(entity.getToDate());
 		dto.setTimeRequest(entity.getTimeRequest());
+		dto.setPartitionBy(entity.getPartitionBy());
+		dto.setIdentityId(entity.getIdentityId());
 		
 		return dto;
 	}
@@ -37,6 +41,8 @@ public class SyncTableConverter {
 		dto.setFromDate(entity.getFromDate());
 		dto.setToDate(entity.getToDate());
 		dto.setTimeRequest(entity.getTimeRequest());
+		dto.setPartitionBy(entity.getPartitionBy());
+		dto.setIdentityId(entity.getIdentityId());
 		dto.setCreatedDate(entity.getCreatedDate());
 		dto.setCreatedBy(entity.getCreatedBy());
 		dto.setModifiedDate(entity.getModifiedDate());
@@ -48,6 +54,8 @@ public class SyncTableConverter {
 		dto.setFromDate(entity.getFromDate());
 		dto.setToDate(entity.getToDate());
 		dto.setTimeRequest(entity.getTimeRequest());
+		dto.setPartitionBy(entity.getPartitionBy());
+		dto.setIdentityId(entity.getIdentityId());
 		
 		return entity;
 	}

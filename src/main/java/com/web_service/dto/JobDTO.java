@@ -8,6 +8,7 @@ public class JobDTO extends AbstractDTO<JobDTO>{
 	private String jobSchedule;
 	private boolean isActive;
 	private int maxRetry;
+	private String status;
 	private AccountDTO excutedBy;
 	private RequestDTO request;
 	
@@ -55,4 +56,11 @@ public class JobDTO extends AbstractDTO<JobDTO>{
 	public void setMaxRetry(int maxRetry) {
 		this.maxRetry = maxRetry;
 	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
 }

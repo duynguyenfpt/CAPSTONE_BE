@@ -26,6 +26,12 @@ public class JobEntity extends BaseEntity{
 	@Column
 	private int maxRetry;
 	
+	@Column
+	private String status;
+	
+	@Column
+	private String description;
+	
 	@JsonBackReference
 	@ManyToOne
     @JoinColumn(name = "executed_by", nullable = false)
@@ -86,5 +92,21 @@ public class JobEntity extends BaseEntity{
 
 	public void setExecutedBy(AccountEntity executedBy) {
 		this.executedBy = executedBy;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }

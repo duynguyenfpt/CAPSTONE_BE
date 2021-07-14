@@ -21,6 +21,7 @@ public class JobConvertor {
 		}
 		entity.setActive(dto.isActive());
 		entity.setMaxRetry(dto.getMaxRetry());
+		entity.setStatus(dto.getStatus());
 		
 		return entity;
 	}
@@ -47,6 +48,7 @@ public class JobConvertor {
 		
 		dto.setActive(entity.isActive());
 		dto.setMaxRetry(entity.getMaxRetry());
+		dto.setStatus(entity.getStatus());
 		dto.setCreatedDate(entity.getCreatedDate());
 		dto.setCreatedBy(entity.getCreatedBy());
 		dto.setModifiedDate(entity.getModifiedDate());
@@ -62,6 +64,7 @@ public class JobConvertor {
 		}
 		entity.setActive(dto.isActive());
 		entity.setMaxRetry(dto.getMaxRetry());
+		entity.setStatus(dto.getStatus());
 		
 		return entity;
 	}

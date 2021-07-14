@@ -27,6 +27,12 @@ public class SyncTableRequestEntity extends BaseEntity{
 	@Column(name = "time_request")
 	private Time timeRequest;
 	
+	@Column(name = "partition_by")
+	private String partitionBy;
+	
+	@Column(name = "identity_id")
+	private String identityId;
+	
 	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "table_id", nullable = false)
@@ -84,4 +90,23 @@ public class SyncTableRequestEntity extends BaseEntity{
 	public void setRequest(RequestEntity request) {
 		this.request = request;
 	}
+
+	
+	public String getIdentityId() {
+		return identityId;
+	}
+
+	public void setIdentityId(String identityId) {
+		this.identityId = identityId;
+	}
+
+	public String getPartitionBy() {
+		return partitionBy;
+	}
+
+	public void setPartitionBy(String partitionBy) {
+		this.partitionBy = partitionBy;
+	}
+	
+	
 }
