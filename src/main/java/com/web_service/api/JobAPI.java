@@ -21,7 +21,7 @@ import com.web_service.api.output.PagingOutput;
 import com.web_service.dto.JobDTO;
 import com.web_service.services.IJobService;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
 @RestController
 public class JobAPI {
 	@Autowired
@@ -29,7 +29,7 @@ public class JobAPI {
 
 	@GetMapping(value = "/api/jobs")
 	public ResponseEntity<ListObjOutput<JobDTO>> showJobs(@RequestParam("page") int page,
-								@RequestParam("limit") int limit) {
+								@RequestParam("limit") int limit, @PathVariable("request_id") long requestId) {
 		
 		ListObjOutput<JobDTO> result = new ListObjOutput<JobDTO>();
 		Pageable pageable = new PageRequest(page - 1, limit);

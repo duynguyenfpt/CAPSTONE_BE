@@ -23,7 +23,7 @@ import com.web_service.api.output.PagingOutput;
 import com.web_service.dto.DatabaseInfoDTO;
 import com.web_service.services.IDatabaseInfoService;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
 @RestController
 public class DatabaseInfoAPI {
 	@Autowired

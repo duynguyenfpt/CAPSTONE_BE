@@ -17,7 +17,7 @@ import com.web_service.api.output.PagingOutput;
 import com.web_service.dto.SchemaChangeHistoryDTO;
 import com.web_service.services.ISchemaChangeHistoryService;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
 @RestController
 public class SchemaChangeHistoryAPI {
 	@Autowired
