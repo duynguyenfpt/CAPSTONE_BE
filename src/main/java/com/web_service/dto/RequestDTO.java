@@ -14,6 +14,8 @@ public class RequestDTO extends AbstractDTO<RequestDTO>{
 	private boolean isAll;
 	private Date fromDate;
 	private Date toDate;
+	private String partitionBy;
+	private String identityId;
 	private long[] rowIds;
 
 	public long[] getRowIds() {
@@ -91,5 +93,16 @@ public class RequestDTO extends AbstractDTO<RequestDTO>{
 	public void setApprovedById(Long approvedById) {
 		this.approvedById = approvedById;
 	}
-	
+	public String getPartitionBy() {
+		return partitionBy;
+	}
+	public void setPartitionBy(String partitionBy) {
+		this.partitionBy = partitionBy;
+	}
+	public String getIdentityId() {
+		return identityId;
+	}
+	public void setIdentityId(String identityId) {
+		this.identityId = identityId;
+	}
 }
