@@ -3,14 +3,11 @@ package com.web_service.services.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.web_service.converter.DatabaseInfoConverter;
 import com.web_service.dto.AddColumnTableRequestDTO;
 import com.web_service.entity.AddColumnDetailEntity;
 import com.web_service.entity.AddColumnTableRequestEntity;
 import com.web_service.entity.CurrentTableSchemaEntity;
-import com.web_service.entity.DatabaseInfoEntity;
 import com.web_service.entity.RequestEntity;
-import com.web_service.entity.ServerInfoEntity;
 import com.web_service.entity.TableEntity;
 import com.web_service.repository.AddColumnDetailRepository;
 import com.web_service.repository.AddColumnTableRequestRepository;
