@@ -1,8 +1,6 @@
 package com.web_service.api;
-import java.sql.SQLIntegrityConstraintViolationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -34,7 +32,7 @@ import com.web_service.security.config.JwtTokenUtil;
 import com.web_service.security.services.JwtUserDetailsService;
 import com.web_service.services.IAccountService;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
 @RestController
 public class AccountAPI {
 	@Autowired

@@ -13,7 +13,7 @@ import com.web_service.dto.AddColumnTableRequestDTO;
 import com.web_service.entity.AddColumnTableRequestEntity;
 import com.web_service.services.IAddColumnTableRequestService;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
 @RestController
 public class AddColumTableRequestAPI {
 	@Autowired

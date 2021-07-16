@@ -21,7 +21,7 @@ import com.web_service.api.output.PagingOutput;
 import com.web_service.dto.TableDTO;
 import com.web_service.services.ITableService;
 
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
 @RestController
 public class TableAPI {
 	@Autowired
