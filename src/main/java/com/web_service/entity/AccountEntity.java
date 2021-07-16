@@ -1,9 +1,11 @@
 package com.web_service.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -57,6 +59,26 @@ public class AccountEntity extends BaseEntity {
 	@OneToMany(mappedBy = "executedBy")
     private List<JobEntity> listJob;
 	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "account")
+	private List<AccountRightEntity> accountRights = new ArrayList<>();
+	
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public List<AccountRightEntity> getAccountRights() {
+		return accountRights;
+	}
+
+	public void setAccountRights(List<AccountRightEntity> accountRights) {
+		this.accountRights = accountRights;
+	}
+
 	public List<JobEntity> getListJob() {
 		return listJob;
 	}

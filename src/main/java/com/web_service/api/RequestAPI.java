@@ -21,7 +21,7 @@ import com.web_service.api.output.PagingOutput;
 import com.web_service.dto.RequestDTO;
 import com.web_service.services.IRequestService;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
 @RestController
 public class RequestAPI {
 	@Autowired

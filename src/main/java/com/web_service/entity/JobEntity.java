@@ -39,7 +39,7 @@ public class JobEntity extends BaseEntity{
 	
 	@JsonBackReference
 	@ManyToOne
-    @JoinColumn(name = "request", nullable = false)
+    @JoinColumn(name = "request_id", nullable = false)
     private RequestEntity request;
 	
 	@JsonManagedReference

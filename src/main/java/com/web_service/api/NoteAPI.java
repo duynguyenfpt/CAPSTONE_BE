@@ -27,7 +27,7 @@ import com.web_service.api.output.PagingOutput;
 import com.web_service.dto.NoteDTO;
 import com.web_service.services.INoteService;
 
-@CrossOrigin
+@CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
 @RestController
 public class NoteAPI {
 	@Autowired

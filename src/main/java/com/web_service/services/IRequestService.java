@@ -12,5 +12,4 @@ public interface IRequestService {
 	int totalItem();
 	RequestDTO getById(long id);
 	void delete(long id);
-	
 }
