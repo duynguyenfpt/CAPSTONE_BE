@@ -9,8 +9,8 @@ import com.web_service.entity.CurrentTableSchemaEntity;
 public class CurrentTableSchemaConverter {
 	public CurrentTableSchemaEntity toEntity(CurrentTableSchemaDTO dto) {
 		CurrentTableSchemaEntity entity = new CurrentTableSchemaEntity();
-		entity.setRowName(dto.getRowName());
-		entity.setRowType(dto.getRowType());
+		entity.setColumnName(dto.getColumnName());
+		entity.setColumnType(dto.getColumnType());
 		entity.setTypeSize(dto.getTypeSize());
 		entity.setDefaultValue(dto.getDefaultValue());
 		entity.setPossibleValue(dto.getPossibleValue());
@@ -23,8 +23,8 @@ public class CurrentTableSchemaConverter {
 		if(entity.getId() != null) {
 			dto.setId(entity.getId());
 		}
-		dto.setRowName(entity.getRowName());
-		dto.setRowType(entity.getRowType());
+		dto.setColumnName(entity.getColumnName());
+		dto.setColumnType(entity.getColumnType());
 		dto.setTypeSize(entity.getTypeSize());
 		dto.setDefaultValue(entity.getDefaultValue());
 		dto.setPossibleValue(entity.getPossibleValue());
@@ -35,8 +35,8 @@ public class CurrentTableSchemaConverter {
 		return dto;
 	}
 	public CurrentTableSchemaEntity toEntity(CurrentTableSchemaDTO dto, CurrentTableSchemaEntity entity) {
-		entity.setRowName(dto.getRowName());
-		entity.setRowType(dto.getRowType());
+		entity.setColumnName(dto.getColumnName());
+		entity.setColumnType(dto.getColumnType());
 		entity.setTypeSize(dto.getTypeSize());
 		entity.setDefaultValue(dto.getDefaultValue());
 		entity.setPossibleValue(dto.getPossibleValue());

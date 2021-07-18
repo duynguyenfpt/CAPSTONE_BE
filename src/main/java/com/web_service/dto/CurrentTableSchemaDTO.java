@@ -1,9 +1,9 @@
 package com.web_service.dto;
 
 public class CurrentTableSchemaDTO extends AbstractDTO<CurrentTableSchemaDTO> {
-	private String rowName;
+	private String columnName;
 	
-	private String rowType;
+	private String columnType;
 	
 	private String typeSize;
 	
@@ -11,20 +11,21 @@ public class CurrentTableSchemaDTO extends AbstractDTO<CurrentTableSchemaDTO> {
 	
 	private String possibleValue;
 
-	public String getRowName() {
-		return rowName;
+
+	public String getColumnName() {
+		return columnName;
 	}
 
-	public void setRowName(String rowName) {
-		this.rowName = rowName;
+	public void setColumnName(String columnName) {
+		this.columnName = columnName;
 	}
 
-	public String getRowType() {
-		return rowType;
+	public String getColumnType() {
+		return columnType;
 	}
 
-	public void setRowType(String rowType) {
-		this.rowType = rowType;
+	public void setColumnType(String columnType) {
+		this.columnType = columnType;
 	}
 
 	public String getTypeSize() {

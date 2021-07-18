@@ -147,7 +147,7 @@ public class RequestService implements IRequestService {
 		
 		addColumnTableRequestEntity = addColumnTableRequestRepository.save(addColumnTableRequestEntity);
 		
-		for(Long rowId : requestDTO.getRowIds()) {
+		for(Long rowId : requestDTO.getColumnIds()) {
 			AddColumnDetailEntity addColumnDetailEntity = new AddColumnDetailEntity();
 			addColumnDetailEntity.setAddColumnTableRequest(addColumnTableRequestEntity);
 			
