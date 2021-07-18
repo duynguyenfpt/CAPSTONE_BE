@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.web_service.api.output.ListObjOutput;
 import com.web_service.api.output.ObjectOuput;
 import com.web_service.api.output.PagingOutput;
+import com.web_service.dto.JobDTO;
 import com.web_service.dto.NoteDTO;
 import com.web_service.services.INoteService;
 
@@ -53,16 +54,29 @@ public class NoteAPI {
 			@RequestParam("limit") int limit,  @PathVariable("request_id") long requestId) {
 		
 		ListObjOutput<NoteDTO> result = new ListObjOutput<NoteDTO>();
-		Pageable pageable = new PageRequest(page - 1, limit, new Sort(new Order(Direction.DESC, "timestamp")));
-		
-		
-		result.setData(noteService.findAllByRequestId(requestId, pageable));
-		int totalPage = (int) Math.ceil((double) (noteService.totalItemByRequestId(requestId)) / limit);
-		int totalItem = noteService.totalItemByRequestId(requestId);
-		result.setMetaData(new PagingOutput(totalPage, totalItem));
-		result.setCode("200");
+		try {
+			Pageable pageable = new PageRequest(page - 1, limit, new Sort(new Order(Direction.DESC, "timestamp")));
+			
+			
+			result.setData(noteService.findAllByRequestId(requestId, pageable));
+			int totalPage = (int) Math.ceil((double) (noteService.totalItemByRequestId(requestId)) / limit);
+			int totalItem = noteService.totalItemByRequestId(requestId);
+			result.setMetaData(new PagingOutput(totalPage, totalItem));
+			result.setCode("200");
 
-		return new ResponseEntity<ListObjOutput<NoteDTO>>(result, HttpStatus.OK);
+			return new ResponseEntity<ListObjOutput<NoteDTO>>(result, HttpStatus.OK);
+		}catch (NullPointerException e) {
+			result.setMessage("Not found record");
+			result.setCode("404");
+			
+			return new ResponseEntity<ListObjOutput<NoteDTO>>(result, HttpStatus.NOT_FOUND);
+		}catch (Exception e) {
+			result.setMessage("Can not get data");
+			result.setCode("500");
+			
+			return new ResponseEntity<ListObjOutput<NoteDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
 	}
 	
 	@GetMapping(value = "/api/notes/{id}")

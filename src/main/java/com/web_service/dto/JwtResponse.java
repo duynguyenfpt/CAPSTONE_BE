@@ -1,4 +1,4 @@
-package com.web_service.entity;
+package com.web_service.dto;
 
 import java.io.Serializable;
 

@@ -2,6 +2,8 @@ package com.web_service.api;
 
 import java.util.Map;
 
+import javax.persistence.Cache;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.web_service.api.output.ListObjOutput;
 import com.web_service.api.output.ObjectOuput;
 import com.web_service.api.output.PagingOutput;
+import com.web_service.dto.CurrentTableSchemaDTO;
 import com.web_service.dto.DatabaseInfoDTO;
 import com.web_service.services.IDatabaseInfoService;
 
@@ -36,15 +39,22 @@ public class DatabaseInfoAPI {
 		if (keyword == null || keyword.isEmpty()) keyword = "";
 		
 		ListObjOutput<DatabaseInfoDTO> result = new ListObjOutput<DatabaseInfoDTO>();
-		Pageable pageable = new PageRequest(page - 1, limit);
-		result.setData(databaseInfoService.findAll(pageable, keyword));
-		int totalPage = (int) Math.ceil((double) (databaseInfoService.totalItem()) / limit);
-		int totalItem = databaseInfoService.totalItem();
-		result.setMetaData(new PagingOutput(totalPage, totalItem));
-		
-		result.setCode("200");
+		try {
+			Pageable pageable = new PageRequest(page - 1, limit);
+			result.setData(databaseInfoService.findAll(pageable, keyword));
+			int totalPage = (int) Math.ceil((double) (databaseInfoService.totalItem()) / limit);
+			int totalItem = databaseInfoService.totalItem();
+			result.setMetaData(new PagingOutput(totalPage, totalItem));
+			result.setCode("200");
 
-		return new ResponseEntity<ListObjOutput<DatabaseInfoDTO>>(result, HttpStatus.OK);
+			return new ResponseEntity<ListObjOutput<DatabaseInfoDTO>>(result, HttpStatus.OK);
+		}catch (Exception e) {
+			result.setCode("500");
+			result.setMessage("Can not get data");
+			
+			return new ResponseEntity<ListObjOutput<DatabaseInfoDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
 	}
 	
 	@GetMapping(value = "/api/database_infors/{id}")
@@ -59,6 +69,11 @@ public class DatabaseInfoAPI {
 			result.setMessage("Not found record");
 			result.setCode("404");
 			return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.NOT_FOUND);
+		}catch (Exception e) {
+			result.setCode("500");
+			result.setMessage("Can not get data");
+			
+			return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
 	}
@@ -66,32 +81,63 @@ public class DatabaseInfoAPI {
 	@PostMapping(value = "/api/database_infors")
 	public ResponseEntity<ObjectOuput<DatabaseInfoDTO>> createDatabaseInfo(@RequestBody DatabaseInfoDTO model) {
 		ObjectOuput<DatabaseInfoDTO> result = new ObjectOuput<DatabaseInfoDTO>();
-		result.setData(databaseInfoService.save(model));
-		result.setCode("201");
+		try {
+			result.setData(databaseInfoService.save(model));
+			result.setCode("201");
+			
+			return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.CREATED);
+		}catch (Exception e) {
+			result.setCode("500");
+			result.setMessage("Can not create data");
+			
+			return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		
-		return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.CREATED);
 	}
 
 	@PutMapping(value = "/api/database_infors/{id}")
 	public ResponseEntity<ObjectOuput<DatabaseInfoDTO>> updateDatabaseInfo(@RequestBody DatabaseInfoDTO model, @PathVariable("id") long id) {
-		model.setId(id);
-		databaseInfoService.save(model);
-		
 		ObjectOuput<DatabaseInfoDTO> result = new ObjectOuput<DatabaseInfoDTO>();
-		result.setCode("200");
+		try {
+			model.setId(id);
+			databaseInfoService.save(model);
+			result.setCode("200");
+			
+			return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.OK);
+		}catch (NullPointerException e) {
+			result.setMessage("Not found record");
+			result.setCode("404");
+			
+			return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.NOT_FOUND);
+		}catch (Exception e) {
+			result.setMessage("Can not update data");
+			result.setCode("500");
+			
+			return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		
-		return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.OK);
 	}
 	
 	@DeleteMapping(value = "/api/database_infors/{id}")
 	public ResponseEntity<ObjectOuput<DatabaseInfoDTO>> deleteDatabaseInfo(@PathVariable("id") long id) {
-		databaseInfoService.delete(id);
-		
 		ObjectOuput<DatabaseInfoDTO> result = new ObjectOuput<DatabaseInfoDTO>();
-		result.setCode("200");
-		
-		return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.OK);
 
+		try {
+			databaseInfoService.delete(id);
+			result.setCode("200");
+			
+			return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.OK);
+		}catch (NullPointerException e) {
+			result.setMessage("Not found record");
+			result.setCode("404");
+			
+			return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.NOT_FOUND);
+		}catch (Exception e) {
+			result.setMessage("Can not delete data");
+			result.setCode("500");
+			
+			return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	@PostMapping(value = "/api/database_infors/test_connection")

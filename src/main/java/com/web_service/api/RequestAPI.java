@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.web_service.api.output.ListObjOutput;
 import com.web_service.api.output.ObjectOuput;
 import com.web_service.api.output.PagingOutput;
+import com.web_service.dto.JobDTO;
+import com.web_service.dto.NoteDTO;
 import com.web_service.dto.RequestDTO;
 import com.web_service.services.IRequestService;
 
@@ -32,53 +34,105 @@ public class RequestAPI {
 								@RequestParam("limit") int limit) {
 		
 		ListObjOutput<RequestDTO> result = new ListObjOutput<RequestDTO>();
-		Pageable pageable = new PageRequest(page - 1, limit);
-		result.setData(requestService.findAll(pageable));
-		int totalPage = (int) Math.ceil((double) (requestService.totalItem()) / limit);
-		int totalItem = requestService.totalItem();
-		result.setMetaData(new PagingOutput(totalPage, totalItem));
-		result.setCode("200");
+		try {
+			Pageable pageable = new PageRequest(page - 1, limit);
+			result.setData(requestService.findAll(pageable));
+			int totalPage = (int) Math.ceil((double) (requestService.totalItem()) / limit);
+			int totalItem = requestService.totalItem();
+			result.setMetaData(new PagingOutput(totalPage, totalItem));
+			result.setCode("200");
 
-		return new ResponseEntity<ListObjOutput<RequestDTO>>(result, HttpStatus.OK);
+			return new ResponseEntity<ListObjOutput<RequestDTO>>(result, HttpStatus.OK);
+		}catch (Exception e) {
+			result.setMessage("Can not get data");
+			result.setCode("500");
+			
+			return new ResponseEntity<ListObjOutput<RequestDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
 	}
 	
 	@PutMapping(value = "/api/requests/{id}")
 	public ResponseEntity<ObjectOuput<RequestDTO>> updateRequest(@RequestBody RequestDTO model, @PathVariable("id") long id) {
-		model.setId(id);
-		requestService.save(model);
-		
 		ObjectOuput<RequestDTO> result = new ObjectOuput<RequestDTO>();
-		result.setCode("200");
+		try {
+			model.setId(id);
+			requestService.save(model);		
+			result.setCode("200");
+			
+			return new ResponseEntity<ObjectOuput<RequestDTO>>(result, HttpStatus.OK);
+		}catch (NullPointerException e) {
+			result.setMessage("Not found record");
+			result.setCode("404");
+			
+			return new ResponseEntity<ObjectOuput<RequestDTO>>(result, HttpStatus.NOT_FOUND);
+		}catch (Exception e) {
+			result.setMessage("Can not update data");
+			result.setCode("500");
+			
+			return new ResponseEntity<ObjectOuput<RequestDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		
-		return new ResponseEntity<ObjectOuput<RequestDTO>>(result, HttpStatus.OK);
 	}
 	
 	@DeleteMapping(value = "/api/requests/{id}")
 	public ResponseEntity<ObjectOuput<RequestDTO>> deleteRequest(@PathVariable("id") long id) {
-		requestService.delete(id);
-		
 		ObjectOuput<RequestDTO> result = new ObjectOuput<RequestDTO>();
-		result.setCode("200");
+		try {
+			requestService.delete(id);
+			result.setCode("200");
+			
+			return new ResponseEntity<ObjectOuput<RequestDTO>>(result, HttpStatus.OK);
+		}catch (NullPointerException e) {
+			result.setMessage("Not found record");
+			result.setCode("404");
+			
+			return new ResponseEntity<ObjectOuput<RequestDTO>>(result, HttpStatus.NOT_FOUND);
+		}catch (Exception e) {
+			result.setMessage("Can not delete data");
+			result.setCode("500");
+			
+			return new ResponseEntity<ObjectOuput<RequestDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		
-		return new ResponseEntity<ObjectOuput<RequestDTO>>(result, HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/api/requests/{id}")
 	public ResponseEntity<ObjectOuput<RequestDTO>> showRequest(@PathVariable("id") long id) {
-		RequestDTO requestDTO =  requestService.getById(id);
 		ObjectOuput<RequestDTO> result = new ObjectOuput<RequestDTO>();
-		result.setData(requestDTO);
-		result.setCode("200");
-		
-		return new ResponseEntity<ObjectOuput<RequestDTO>>(result, HttpStatus.OK);
+		try {
+			RequestDTO requestDTO =  requestService.getById(id);
+			result.setData(requestDTO);
+			result.setCode("200");
+			
+			return new ResponseEntity<ObjectOuput<RequestDTO>>(result, HttpStatus.OK);
+		}catch (NullPointerException e) {
+			result.setMessage("Not found record");
+			result.setCode("404");
+			
+			return new ResponseEntity<ObjectOuput<RequestDTO>>(result, HttpStatus.NOT_FOUND);
+		}catch (Exception e) {
+			result.setMessage("Can not delete data");
+			result.setCode("500");
+			
+			return new ResponseEntity<ObjectOuput<RequestDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	@PostMapping(value = "/api/requests")
 	public ResponseEntity<ObjectOuput<RequestDTO>> createRequest(@RequestBody RequestDTO model) {
 		ObjectOuput<RequestDTO> result = new ObjectOuput<RequestDTO>();
-		result.setData(requestService.save(model));
-		result.setCode("201");
-		
-		return new ResponseEntity<ObjectOuput<RequestDTO>>(result, HttpStatus.CREATED);
+		try {
+			result.setData(requestService.save(model));
+			result.setCode("201");
+			
+			return new ResponseEntity<ObjectOuput<RequestDTO>>(result, HttpStatus.CREATED);
+		}catch (Exception e) {
+			result.setMessage("Can not delete data");
+			result.setCode("500");
+			
+			return new ResponseEntity<ObjectOuput<RequestDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	
 	}
 }

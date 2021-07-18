@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.web_service.api.output.ListObjOutput;
 import com.web_service.api.output.ObjectOuput;
 import com.web_service.api.output.PagingOutput;
+import com.web_service.dto.RequestDTO;
+import com.web_service.dto.ServerInfoDTO;
 import com.web_service.dto.TableDTO;
 import com.web_service.services.ITableService;
 
@@ -31,14 +33,22 @@ public class TableAPI {
 	public ResponseEntity<ListObjOutput<TableDTO>> showTables(@RequestParam("page") int page,
 								@RequestParam("limit") int limit) {
 		ListObjOutput<TableDTO> result = new ListObjOutput<TableDTO>();
-		Pageable pageable = new PageRequest(page - 1, limit);
-		result.setData(tableService.findAll(pageable));
-		int totalPage = (int) Math.ceil((double) (tableService.totalItem()) / limit);
-		int totalItem = tableService.totalItem();
-		result.setMetaData(new PagingOutput(totalPage, totalItem));
-		result.setCode("200");
+		try {
+			Pageable pageable = new PageRequest(page - 1, limit);
+			result.setData(tableService.findAll(pageable));
+			int totalPage = (int) Math.ceil((double) (tableService.totalItem()) / limit);
+			int totalItem = tableService.totalItem();
+			result.setMetaData(new PagingOutput(totalPage, totalItem));
+			result.setCode("200");
+			
+			return new ResponseEntity<ListObjOutput<TableDTO>>(result, HttpStatus.OK);
+		}catch (Exception e) {
+			result.setMessage("Can not get data");
+			result.setCode("500");
+			
+			return new ResponseEntity<ListObjOutput<TableDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		
-		return new ResponseEntity<ListObjOutput<TableDTO>>(result, HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "api/database_infors/{database_infor_id}/tables")
@@ -46,55 +56,116 @@ public class TableAPI {
 								@RequestParam("page") int page,
 								@RequestParam("limit") int limit) {
 		ListObjOutput<TableDTO> result = new ListObjOutput<TableDTO>();
-		Pageable pageable = new PageRequest(page - 1, limit);
-		result.setData(tableService.findByDatabaseInfoId(database_infor_id, pageable));
-		int totalPage = (int) Math.ceil((double) (tableService.totalItemByDatabaseId(database_infor_id)) / limit);
-		int totalItem = tableService.totalItemByDatabaseId(database_infor_id);
-		result.setMetaData(new PagingOutput(totalPage, totalItem));
-		result.setCode("200");
+		try {
+			Pageable pageable = new PageRequest(page - 1, limit);
+			result.setData(tableService.findByDatabaseInfoId(database_infor_id, pageable));
+			int totalPage = (int) Math.ceil((double) (tableService.totalItemByDatabaseId(database_infor_id)) / limit);
+			int totalItem = tableService.totalItemByDatabaseId(database_infor_id);
+			result.setMetaData(new PagingOutput(totalPage, totalItem));
+			result.setCode("200");
+			
+			return new ResponseEntity<ListObjOutput<TableDTO>>(result, HttpStatus.OK);
+		}catch (NullPointerException e) {
+			result.setMessage("Not found record");
+			result.setCode("404");
+			
+			return new ResponseEntity<ListObjOutput<TableDTO>>(result, HttpStatus.NOT_FOUND);
+		}catch (Exception e) {
+			result.setMessage("Can not get data");
+			result.setCode("500");
+			
+			return new ResponseEntity<ListObjOutput<TableDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		
-		return new ResponseEntity<ListObjOutput<TableDTO>>(result, HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "api/tables/{id}")
 	public ResponseEntity<ObjectOuput<TableDTO>> showTable(@PathVariable("id") long id) {
-		TableDTO tableDTO =  tableService.getById(id);
 		ObjectOuput<TableDTO> result = new ObjectOuput<TableDTO>();
-		result.setData(tableDTO);
-		result.setCode("200");
+		try {
+			TableDTO tableDTO =  tableService.getById(id);
+			result.setData(tableDTO);
+			result.setCode("200");
+			
+			return new ResponseEntity<ObjectOuput<TableDTO>>(result, HttpStatus.OK);
+		}catch (NullPointerException e) {
+			result.setMessage("Not found record");
+			result.setCode("404");
+			
+			return new ResponseEntity<ObjectOuput<TableDTO>>(result, HttpStatus.NOT_FOUND);
+		}catch (Exception e) {
+			result.setMessage("Can not get data");
+			result.setCode("500");
+			
+			return new ResponseEntity<ObjectOuput<TableDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		
-		return new ResponseEntity<ObjectOuput<TableDTO>>(result, HttpStatus.OK);
 	}
 	
 	@PostMapping(value = "api/tables")
 	public ResponseEntity<ObjectOuput<TableDTO>> createTable(@RequestBody TableDTO model) {
-		tableService.save(model);
-		
 		ObjectOuput<TableDTO> result = new ObjectOuput<TableDTO>();
-		result.setCode("201");
-		
-		return new ResponseEntity<ObjectOuput<TableDTO>>(result, HttpStatus.CREATED);				
+		try {
+			tableService.save(model);
+			result.setCode("201");
+			
+			return new ResponseEntity<ObjectOuput<TableDTO>>(result, HttpStatus.CREATED);	
+		}catch (NullPointerException e) {
+			result.setMessage("Not found record");
+			result.setCode("404");
+			
+			return new ResponseEntity<ObjectOuput<TableDTO>>(result, HttpStatus.NOT_FOUND);
+		}catch (Exception e) {
+			result.setMessage("Can not create data");
+			result.setCode("500");
+			
+			return new ResponseEntity<ObjectOuput<TableDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}		
 	}
 
 	@PutMapping(value = "api/tables/{id}")
 	public ResponseEntity<ObjectOuput<TableDTO>> updateNew(@RequestBody TableDTO model, @PathVariable("id") long id) {
-		model.setId(id);
-		tableService.save(model);
-		
 		ObjectOuput<TableDTO> result = new ObjectOuput<TableDTO>();
-		result.setCode("200");
-		
-		return new ResponseEntity<ObjectOuput<TableDTO>>(result, HttpStatus.OK);		
+		try {
+			model.setId(id);
+			tableService.save(model);
+			
+			result.setCode("200");
+			
+			return new ResponseEntity<ObjectOuput<TableDTO>>(result, HttpStatus.OK);	
+		}catch (NullPointerException e) {
+			result.setMessage("Not found record");
+			result.setCode("404");
+			
+			return new ResponseEntity<ObjectOuput<TableDTO>>(result, HttpStatus.NOT_FOUND);
+		}catch (Exception e) {
+			result.setMessage("Can not update data");
+			result.setCode("500");
+			
+			return new ResponseEntity<ObjectOuput<TableDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}	
 	}
 	
 	@DeleteMapping(value = "api/tables/{id}")
 	public ResponseEntity<ObjectOuput<TableDTO>> deleteTable(@PathVariable("id") long id) {
-		
-		tableService.delete(id);
-		
 		ObjectOuput<TableDTO> result = new ObjectOuput<TableDTO>();
-		result.setCode("200");
+		try {
+			tableService.delete(id);
+			result.setCode("200");
+			
+			return new ResponseEntity<ObjectOuput<TableDTO>>(result, HttpStatus.OK);
+		}catch (NullPointerException e) {
+			result.setMessage("Not found record");
+			result.setCode("404");
+			
+			return new ResponseEntity<ObjectOuput<TableDTO>>(result, HttpStatus.NOT_FOUND);
+		}catch (Exception e) {
+			result.setMessage("Can not delete data");
+			result.setCode("500");
+			
+			return new ResponseEntity<ObjectOuput<TableDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		
-		return new ResponseEntity<ObjectOuput<TableDTO>>(result, HttpStatus.OK);
+		
 	}
 }

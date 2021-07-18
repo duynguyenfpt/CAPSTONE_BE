@@ -53,6 +53,10 @@ public class CurrentTableSchemaAPI {
 			result.setCode("404");
 			result.setMessage("Not found record");
 			return new ResponseEntity<ObjectOuput<CurrentTableSchemaDTO>>(result, HttpStatus.NOT_FOUND);
+		}catch (Exception e) {
+			result.setCode("500");
+			result.setMessage("Can not get data");
+			return new ResponseEntity<ObjectOuput<CurrentTableSchemaDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
 		}		
 	}
 }
