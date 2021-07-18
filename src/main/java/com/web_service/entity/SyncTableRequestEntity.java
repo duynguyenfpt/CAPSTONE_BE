@@ -90,4 +90,23 @@ public class SyncTableRequestEntity extends BaseEntity{
 	public void setRequest(RequestEntity request) {
 		this.request = request;
 	}
+
+	
+	public String getIdentityId() {
+		return identityId;
+	}
+
+	public void setIdentityId(String identityId) {
+		this.identityId = identityId;
+	}
+
+	public String getPartitionBy() {
+		return partitionBy;
+	}
+
+	public void setPartitionBy(String partitionBy) {
+		this.partitionBy = partitionBy;
+	}
+	
+	
 }

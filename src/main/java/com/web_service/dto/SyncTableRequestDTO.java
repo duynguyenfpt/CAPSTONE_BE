@@ -14,6 +14,9 @@ public class SyncTableRequestDTO extends AbstractDTO<SyncTableRequestDTO> {
 	
 	private Time timeRequest;
 	
+	private String partitionBy;
+	
+	private String identityId;
 	
 
 
@@ -56,6 +59,20 @@ public class SyncTableRequestDTO extends AbstractDTO<SyncTableRequestDTO> {
 	public void setTimeRequest(Time timeRequest) {
 		this.timeRequest = timeRequest;
 	}
-	
-	
+
+	public String getPartitionBy() {
+		return partitionBy;
+	}
+
+	public void setPartitionBy(String partitionBy) {
+		this.partitionBy = partitionBy;
+	}
+
+	public String getIdentityId() {
+		return identityId;
+	}
+
+	public void setIdentityId(String identityId) {
+		this.identityId = identityId;
+	}
 }

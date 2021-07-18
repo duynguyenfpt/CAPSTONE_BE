@@ -42,9 +42,6 @@ public class RequestService implements IRequestService {
 	private TableRepository tableRepository;
 	
 	@Autowired
-	private SyncTableConverter syncTableConverter;
-	
-	@Autowired
 	private SyncTableRequestRepository syncTableRequestRepository;
 	
 	@Autowired
@@ -103,7 +100,7 @@ public class RequestService implements IRequestService {
 			
 		requestEntity = requestRepository.save(requestEntity);
 		
-		if(requestDTO.getId() != null) {
+		if(requestEntity.getId() != null) {
 			if(requestDTO.getRequestType().equals("SyncTable")) {			
 				createSyncTableRequest(requestDTO, requestEntity);
 			}
@@ -130,6 +127,8 @@ public class RequestService implements IRequestService {
 		syncTableRequestEntity.setTimeRequest(requestDTO.getTimeRequest());
 		syncTableRequestEntity.setRequest(requestEntity);
 		syncTableRequestEntity.setTableInfo(tableEntity);
+		syncTableRequestEntity.setIdentityId(requestDTO.getIdentityId());
+		syncTableRequestEntity.setPartitionBy(requestDTO.getPartitionBy());
 		
 		syncTableRequestRepository.save(syncTableRequestEntity);
 	}
