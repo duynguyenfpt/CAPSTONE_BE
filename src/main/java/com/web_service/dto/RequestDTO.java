@@ -16,13 +16,14 @@ public class RequestDTO extends AbstractDTO<RequestDTO>{
 	private Date toDate;
 	private String partitionBy;
 	private String identityId;
-	private long[] rowIds;
+	private long[] columnIds;
 
-	public long[] getRowIds() {
-		return rowIds;
+	
+	public long[] getColumnIds() {
+		return columnIds;
 	}
-	public void setRowIds(long[] rowIds) {
-		this.rowIds = rowIds;
+	public void setColumnIds(long[] columnIds) {
+		this.columnIds = columnIds;
 	}
 	public long getTableId() {
 		return tableId;

@@ -13,11 +13,11 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity
 @Table(name = "current_table_schemas")
 public class CurrentTableSchemaEntity extends BaseEntity {
-	@Column
-	private String rowName;
+	@Column(name = "column_name")
+	private String columnName;
 	
-	@Column
-	private String rowType;
+	@Column(name = "column_type")
+	private String columnType;
 	
 	@Column
 	private String typeSize;
@@ -46,24 +46,24 @@ public class CurrentTableSchemaEntity extends BaseEntity {
 //		this.addColumnDetails = addColumnDetails;
 //	}
 
-	public String getRowName() {
-		return rowName;
-	}
-
-	public void setRowName(String rowName) {
-		this.rowName = rowName;
-	}
-
-	public String getRowType() {
-		return rowType;
-	}
-
-	public void setRowType(String rowType) {
-		this.rowType = rowType;
-	}
-
 	public String getTypeSize() {
 		return typeSize;
+	}
+
+	public String getColumnName() {
+		return columnName;
+	}
+
+	public void setColumnName(String columnName) {
+		this.columnName = columnName;
+	}
+
+	public String getColumnType() {
+		return columnType;
+	}
+
+	public void setColumnType(String columnType) {
+		this.columnType = columnType;
 	}
 
 	public void setTypeSize(String typeSize) {
