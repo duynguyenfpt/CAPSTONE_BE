@@ -16,6 +16,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,20 +57,42 @@ public class AccountAPI {
 	private JwtUserDetailsService userDetailsService;
 	
 	@PostMapping(value = "/api/authenticate")
-	public ResponseEntity<ObjectOuput<JwtResponse>> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
+	public ResponseEntity<ObjectOuput<JwtResponse>> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) {
 		ObjectOuput<JwtResponse> result = new ObjectOuput<JwtResponse>();
 
-		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+		try {
+			authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+			
+	
+			final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+	
+			final String token = JwtTokenUtil.generateToken(userDetails);
+			
+			result.setCode("200");
+			result.setData(new JwtResponse(token));
+			result.setMessage("Login success");
+	
+			return new ResponseEntity<ObjectOuput<JwtResponse>>(result, HttpStatus.OK);
+		} catch (Exception e) {
+			result.setCode("401");
+			result.setMessage("Login fail");
+	
+			return new ResponseEntity<ObjectOuput<JwtResponse>>(result, HttpStatus.UNAUTHORIZED);
+		}
+	}
+	
+	@GetMapping(value = "/api/me")
+	public ResponseEntity<ObjectOuput<AccountDTO>> getCurrentUser() throws Exception {
+		ObjectOuput<AccountDTO> result = new ObjectOuput<AccountDTO>();
 
-		final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-		final String token = JwtTokenUtil.generateToken(userDetails);
-		
+		AccountDTO accountDTO = accountService.findByUserName(auth.getName());
 		result.setCode("200");
-		result.setData(new JwtResponse(token));
+		result.setData(accountDTO);
 		result.setMessage("Login success");
 
-		return new ResponseEntity<ObjectOuput<JwtResponse>>(result, HttpStatus.OK);
+		return new ResponseEntity<ObjectOuput<AccountDTO>>(result, HttpStatus.OK);
 	}
 	
 	@PostMapping(value = "/api/register")

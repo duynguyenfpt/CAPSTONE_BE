@@ -13,4 +13,5 @@ public interface IAccountService {
 	AccountDTO getById(long id);
 	AccountDTO save(AccountDTO accountDTO);
 	void resetPassword(long id);
+	AccountDTO findByUserName(String username);
 }

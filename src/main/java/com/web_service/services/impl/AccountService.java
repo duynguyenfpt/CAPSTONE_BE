@@ -69,5 +69,13 @@ public class AccountService implements IAccountService {
 		
 		accountRepository.save(accountEntity);
 	}
+	
+	@Override
+	public AccountDTO findByUserName(String username) {
+		AccountEntity accountEntity = accountRepository.findByUsername(username);
+		AccountDTO accountDTO = accountConvertor.toDTO(accountEntity);
+		
+		return accountDTO;
+	}
 
 }
