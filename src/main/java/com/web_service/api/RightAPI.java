@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.web_service.api.output.ListObjOutput;
+import com.web_service.api.output.ObjectOuput;
 import com.web_service.api.output.PagingOutput;
+import com.web_service.dto.RequestDTO;
 import com.web_service.dto.RightDTO;
 import com.web_service.services.IRightService;
 
@@ -28,14 +30,22 @@ public class RightAPI {
 								@RequestParam("limit") int limit) {
 		
 		ListObjOutput<RightDTO> result = new ListObjOutput<RightDTO>();
-		Pageable pageable = new PageRequest(page - 1, limit);
-		result.setData(rightService.findAll(pageable));
-		int totalPage = (int) Math.ceil((double) (rightService.totalItem()) / limit);
-		int totalItem = rightService.totalItem();
-		result.setMetaData(new PagingOutput(totalPage, totalItem));
-		result.setCode("200");
+		try {
+			Pageable pageable = new PageRequest(page - 1, limit);
+			result.setData(rightService.findAll(pageable));
+			int totalPage = (int) Math.ceil((double) (rightService.totalItem()) / limit);
+			int totalItem = rightService.totalItem();
+			result.setMetaData(new PagingOutput(totalPage, totalItem));
+			result.setCode("200");
 
-		return new ResponseEntity<ListObjOutput<RightDTO>>(result, HttpStatus.OK);
+			return new ResponseEntity<ListObjOutput<RightDTO>>(result, HttpStatus.OK);
+		}catch (Exception e) {
+			result.setMessage("Can not get data");
+			result.setCode("500");
+			
+			return new ResponseEntity<ListObjOutput<RightDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	
 	}
 	
 	@GetMapping(value = "/api/accounts/{account_id}/rights")
@@ -43,13 +53,26 @@ public class RightAPI {
 								@RequestParam("limit") int limit, @PathVariable("account_id") long accountId) {
 		
 		ListObjOutput<RightDTO> result = new ListObjOutput<RightDTO>();
-		Pageable pageable = new PageRequest(page - 1, limit);
-		result.setData(rightService.findAllByAccountId(accountId, pageable));
-		int totalPage = (int) Math.ceil((double) (rightService.countRightByAccountId(accountId)) / limit);
-		int totalItem = rightService.countRightByAccountId(accountId);
-		result.setMetaData(new PagingOutput(totalPage, totalItem));
-		result.setCode("200");
+		try {
+			Pageable pageable = new PageRequest(page - 1, limit);
+			result.setData(rightService.findAllByAccountId(accountId, pageable));
+			int totalPage = (int) Math.ceil((double) (rightService.countRightByAccountId(accountId)) / limit);
+			int totalItem = rightService.countRightByAccountId(accountId);
+			result.setMetaData(new PagingOutput(totalPage, totalItem));
+			result.setCode("200");
 
-		return new ResponseEntity<ListObjOutput<RightDTO>>(result, HttpStatus.OK);
+			return new ResponseEntity<ListObjOutput<RightDTO>>(result, HttpStatus.OK);
+		}catch (NullPointerException e) {
+			result.setMessage("Not found record");
+			result.setCode("404");
+			
+			return new ResponseEntity<ListObjOutput<RightDTO>>(result, HttpStatus.NOT_FOUND);
+		}catch (Exception e) {
+			result.setMessage("Can not get data");
+			result.setCode("500");
+			
+			return new ResponseEntity<ListObjOutput<RightDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
 	}
 }

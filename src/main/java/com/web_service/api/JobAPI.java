@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.web_service.api.output.ListObjOutput;
 import com.web_service.api.output.ObjectOuput;
 import com.web_service.api.output.PagingOutput;
+import com.web_service.dto.DatabaseInfoDTO;
 import com.web_service.dto.JobDTO;
+import com.web_service.dto.NoteDTO;
 import com.web_service.services.IJobService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
@@ -29,56 +31,108 @@ public class JobAPI {
 
 	@GetMapping(value = "/api/jobs")
 	public ResponseEntity<ListObjOutput<JobDTO>> showJobs(@RequestParam("page") int page,
-								@RequestParam("limit") int limit, @PathVariable("request_id") long requestId) {
+								@RequestParam("limit") int limit) {
 		
 		ListObjOutput<JobDTO> result = new ListObjOutput<JobDTO>();
-		Pageable pageable = new PageRequest(page - 1, limit);
-		result.setData(jobService.findAll(pageable));
-		int totalPage = (int) Math.ceil((double) (jobService.totalItem()) / limit);
-		int totalItem = jobService.totalItem();
-		result.setMetaData(new PagingOutput(totalPage, totalItem));
-		result.setCode("200");
-
-		return new ResponseEntity<ListObjOutput<JobDTO>>(result, HttpStatus.OK);
+		try {
+			Pageable pageable = new PageRequest(page - 1, limit);
+			result.setData(jobService.findAll(pageable));
+			int totalPage = (int) Math.ceil((double) (jobService.totalItem()) / limit);
+			int totalItem = jobService.totalItem();
+			result.setMetaData(new PagingOutput(totalPage, totalItem));
+			result.setCode("200");
+			
+			return new ResponseEntity<ListObjOutput<JobDTO>>(result, HttpStatus.OK);
+		}catch (Exception e) {
+			result.setMessage("Can not get data");
+			result.setCode("500");
+			
+			return new ResponseEntity<ListObjOutput<JobDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	@PutMapping(value = "/api/jobs/{id}")
 	public ResponseEntity<ObjectOuput<JobDTO>> updateJob(@RequestBody JobDTO model, @PathVariable("id") long id) {
-		model.setId(id);
-		jobService.save(model);
-		
 		ObjectOuput<JobDTO> result = new ObjectOuput<JobDTO>();
-		result.setCode("200");
+		try {
+			model.setId(id);
+			jobService.save(model);
+			result.setCode("200");
+			
+			return new ResponseEntity<ObjectOuput<JobDTO>>(result, HttpStatus.OK);
+		}catch (NullPointerException e) {
+			result.setMessage("Not found record");
+			result.setCode("404");
+			
+			return new ResponseEntity<ObjectOuput<JobDTO>>(result, HttpStatus.NOT_FOUND);
+		}catch (Exception e) {
+			result.setMessage("Can not update data");
+			result.setCode("500");
+			
+			return new ResponseEntity<ObjectOuput<JobDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		
-		return new ResponseEntity<ObjectOuput<JobDTO>>(result, HttpStatus.OK);
 	}
 	
 	@DeleteMapping(value = "/api/jobs/{id}")
 	public ResponseEntity<ObjectOuput<JobDTO>> deleteJob(@PathVariable("id") long id) {
-		jobService.delete(id);
-		
 		ObjectOuput<JobDTO> result = new ObjectOuput<JobDTO>();
-		result.setCode("200");
-		
-		return new ResponseEntity<ObjectOuput<JobDTO>>(result, HttpStatus.OK);
+		try {
+			jobService.delete(id);
+			result.setCode("200");
+			
+			return new ResponseEntity<ObjectOuput<JobDTO>>(result, HttpStatus.OK);
+		}catch (NullPointerException e) {
+			result.setMessage("Not found record");
+			result.setCode("404");
+			
+			return new ResponseEntity<ObjectOuput<JobDTO>>(result, HttpStatus.NOT_FOUND);
+		}catch (Exception e) {
+			result.setMessage("Can not delete data");
+			result.setCode("500");
+			
+			return new ResponseEntity<ObjectOuput<JobDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	@GetMapping(value = "/api/jobs/{id}")
 	public ResponseEntity<ObjectOuput<JobDTO>> showJob(@PathVariable("id") long id) {
-		JobDTO jobDTO =  jobService.getById(id);
 		ObjectOuput<JobDTO> result = new ObjectOuput<JobDTO>();
-		result.setData(jobDTO);
-		result.setCode("200");
+
+		try {
+			JobDTO jobDTO =  jobService.getById(id);
+			result.setData(jobDTO);
+			result.setCode("200");
+			
+			return new ResponseEntity<ObjectOuput<JobDTO>>(result, HttpStatus.OK);
+		}catch (NullPointerException e) {
+			result.setMessage("Not found record");
+			result.setCode("404");
+			
+			return new ResponseEntity<ObjectOuput<JobDTO>>(result, HttpStatus.NOT_FOUND);
+		}catch (Exception e) {
+			result.setMessage("Can not get data");
+			result.setCode("500");
+			
+			return new ResponseEntity<ObjectOuput<JobDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		
-		return new ResponseEntity<ObjectOuput<JobDTO>>(result, HttpStatus.OK);
 	}
 	
 	@PostMapping(value = "/api/jobs")
 	public ResponseEntity<ObjectOuput<JobDTO>> createJob(@RequestBody JobDTO model) {
 		ObjectOuput<JobDTO> result = new ObjectOuput<JobDTO>();
-		result.setData(jobService.save(model));
-		result.setCode("201");
+		try {
+			result.setData(jobService.save(model));
+			result.setCode("201");
+			
+			return new ResponseEntity<ObjectOuput<JobDTO>>(result, HttpStatus.CREATED);
+		}catch (Exception e) {
+			result.setMessage("Can not create data");
+			result.setCode("500");
+			
+			return new ResponseEntity<ObjectOuput<JobDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		
-		return new ResponseEntity<ObjectOuput<JobDTO>>(result, HttpStatus.CREATED);
 	}
 }

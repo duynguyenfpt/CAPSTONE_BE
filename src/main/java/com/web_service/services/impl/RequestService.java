@@ -6,11 +6,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.web_service.converter.RequestConvertor;
 import com.web_service.converter.SyncTableConverter;
 import com.web_service.dto.RequestDTO;
-import com.web_service.dto.SyncTableRequestDTO;
 import com.web_service.entity.AccountEntity;
 import com.web_service.entity.AddColumnDetailEntity;
 import com.web_service.entity.AddColumnTableRequestEntity;
@@ -80,6 +80,7 @@ public class RequestService implements IRequestService {
 	}
 
 	@Override
+	@Transactional
 	public RequestDTO save(RequestDTO requestDTO) {
 		RequestEntity requestEntity = new RequestEntity();
 		if (requestDTO.getId() != null) {

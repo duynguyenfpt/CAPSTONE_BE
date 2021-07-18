@@ -1,6 +1,7 @@
 package com.web_service.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -24,10 +25,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.web_service.api.output.ListObjOutput;
+import com.web_service.api.output.ObjectOuput;
 import com.web_service.api.output.PagingOutput;
 import com.web_service.dto.AccountDTO;
+import com.web_service.dto.CurrentTableSchemaDTO;
+import com.web_service.dto.JobDTO;
+import com.web_service.dto.JwtResponse;
+import com.web_service.dto.NoteDTO;
+import com.web_service.dto.ServerInfoDTO;
+import com.web_service.entity.AccountEntity;
 import com.web_service.entity.JwtRequest;
-import com.web_service.entity.JwtResponse;
 import com.web_service.security.config.JwtTokenUtil;
 import com.web_service.security.services.JwtUserDetailsService;
 import com.web_service.services.IAccountService;
@@ -48,24 +55,47 @@ public class AccountAPI {
 	private JwtUserDetailsService userDetailsService;
 	
 	@PostMapping(value = "/api/authenticate")
-	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
+	public ResponseEntity<ObjectOuput<JwtResponse>> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
+		ObjectOuput<JwtResponse> result = new ObjectOuput<JwtResponse>();
 
 		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 
 		final String token = JwtTokenUtil.generateToken(userDetails);
+		
+		result.setCode("200");
+		result.setData(new JwtResponse(token));
+		result.setMessage("Login success");
 
-		return ResponseEntity.ok(new JwtResponse(token));
+		return new ResponseEntity<ObjectOuput<JwtResponse>>(result, HttpStatus.OK);
 	}
 	
 	@PostMapping(value = "/api/register")
-	public ResponseEntity<?> saveUser(@RequestBody AccountDTO account) throws Exception {
-		return ResponseEntity.ok(userDetailsService.save(account));
+	public ResponseEntity<ObjectOuput<AccountEntity>> saveUser(@RequestBody AccountDTO account) throws Exception {
+		ObjectOuput<AccountEntity> result = new ObjectOuput<AccountEntity>();
+		try {
+			userDetailsService.save(account);
+			
+			result.setCode("201");
+			result.setMessage("success");
+			
+			return new ResponseEntity<ObjectOuput<AccountEntity>>(result, HttpStatus.CREATED);
+		}catch (DataIntegrityViolationException e) {
+			result.setCode("422");
+			result.setMessage("User or Email exist");
+			
+			return new ResponseEntity<ObjectOuput<AccountEntity>>(result, HttpStatus.UNPROCESSABLE_ENTITY);
+		}catch (Exception e) {
+			result.setCode("500");
+			result.setMessage("Can not create account");
+			
+			return new ResponseEntity<ObjectOuput<AccountEntity>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	@GetMapping(value = "/api/accounts")
-	public ResponseEntity<ListObjOutput<AccountDTO>> showServerInfors(@RequestParam("page") int page,
+	public ResponseEntity<ListObjOutput<AccountDTO>> showAccount(@RequestParam("page") int page,
 								@RequestParam("limit") int limit) {
 		
 		ListObjOutput<AccountDTO> result = new ListObjOutput<AccountDTO>();

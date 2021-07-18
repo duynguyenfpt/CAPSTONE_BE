@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.web_service.api.output.ListObjOutput;
 import com.web_service.api.output.ObjectOuput;
 import com.web_service.api.output.PagingOutput;
+import com.web_service.dto.DatabaseInfoDTO;
+import com.web_service.dto.JobDTO;
 import com.web_service.dto.SchemaChangeHistoryDTO;
 import com.web_service.services.ISchemaChangeHistoryService;
 
@@ -28,14 +30,21 @@ public class SchemaChangeHistoryAPI {
 								@RequestParam("limit") int limit) {
 		
 		ListObjOutput<SchemaChangeHistoryDTO> result = new ListObjOutput<SchemaChangeHistoryDTO>();
-		Pageable pageable = new PageRequest(page - 1, limit);
-		result.setData(schemaChangeHistoryService.findAll(pageable));
-		int totalPage = (int) Math.ceil((double) (schemaChangeHistoryService.totalItem()) / limit);
-		int totalItem = schemaChangeHistoryService.totalItem();
-		result.setMetaData(new PagingOutput(totalPage, totalItem));
-		result.setCode("200");
+		try {
+			Pageable pageable = new PageRequest(page - 1, limit);
+			result.setData(schemaChangeHistoryService.findAll(pageable));
+			int totalPage = (int) Math.ceil((double) (schemaChangeHistoryService.totalItem()) / limit);
+			int totalItem = schemaChangeHistoryService.totalItem();
+			result.setMetaData(new PagingOutput(totalPage, totalItem));
+			result.setCode("200");
 
-		return new ResponseEntity<ListObjOutput<SchemaChangeHistoryDTO>>(result, HttpStatus.OK);
+			return new ResponseEntity<ListObjOutput<SchemaChangeHistoryDTO>>(result, HttpStatus.OK);
+		}catch (Exception e) {
+			result.setMessage("Can not get data");
+			result.setCode("500");
+			
+			return new ResponseEntity<ListObjOutput<SchemaChangeHistoryDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	@GetMapping(value = "/api/schema_change_history/search")
@@ -44,22 +53,43 @@ public class SchemaChangeHistoryAPI {
 								@RequestParam(required = false) String typeChange) {
 		
 		ListObjOutput<SchemaChangeHistoryDTO> result = new ListObjOutput<SchemaChangeHistoryDTO>();
-		result.setData(schemaChangeHistoryService.search(tableId, typeChange, page, limit));
-		int totalPage = (int) Math.ceil((double) (schemaChangeHistoryService.totalItemSearch(tableId, typeChange)) / limit);
-		int totalItem = schemaChangeHistoryService.totalItemSearch(tableId, typeChange);
-		result.setMetaData(new PagingOutput(totalPage, totalItem));
-		result.setCode("200");
+		try {
+			result.setData(schemaChangeHistoryService.search(tableId, typeChange, page, limit));
+			int totalPage = (int) Math.ceil((double) (schemaChangeHistoryService.totalItemSearch(tableId, typeChange)) / limit);
+			int totalItem = schemaChangeHistoryService.totalItemSearch(tableId, typeChange);
+			result.setMetaData(new PagingOutput(totalPage, totalItem));
+			result.setCode("200");
 
-		return new ResponseEntity<ListObjOutput<SchemaChangeHistoryDTO>>(result, HttpStatus.OK);
+			return new ResponseEntity<ListObjOutput<SchemaChangeHistoryDTO>>(result, HttpStatus.OK);
+		}catch (Exception e) {
+			result.setMessage("Can not get data");
+			result.setCode("500");
+			
+			return new ResponseEntity<ListObjOutput<SchemaChangeHistoryDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
 	}
 	
 	@GetMapping(value = "/api/schema_change_history/{id}")
 	public ResponseEntity<ObjectOuput<SchemaChangeHistoryDTO>> showServerInfo(@PathVariable("id") long id) {
-		SchemaChangeHistoryDTO schemaChangeHistoryDTO =  schemaChangeHistoryService.getById(id);
 		ObjectOuput<SchemaChangeHistoryDTO> result = new ObjectOuput<SchemaChangeHistoryDTO>();
-		result.setData(schemaChangeHistoryDTO);
-		result.setCode("200");
-		
-		return new ResponseEntity<ObjectOuput<SchemaChangeHistoryDTO>>(result, HttpStatus.OK);		
+		try {
+			SchemaChangeHistoryDTO schemaChangeHistoryDTO =  schemaChangeHistoryService.getById(id);
+			result.setData(schemaChangeHistoryDTO);
+			result.setCode("200");
+			
+			return new ResponseEntity<ObjectOuput<SchemaChangeHistoryDTO>>(result, HttpStatus.OK);	
+		}catch (NullPointerException e) {
+			result.setMessage("Not found record");
+			result.setCode("404");
+			
+			return new ResponseEntity<ObjectOuput<SchemaChangeHistoryDTO>>(result, HttpStatus.NOT_FOUND);
+		}catch (Exception e) {
+			result.setMessage("Can not get data");
+			result.setCode("500");
+			
+			return new ResponseEntity<ObjectOuput<SchemaChangeHistoryDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+			
 	}
 }

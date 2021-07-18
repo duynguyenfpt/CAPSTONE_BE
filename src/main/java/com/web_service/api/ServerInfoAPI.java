@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.web_service.api.output.ListObjOutput;
 import com.web_service.api.output.ObjectOuput;
 import com.web_service.api.output.PagingOutput;
+import com.web_service.dto.SchemaChangeHistoryDTO;
 import com.web_service.dto.ServerInfoDTO;
 import com.web_service.services.IServerInfoService;
 
@@ -32,55 +33,108 @@ public class ServerInfoAPI {
 								@RequestParam("limit") int limit) {
 		
 		ListObjOutput<ServerInfoDTO> result = new ListObjOutput<ServerInfoDTO>();
-		Pageable pageable = new PageRequest(page - 1, limit);
-		result.setData(serverInfoService.findAll(pageable));
-		int totalPage = (int) Math.ceil((double) (serverInfoService.totalItem()) / limit);
-		int totalItem = serverInfoService.totalItem();
-		result.setMetaData(new PagingOutput(totalPage, totalItem));
-		result.setCode("200");
+		try {
+			Pageable pageable = new PageRequest(page - 1, limit);
+			result.setData(serverInfoService.findAll(pageable));
+			int totalPage = (int) Math.ceil((double) (serverInfoService.totalItem()) / limit);
+			int totalItem = serverInfoService.totalItem();
+			result.setMetaData(new PagingOutput(totalPage, totalItem));
+			result.setCode("200");
 
-		return new ResponseEntity<ListObjOutput<ServerInfoDTO>>(result, HttpStatus.OK);
+			return new ResponseEntity<ListObjOutput<ServerInfoDTO>>(result, HttpStatus.OK);
+		}catch (Exception e) {
+			result.setMessage("Can not get data");
+			result.setCode("500");
+			
+			return new ResponseEntity<ListObjOutput<ServerInfoDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
 	}
 	
 	@GetMapping(value = "/api/server_infors/{id}")
 	public ResponseEntity<ObjectOuput<ServerInfoDTO>> showServerInfo(@PathVariable("id") long id) {
-		ServerInfoDTO serverInfoDTO =  serverInfoService.getById(id);
 		ObjectOuput<ServerInfoDTO> result = new ObjectOuput<ServerInfoDTO>();
-		result.setData(serverInfoDTO);
-		result.setCode("200");
+		try {
+			ServerInfoDTO serverInfoDTO =  serverInfoService.getById(id);
+			result.setData(serverInfoDTO);
+			result.setCode("200");
+			
+			return new ResponseEntity<ObjectOuput<ServerInfoDTO>>(result, HttpStatus.OK);
+		}catch (NullPointerException e) {
+			result.setMessage("Not found record");
+			result.setCode("404");
+			
+			return new ResponseEntity<ObjectOuput<ServerInfoDTO>>(result, HttpStatus.NOT_FOUND);
+		}catch (Exception e) {
+			result.setMessage("Can not get data");
+			result.setCode("500");
+			
+			return new ResponseEntity<ObjectOuput<ServerInfoDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		
-		return new ResponseEntity<ObjectOuput<ServerInfoDTO>>(result, HttpStatus.OK);
 	}
 	
 	@PostMapping(value = "/api/server_infors")
 	public ResponseEntity<ObjectOuput<ServerInfoDTO>> createServerInfo(@RequestBody ServerInfoDTO model) {
-		serverInfoService.save(model);
-		
 		ObjectOuput<ServerInfoDTO> result = new ObjectOuput<ServerInfoDTO>();
-		result.setCode("201");
-		
-		return new ResponseEntity<ObjectOuput<ServerInfoDTO>>(result, HttpStatus.CREATED);		
+		try {
+			serverInfoService.save(model);
+			
+			result.setCode("201");
+			
+			return new ResponseEntity<ObjectOuput<ServerInfoDTO>>(result, HttpStatus.CREATED);
+		}catch (Exception e) {
+			result.setMessage("Can not create data");
+			result.setCode("500");
+			
+			return new ResponseEntity<ObjectOuput<ServerInfoDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+				
 	}
 
 	@PutMapping(value = "/api/server_infors/{id}")
 	public ResponseEntity<ObjectOuput<ServerInfoDTO>> updateServerInfo(@RequestBody ServerInfoDTO model, @PathVariable("id") long id) {
-		model.setId(id);
-		serverInfoService.save(model);
-		
 		ObjectOuput<ServerInfoDTO> result = new ObjectOuput<ServerInfoDTO>();
-		result.setCode("200");
+		try {
+			model.setId(id);
+			serverInfoService.save(model);
+			result.setCode("200");
+			
+			return new ResponseEntity<ObjectOuput<ServerInfoDTO>>(result, HttpStatus.OK);
+		}catch (NullPointerException e) {
+			result.setMessage("Not found record");
+			result.setCode("404");
+			
+			return new ResponseEntity<ObjectOuput<ServerInfoDTO>>(result, HttpStatus.NOT_FOUND);
+		}catch (Exception e) {
+			result.setMessage("Can not create data");
+			result.setCode("500");
+			
+			return new ResponseEntity<ObjectOuput<ServerInfoDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		
-		return new ResponseEntity<ObjectOuput<ServerInfoDTO>>(result, HttpStatus.OK);
+		
 	}
 	
 	@DeleteMapping(value = "/api/server_infors/{id}")
 	public ResponseEntity<ObjectOuput<ServerInfoDTO>> deleteServerInfo(@PathVariable("id") long id) {
-		serverInfoService.delete(id);
-		
 		ObjectOuput<ServerInfoDTO> result = new ObjectOuput<ServerInfoDTO>();
-		result.setCode("200");
-		
-		return new ResponseEntity<ObjectOuput<ServerInfoDTO>>(result, HttpStatus.OK);
 
+		try {
+			serverInfoService.delete(id);
+			result.setCode("200");
+			
+			return new ResponseEntity<ObjectOuput<ServerInfoDTO>>(result, HttpStatus.OK);
+		}catch (NullPointerException e) {
+			result.setMessage("Not found record");
+			result.setCode("404");
+			
+			return new ResponseEntity<ObjectOuput<ServerInfoDTO>>(result, HttpStatus.NOT_FOUND);
+		}catch (Exception e) {
+			result.setMessage("Can not delete data");
+			result.setCode("500");
+			
+			return new ResponseEntity<ObjectOuput<ServerInfoDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 }
