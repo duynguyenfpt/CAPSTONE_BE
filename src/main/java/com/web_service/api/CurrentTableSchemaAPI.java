@@ -15,6 +15,7 @@ import com.web_service.api.output.ListObjOutput;
 import com.web_service.api.output.ObjectOuput;
 import com.web_service.api.output.PagingOutput;
 import com.web_service.dto.CurrentTableSchemaDTO;
+import com.web_service.dto.JobDTO;
 import com.web_service.services.ICurrentTableSchemaService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
@@ -29,14 +30,27 @@ public class CurrentTableSchemaAPI {
 								@PathVariable("table_id") long tableId) {
 		
 		ListObjOutput<CurrentTableSchemaDTO> result = new ListObjOutput<CurrentTableSchemaDTO>();
-		Pageable pageable = new PageRequest(page - 1, limit);
-		result.setData(currentTableSchemaService.findAll(pageable, tableId));
-		int totalPage = (int) Math.ceil((double) (currentTableSchemaService.totalItem(tableId)) / limit);
-		int totalItem = currentTableSchemaService.totalItem(tableId);
-		result.setMetaData(new PagingOutput(totalPage, totalItem));
-		result.setCode("200");
+		try {
+			Pageable pageable = new PageRequest(page - 1, limit);
+			result.setData(currentTableSchemaService.findAll(pageable, tableId));
+			int totalPage = (int) Math.ceil((double) (currentTableSchemaService.totalItem(tableId)) / limit);
+			int totalItem = currentTableSchemaService.totalItem(tableId);
+			result.setMetaData(new PagingOutput(totalPage, totalItem));
+			result.setCode("200");
 
-		return new ResponseEntity<ListObjOutput<CurrentTableSchemaDTO>>(result, HttpStatus.OK);
+			return new ResponseEntity<ListObjOutput<CurrentTableSchemaDTO>>(result, HttpStatus.OK);
+		}catch (NullPointerException e) {
+			result.setMessage("Not found record");
+			result.setCode("404");
+			
+			return new ResponseEntity<ListObjOutput<CurrentTableSchemaDTO>>(result, HttpStatus.NOT_FOUND);
+		}catch (Exception e) {
+			result.setMessage("Can not get data");
+			result.setCode("500");
+			
+			return new ResponseEntity<ListObjOutput<CurrentTableSchemaDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
 	}
 	
 	@GetMapping(value = "/api/current_table_schemas/{id}")
