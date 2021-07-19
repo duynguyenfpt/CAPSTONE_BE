@@ -20,8 +20,9 @@ public class JobConvertor {
 
 		}
 		entity.setActive(dto.isActive());
-		entity.setMaxRetry(dto.getMaxRetry());
+		entity.setMaxRetries(dto.getMaxRetries());
 		entity.setStatus(dto.getStatus());
+		entity.setNumberRetries(dto.getNumberRetries());
 		
 		return entity;
 	}
@@ -47,8 +48,9 @@ public class JobConvertor {
 		}
 		
 		dto.setActive(entity.isActive());
-		dto.setMaxRetry(entity.getMaxRetry());
+		dto.setMaxRetries(entity.getMaxRetries());
 		dto.setStatus(entity.getStatus());
+		dto.setNumberRetries(entity.getNumberRetries());;
 		dto.setCreatedDate(entity.getCreatedDate());
 		dto.setCreatedBy(entity.getCreatedBy());
 		dto.setModifiedDate(entity.getModifiedDate());
@@ -62,8 +64,9 @@ public class JobConvertor {
 		} catch (ParseException e) {
 
 		}
+		entity.setNumberRetries(dto.getNumberRetries());
 		entity.setActive(dto.isActive());
-		entity.setMaxRetry(dto.getMaxRetry());
+		entity.setMaxRetries(dto.getMaxRetries());
 		entity.setStatus(dto.getStatus());
 		
 		return entity;
