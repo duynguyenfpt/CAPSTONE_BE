@@ -5,12 +5,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-//
-//import org.springframework.http.HttpStatus;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.web.bind.annotation.CrossOrigin;
-//import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -21,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -90,7 +85,7 @@ public class AccountAPI {
 		AccountDTO accountDTO = accountService.findByUserName(auth.getName());
 		result.setCode("200");
 		result.setData(accountDTO);
-		result.setMessage("Login success");
+		result.setMessage("Success");
 
 		return new ResponseEntity<ObjectOuput<AccountDTO>>(result, HttpStatus.OK);
 	}
@@ -131,6 +126,23 @@ public class AccountAPI {
 		result.setCode("200");
 
 		return new ResponseEntity<ListObjOutput<AccountDTO>>(result, HttpStatus.OK);
+	}
+	
+	@PostMapping(value = "/api/accounts/{id}/reset_password")
+	public ResponseEntity<ObjectOuput<AccountDTO>> resetPassword(@PathVariable("id") long id) {
+		ObjectOuput<AccountDTO> result = new ObjectOuput<AccountDTO>();
+		try {
+			userDetailsService.resetPassword(id);
+			result.setCode("200");
+			result.setMessage("Reset password success");
+			
+			return new ResponseEntity<ObjectOuput<AccountDTO>>(result, HttpStatus.OK);
+		}catch (Exception e) {
+			result.setCode("500");
+			result.setMessage("Can not reset password");
+			
+			return new ResponseEntity<ObjectOuput<AccountDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	private void authenticate(String username, String password) throws Exception {

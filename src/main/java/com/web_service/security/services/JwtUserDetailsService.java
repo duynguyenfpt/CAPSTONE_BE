@@ -41,5 +41,13 @@ public class JwtUserDetailsService implements UserDetailsService {
 		newAcc.setRole(account.getRole());
 		return accountRepository.save(newAcc);
 	}
+	
+	public void resetPassword(long accountId) {
+		String DEFAULT_PASSWORD = "123456";
+		AccountEntity accountEntity = accountRepository.findOne(accountId);
+		accountEntity.setPassword(bcryptEncoder.encode(DEFAULT_PASSWORD));
+		
+		accountRepository.save(accountEntity);	
+	}
 
 }

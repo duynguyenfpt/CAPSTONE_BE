@@ -65,7 +65,6 @@ public class DatabaseInfoService implements IDatabaseInfoService {
 		if(keyword.isEmpty()) {
 			entities = databaseInfoRepository.findAll(pageable).getContent();
 		}else {
-//			entities = databaseInfoRepository.findAll(pageable).getContent();
 			entities = databaseInfoRepository.search(keyword, pageable).getContent();
 		}
 		for (DatabaseInfoEntity item: entities) {
