@@ -24,11 +24,14 @@ public class JobEntity extends BaseEntity{
 	@Column
 	private Date jobSchedule;
 	
-	@Column
-	private int maxRetry;
+	@Column(name = "max_retries")
+	private int maxRetries;
 	
 	@Column
 	private String status;
+	
+	@Column(name = "number_retries")
+	private int numberRetries;
 	
 	@Column
 	private String description;
@@ -79,12 +82,12 @@ public class JobEntity extends BaseEntity{
 		this.jobSchedule = jobSchedule;
 	}
 
-	public int getMaxRetry() {
-		return maxRetry;
+	public int getMaxRetries() {
+		return maxRetries;
 	}
 
-	public void setMaxRetry(int maxRetry) {
-		this.maxRetry = maxRetry;
+	public void setMaxRetries(int maxRetries) {
+		this.maxRetries = maxRetries;
 	}
 
 	public AccountEntity getExecutedBy() {
@@ -109,5 +112,13 @@ public class JobEntity extends BaseEntity{
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public int getNumberRetries() {
+		return numberRetries;
+	}
+
+	public void setNumberRetries(int numberRetries) {
+		this.numberRetries = numberRetries;
 	}
 }
