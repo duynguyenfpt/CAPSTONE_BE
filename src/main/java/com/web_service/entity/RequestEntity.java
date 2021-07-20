@@ -11,12 +11,17 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
 @Entity
 @Table(name = "request")
+@SQLDelete(sql = "UPDATE request SET deleted = true WHERE id=?")
+@Where(clause = "deleted=false")
 public class RequestEntity extends BaseEntity {
 	@Column
 	private String status = "0";
@@ -37,6 +42,9 @@ public class RequestEntity extends BaseEntity {
 	@JsonManagedReference
 	@OneToMany(mappedBy = "request")
     private List<JobEntity> listJob;
+	
+	@Column
+	private boolean deleted = Boolean.FALSE;
 //	
 //	@JsonManagedReference
 //	@OneToMany(mappedBy = "requestAddColumn", fetch=FetchType.EAGER)
