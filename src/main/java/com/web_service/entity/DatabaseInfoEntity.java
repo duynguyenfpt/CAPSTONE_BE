@@ -10,11 +10,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "database_infos")
+@SQLDelete(sql = "UPDATE database_infos SET deleted = true WHERE id=?")
+@Where(clause = "deleted=false")
 public class DatabaseInfoEntity extends BaseEntity{
 	@Column
 	private String port;
@@ -30,6 +35,9 @@ public class DatabaseInfoEntity extends BaseEntity{
 	
 	@Column(name = "database_type")
 	private String databaseType;
+	
+	@Column
+	private boolean deleted = Boolean.FALSE;
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy = "databaseInfo")
@@ -95,6 +103,12 @@ public class DatabaseInfoEntity extends BaseEntity{
 	public void setServerInfo(ServerInfoEntity serverInfo) {
 		this.serverInfo = serverInfo;
 	}
-	
-	
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 }

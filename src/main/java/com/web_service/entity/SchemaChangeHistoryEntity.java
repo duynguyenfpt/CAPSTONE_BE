@@ -6,10 +6,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "schema_change_histories")
+@SQLDelete(sql = "UPDATE schema_change_histories SET deleted = true WHERE id=?")
+@Where(clause = "deleted=false")
 public class SchemaChangeHistoryEntity extends BaseEntity{
 	
 	@Column(name = "change_type")
@@ -24,6 +29,8 @@ public class SchemaChangeHistoryEntity extends BaseEntity{
 	@Column(name = "new_value")
 	private String newValue;
 	
+	@Column
+	private boolean deleted = Boolean.FALSE;
 	
 	@JsonBackReference
 	@ManyToOne
