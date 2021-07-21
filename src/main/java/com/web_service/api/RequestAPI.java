@@ -55,23 +55,23 @@ public class RequestAPI {
 	@PutMapping(value = "/api/requests/{id}")
 	public ResponseEntity<ObjectOuput<RequestDTO>> updateRequest(@RequestBody RequestDTO model, @PathVariable("id") long id) {
 		ObjectOuput<RequestDTO> result = new ObjectOuput<RequestDTO>();
-		try {
+//		try {
 			model.setId(id);
-			requestService.save(model);		
+			requestService.update(model);		
 			result.setCode("200");
 			
 			return new ResponseEntity<ObjectOuput<RequestDTO>>(result, HttpStatus.OK);
-		}catch (NullPointerException e) {
-			result.setMessage("Not found record");
-			result.setCode("404");
-			
-			return new ResponseEntity<ObjectOuput<RequestDTO>>(result, HttpStatus.NOT_FOUND);
-		}catch (Exception e) {
-			result.setMessage("Can not update data");
-			result.setCode("500");
-			
-			return new ResponseEntity<ObjectOuput<RequestDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+//		}catch (NullPointerException e) {
+//			result.setMessage("Not found record");
+//			result.setCode("404");
+//			
+//			return new ResponseEntity<ObjectOuput<RequestDTO>>(result, HttpStatus.NOT_FOUND);
+//		}catch (Exception e) {
+//			result.setMessage("Can not update data");
+//			result.setCode("500");
+//			
+//			return new ResponseEntity<ObjectOuput<RequestDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+//		}
 		
 	}
 	
@@ -123,7 +123,7 @@ public class RequestAPI {
 	public ResponseEntity<ObjectOuput<RequestDTO>> createRequest(@RequestBody RequestDTO model) {
 		ObjectOuput<RequestDTO> result = new ObjectOuput<RequestDTO>();
 		try {
-			result.setData(requestService.save(model));
+			result.setData(requestService.create(model));
 			result.setCode("201");
 			
 			return new ResponseEntity<ObjectOuput<RequestDTO>>(result, HttpStatus.CREATED);

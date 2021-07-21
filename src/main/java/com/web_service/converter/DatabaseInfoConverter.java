@@ -11,6 +11,7 @@ public class DatabaseInfoConverter {
 		DatabaseInfoEntity entity = new DatabaseInfoEntity();
 		entity.setPort(dto.getPort());
 		entity.setUsername(dto.getUsername());
+		entity.setPassword(dto.getPassword());
 		entity.setDatabaseType(dto.getDatabaseType());
 		entity.setDatabaseName(dto.getDatabaseName());
 		return entity;
@@ -24,6 +25,7 @@ public class DatabaseInfoConverter {
 		ServerInfoConverter serverInfoConverter = new ServerInfoConverter();
 		dto.setPort(entity.getPort());
 		dto.setUsername(entity.getUsername());
+		dto.setPassword(entity.getPassword());
 		dto.setDatabaseType(entity.getDatabaseType());
 		dto.setDatabaseName(entity.getDatabaseName());
 		dto.setTables(entity.getTables());
@@ -50,6 +52,7 @@ public class DatabaseInfoConverter {
 	public DatabaseInfoEntity toEntity(DatabaseInfoDTO dto, DatabaseInfoEntity entity) {
 		entity.setPort(dto.getPort());
 		entity.setUsername(dto.getUsername());
+		entity.setPassword(dto.getPassword());
 		entity.setDatabaseType(dto.getDatabaseType());
 		entity.setDatabaseName(dto.getDatabaseName());
 		return entity;

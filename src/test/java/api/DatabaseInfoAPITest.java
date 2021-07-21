@@ -20,7 +20,7 @@
 //	@Override
 //	@Before
 //	public void setUp() {
-//		super.setWWWUp();
+//		super.setUp();
 //	}
 //	
 //	@Autowired

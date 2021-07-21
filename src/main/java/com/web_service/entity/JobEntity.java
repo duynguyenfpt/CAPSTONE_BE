@@ -30,13 +30,13 @@ public class JobEntity extends BaseEntity{
 	private Date jobSchedule;
 	
 	@Column(name = "max_retries")
-	private int maxRetries;
+	private Integer maxRetries;
 	
 	@Column
 	private String status;
 	
 	@Column(name = "number_retries")
-	private int numberRetries;
+	private Integer numberRetries;
 	
 	@Column
 	private String description;
@@ -53,10 +53,6 @@ public class JobEntity extends BaseEntity{
 	@ManyToOne
     @JoinColumn(name = "request_id", nullable = false)
     private RequestEntity request;
-	
-	@JsonManagedReference
-	@OneToMany(mappedBy = "job")
-    private List<JobLogEntity> listJobLog;
 
 	public RequestEntity getRequest() {
 		return request;
@@ -64,14 +60,6 @@ public class JobEntity extends BaseEntity{
 
 	public void setRequest(RequestEntity request) {
 		this.request = request;
-	}
-
-	public List<JobLogEntity> getListJobLog() {
-		return listJobLog;
-	}
-
-	public void setListJobLog(List<JobLogEntity> listJobLog) {
-		this.listJobLog = listJobLog;
 	}
 
 	public boolean isActive() {
@@ -88,14 +76,6 @@ public class JobEntity extends BaseEntity{
 
 	public void setJobSchedule(Date jobSchedule) {
 		this.jobSchedule = jobSchedule;
-	}
-
-	public int getMaxRetries() {
-		return maxRetries;
-	}
-
-	public void setMaxRetries(int maxRetries) {
-		this.maxRetries = maxRetries;
 	}
 
 	public AccountEntity getExecutedBy() {
@@ -122,11 +102,19 @@ public class JobEntity extends BaseEntity{
 		this.description = description;
 	}
 
-	public int getNumberRetries() {
+	public Integer getMaxRetries() {
+		return maxRetries;
+	}
+
+	public void setMaxRetries(Integer maxRetries) {
+		this.maxRetries = maxRetries;
+	}
+
+	public Integer getNumberRetries() {
 		return numberRetries;
 	}
 
-	public void setNumberRetries(int numberRetries) {
+	public void setNumberRetries(Integer numberRetries) {
 		this.numberRetries = numberRetries;
 	}
 }

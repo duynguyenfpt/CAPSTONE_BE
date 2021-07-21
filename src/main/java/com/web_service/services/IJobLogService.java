@@ -2,14 +2,15 @@ package com.web_service.services;
 
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.domain.Pageable;
 
-import com.web_service.dto.JobLogDTO;
+import com.web_service.entity.mongo.JobLogEntity;
 
 public interface IJobLogService {
-	JobLogDTO save(JobLogDTO JobLogDTO);
-	List<JobLogDTO> findAll(Pageable pageable);
+	JobLogEntity save(JobLogEntity jobLogEntity);
+	List<JobLogEntity> findAll(Pageable pageable);
 	int totalItem();
-	JobLogDTO getById(long id);
-	void delete(long id);
+	List<JobLogEntity> findAllByJobId(long jobId, Pageable pageable);
+	int totalItemByJobId(long jobId);
 }

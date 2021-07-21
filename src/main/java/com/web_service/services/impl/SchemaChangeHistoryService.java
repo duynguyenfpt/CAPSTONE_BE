@@ -50,14 +50,8 @@ public class SchemaChangeHistoryService implements ISchemaChangeHistoryService {
 		return schemaChangeHistoryDTO;
 	}
 
-	public List<SchemaChangeHistoryDTO> search(Long tableId, String changeType, int page, int limit) {
-		if (changeType == null) changeType = "";
-		String query = "select * from schema_change_histories where LOWER(change_type) LIKE '%"
-				+ changeType.toLowerCase() + "%'";
-
-		if (tableId != null) {
-			query += " and table_info_id = " + tableId;
-		}
+	public List<SchemaChangeHistoryDTO> search(Long databaseInfoId, Long tableId, String changeType, int page, int limit) {
+		String query = createSearchQuery(databaseInfoId, tableId, changeType);
 
 		List<SchemaChangeHistoryEntity> schemaChangeHistoryEntities = em
 				.createNativeQuery(query, SchemaChangeHistoryEntity.class)
@@ -74,18 +68,27 @@ public class SchemaChangeHistoryService implements ISchemaChangeHistoryService {
 	}
 
 	@Override
-	public int totalItemSearch(Long tableId, String changeType) {
-		if (changeType == null) changeType = "";
-		String query = "select * from schema_change_histories where LOWER(change_type) LIKE '%"
-				+ changeType.toLowerCase() + "%'";
-
-		if (tableId != null) {
-			query += " and table_info_id = " + tableId;
-		}
+	public int totalItemSearch(Long databaseInfoId, Long tableId, String changeType) {
+		String query = createSearchQuery(databaseInfoId, tableId, changeType);
 
 		List<SchemaChangeHistoryEntity> schemaChangeHistoryEntities = em
 				.createNativeQuery(query, SchemaChangeHistoryEntity.class).getResultList();
 
 		return schemaChangeHistoryEntities.size();
+	}
+	
+	
+	private String createSearchQuery(Long databaseInfoId, Long tableId, String changeType) {
+		String query = "select * from schema_change_histories where LOWER(change_type) LIKE '%"
+				+ changeType.toLowerCase() + "%'";
+		if(tableId == null && databaseInfoId != null) {
+			query += " and table_info_id in (select t.id from tables as t where t.database_info_id = "+ databaseInfoId +")";
+		}
+		
+		if(tableId != null) {
+			query += " and table_info_id = " + tableId;
+		}
+		
+		return query;
 	}
 }

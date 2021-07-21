@@ -34,7 +34,6 @@ public class JobAPI {
 								@RequestParam("limit") int limit) {
 		
 		ListObjOutput<JobDTO> result = new ListObjOutput<JobDTO>();
-		try {
 			Pageable pageable = new PageRequest(page - 1, limit);
 			result.setData(jobService.findAll(pageable));
 			int totalPage = (int) Math.ceil((double) (jobService.totalItem()) / limit);
@@ -43,12 +42,7 @@ public class JobAPI {
 			result.setCode("200");
 			
 			return new ResponseEntity<ListObjOutput<JobDTO>>(result, HttpStatus.OK);
-		}catch (Exception e) {
-			result.setMessage("Can not get data");
-			result.setCode("500");
-			
-			return new ResponseEntity<ListObjOutput<JobDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		
 	}
 	
 	@PutMapping(value = "/api/jobs/{id}")

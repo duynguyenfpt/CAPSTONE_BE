@@ -48,14 +48,6 @@ public class AccountEntity extends BaseEntity {
 	private String role;
 	
 	@JsonManagedReference
-	@OneToMany(mappedBy = "creator")
-    private List<RequestEntity> listRequestCreator;
-    
-	@JsonManagedReference
-	@OneToMany(mappedBy = "approvedBy")
-    private List<RequestEntity> listRequestApproved;
-	
-	@JsonManagedReference
 	@OneToMany(mappedBy = "executedBy")
     private List<JobEntity> listJob;
 	
@@ -85,22 +77,6 @@ public class AccountEntity extends BaseEntity {
 
 	public void setListJob(List<JobEntity> listJob) {
 		this.listJob = listJob;
-	}
-
-	public List<RequestEntity> getListRequestCreator() {
-		return listRequestCreator;
-	}
-
-	public void setListRequestCreator(List<RequestEntity> listRequestCreator) {
-		this.listRequestCreator = listRequestCreator;
-	}
-
-	public List<RequestEntity> getListRequestApproved() {
-		return listRequestApproved;
-	}
-
-	public void setListRequestApproved(List<RequestEntity> listRequestApproved) {
-		this.listRequestApproved = listRequestApproved;
 	}
 
 	public String getUserName() {

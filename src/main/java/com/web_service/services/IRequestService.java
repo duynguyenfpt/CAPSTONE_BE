@@ -7,7 +7,8 @@ import org.springframework.data.domain.Pageable;
 import com.web_service.dto.RequestDTO;
 
 public interface IRequestService {
-	RequestDTO save(RequestDTO requestDTO);
+	RequestDTO create(RequestDTO requestDTO);
+	RequestDTO update(RequestDTO requestDTO);
 	List<RequestDTO> findAll(Pageable pageable);
 	int totalItem();
 	RequestDTO getById(long id);

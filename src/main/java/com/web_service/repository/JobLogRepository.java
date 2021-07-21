@@ -1,9 +1,18 @@
 package com.web_service.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
 
-import com.web_service.entity.JobLogEntity;
+import org.bson.types.ObjectId;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface JobLogRepository extends JpaRepository<JobLogEntity, Long> {
+import com.web_service.entity.mongo.JobLogEntity;
 
+public interface JobLogRepository extends MongoRepository<JobLogEntity, ObjectId> {
+	JobLogEntity findById(ObjectId _id);
+	
+	Page<JobLogEntity> findByJobId(long jobId, Pageable pageable);
+	
+	List<JobLogEntity> getAllNoteByJobId(long requestId);
 }
