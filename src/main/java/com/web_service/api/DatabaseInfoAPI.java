@@ -81,17 +81,11 @@ public class DatabaseInfoAPI {
 	@PostMapping(value = "/api/database_infors")
 	public ResponseEntity<ObjectOuput<DatabaseInfoDTO>> createDatabaseInfo(@RequestBody DatabaseInfoDTO model) {
 		ObjectOuput<DatabaseInfoDTO> result = new ObjectOuput<DatabaseInfoDTO>();
-		try {
 			result.setData(databaseInfoService.save(model));
 			result.setCode("201");
 			
 			return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.CREATED);
-		}catch (Exception e) {
-			result.setCode("500");
-			result.setMessage("Can not create data");
-			
-			return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		
 		
 	}
 
@@ -122,22 +116,11 @@ public class DatabaseInfoAPI {
 	public ResponseEntity<ObjectOuput<DatabaseInfoDTO>> deleteDatabaseInfo(@PathVariable("id") long id) {
 		ObjectOuput<DatabaseInfoDTO> result = new ObjectOuput<DatabaseInfoDTO>();
 
-		try {
 			databaseInfoService.delete(id);
 			result.setCode("200");
 			
 			return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.OK);
-		}catch (NullPointerException e) {
-			result.setMessage("Not found record");
-			result.setCode("404");
-			
-			return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.NOT_FOUND);
-		}catch (Exception e) {
-			result.setMessage("Can not delete data");
-			result.setCode("500");
-			
-			return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		
 	}
 	
 	@PostMapping(value = "/api/database_infors/test_connection")

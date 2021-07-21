@@ -8,10 +8,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "current_table_schemas")
+@SQLDelete(sql = "UPDATE current_table_schemas SET deleted = true WHERE id=?")
+@Where(clause = "deleted=false")
 public class CurrentTableSchemaEntity extends BaseEntity {
 	@Column(name = "column_name")
 	private String columnName;
@@ -32,6 +37,9 @@ public class CurrentTableSchemaEntity extends BaseEntity {
 	@ManyToOne
 	@JoinColumn(name = "table_info_id", nullable = false)
 	private TableEntity tableInfo;
+	
+	@Column
+	private boolean deleted = Boolean.FALSE;
 	
 //	@JsonManagedReference
 //	@OneToMany(mappedBy = "currentTableSchema")
