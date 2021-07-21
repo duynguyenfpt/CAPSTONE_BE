@@ -5,11 +5,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.web_service.converter.RequestConvertor;
 import com.web_service.converter.SyncTableConverter;
+import com.web_service.dto.AccountDTO;
 import com.web_service.dto.RequestDTO;
 import com.web_service.entity.AccountEntity;
 import com.web_service.entity.AddColumnDetailEntity;
@@ -25,6 +28,7 @@ import com.web_service.repository.CurrentTableSchemaRepository;
 import com.web_service.repository.RequestRepository;
 import com.web_service.repository.SyncTableRequestRepository;
 import com.web_service.repository.TableRepository;
+import com.web_service.services.IAccountService;
 import com.web_service.services.IRequestService;
 
 @Service
@@ -53,6 +57,7 @@ public class RequestService implements IRequestService {
 	@Autowired
 	private AddColumnDetailRepository addColumnDetailRepository;
 	
+	
 	@Override
 	public List<RequestDTO> findAll(Pageable pageable) {
 		List<RequestDTO> results = new ArrayList<>();
@@ -78,26 +83,9 @@ public class RequestService implements IRequestService {
 
 	@Override
 	@Transactional
-	public RequestDTO save(RequestDTO requestDTO) {
+	public RequestDTO create(RequestDTO requestDTO) {
 		RequestEntity requestEntity = new RequestEntity();
-		if (requestDTO.getId() != null) {
-			RequestEntity oldreRequestEntity = requestRepository.findOne(requestDTO.getId());
-			requestEntity = requestConvertor.toEntity(requestDTO, oldreRequestEntity);
-			
-			if(requestDTO.getApprovedById() != null) {
-				AccountEntity approvedBy =  accountRepository.findOne(requestDTO.getApprovedById());
-				requestEntity.setApprovedBy(approvedBy);
-			}
-		} else {
-			requestEntity = requestConvertor.toEntity(requestDTO);
-			
-			if(requestDTO.getCreatorId() != null) {
-				AccountEntity creator =  accountRepository.findOne(requestDTO.getCreatorId());
-				requestEntity.setCreator(creator);
-			}
-			
-		}
-			
+		requestEntity = requestConvertor.toEntity(requestDTO);
 		requestEntity = requestRepository.save(requestEntity);
 		
 		if(requestEntity.getId() != null) {
@@ -109,6 +97,16 @@ public class RequestService implements IRequestService {
 			} 
 			
 		}
+		return requestConvertor.toDTO(requestEntity);
+	}
+	
+	@Override
+	@Transactional
+	public RequestDTO update(RequestDTO requestDTO) {
+		RequestEntity requestEntity = new RequestEntity();
+		RequestEntity oldreRequestEntity = requestRepository.findOne(requestDTO.getId());
+		requestEntity = requestConvertor.toEntity(requestDTO, oldreRequestEntity);
+	
 		return requestConvertor.toDTO(requestEntity);
 	}
 

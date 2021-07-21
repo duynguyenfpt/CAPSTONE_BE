@@ -1,11 +1,9 @@
 package com.web_service.entity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -24,15 +22,8 @@ public class RequestEntity extends BaseEntity {
 	@Column
 	private String requestType;
 	
-	@JsonBackReference
-	@ManyToOne
-    @JoinColumn(name = "creator_id")
-    private AccountEntity creator;
-	
-	@JsonBackReference
-	@ManyToOne
-    @JoinColumn(name = "approved_by_id", nullable = true)
-    private AccountEntity approvedBy;
+    @JoinColumn(name = "approved_by")
+    private String approvedBy;
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy = "request")
@@ -51,19 +42,11 @@ public class RequestEntity extends BaseEntity {
 		this.listJob = listJob;
 	}
 
-	public AccountEntity getCreator() {
-		return creator;
-	}
-
-	public void setCreator(AccountEntity creator) {
-		this.creator = creator;
-	}
-
-	public AccountEntity getApprovedBy() {
+	public String getApprovedBy() {
 		return approvedBy;
 	}
 
-	public void setApprovedBy(AccountEntity approvedBy) {
+	public void setApprovedBy(String approvedBy) {
 		this.approvedBy = approvedBy;
 	}
 

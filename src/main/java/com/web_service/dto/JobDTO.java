@@ -6,8 +6,8 @@ public class JobDTO extends AbstractDTO<JobDTO> {
 	private long executedById;
 	private String jobSchedule;
 	private boolean isActive;
-	private int maxRetries;
-	private int numberRetries;
+	private Integer maxRetries;
+	private Integer numberRetries;
 	private String status;
 	private AccountDTO excutedBy;
 	private RequestDTO request;
@@ -60,14 +60,6 @@ public class JobDTO extends AbstractDTO<JobDTO> {
 		this.isActive = isActive;
 	}
 
-	
-	public int getMaxRetries() {
-		return maxRetries;
-	}
-
-	public void setMaxRetries(int maxRetries) {
-		this.maxRetries = maxRetries;
-	}
 
 	public String getStatus() {
 		return status;
@@ -76,11 +68,21 @@ public class JobDTO extends AbstractDTO<JobDTO> {
 		this.status = status;
 	}
 
-	public int getNumberRetries() {
+	public Integer getMaxRetries() {
+		return maxRetries;
+	}
+
+	public void setMaxRetries(Integer maxRetries) {
+		this.maxRetries = maxRetries;
+	}
+
+	public Integer getNumberRetries() {
 		return numberRetries;
 	}
 
-	public void setNumberRetries(int numberRetries) {
+	public void setNumberRetries(Integer numberRetries) {
 		this.numberRetries = numberRetries;
 	}
+
+	
 }

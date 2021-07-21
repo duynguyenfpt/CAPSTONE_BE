@@ -50,13 +50,14 @@ public class SchemaChangeHistoryAPI {
 	@GetMapping(value = "/api/schema_change_history/search")
 	public ResponseEntity<ListObjOutput<SchemaChangeHistoryDTO>> searchSchemaChangeHistory(@RequestParam("page") int page,
 								@RequestParam("limit") int limit, @RequestParam(required = false) Long tableId,
+								@RequestParam(required = false) Long databaseInfoId,
 								@RequestParam(required = false) String typeChange) {
 		
 		ListObjOutput<SchemaChangeHistoryDTO> result = new ListObjOutput<SchemaChangeHistoryDTO>();
 		try {
-			result.setData(schemaChangeHistoryService.search(tableId, typeChange, page, limit));
-			int totalPage = (int) Math.ceil((double) (schemaChangeHistoryService.totalItemSearch(tableId, typeChange)) / limit);
-			int totalItem = schemaChangeHistoryService.totalItemSearch(tableId, typeChange);
+			result.setData(schemaChangeHistoryService.search(databaseInfoId, tableId, typeChange, page, limit));
+			int totalPage = (int) Math.ceil((double) (schemaChangeHistoryService.totalItemSearch(databaseInfoId, tableId, typeChange)) / limit);
+			int totalItem = schemaChangeHistoryService.totalItemSearch(databaseInfoId, tableId, typeChange);
 			result.setMetaData(new PagingOutput(totalPage, totalItem));
 			result.setCode("200");
 
