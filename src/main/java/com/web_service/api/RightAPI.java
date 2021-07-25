@@ -19,7 +19,6 @@ import com.web_service.api.output.ListObjOutput;
 import com.web_service.api.output.ObjectOuput;
 import com.web_service.api.output.PagingOutput;
 import com.web_service.dto.RightDTO;
-import com.web_service.entity.AccountEntity;
 import com.web_service.services.IRightService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
@@ -31,14 +30,15 @@ public class RightAPI {
 
 	@GetMapping(value = "/api/rights")
 	public ResponseEntity<ListObjOutput<RightDTO>> showRights(@RequestParam("page") int page,
-								@RequestParam("limit") int limit) {
+								@RequestParam("limit") int limit,
+								@RequestParam(required = false) String rightName,
+								@RequestParam(required = false) String code) {
 		
 		ListObjOutput<RightDTO> result = new ListObjOutput<RightDTO>();
 		try {
-			Pageable pageable = new PageRequest(page - 1, limit);
-			result.setData(rightService.findAll(pageable));
-			int totalPage = (int) Math.ceil((double) (rightService.totalItem()) / limit);
-			int totalItem = rightService.totalItem();
+			result.setData(rightService.findAll(rightName, code, page, limit));
+			int totalItem = rightService.totalItemSearch(rightName, code);
+			int totalPage = (int) Math.ceil((double) (totalItem) / limit);
 			result.setMetaData(new PagingOutput(totalPage, totalItem));
 			result.setCode("200");
 

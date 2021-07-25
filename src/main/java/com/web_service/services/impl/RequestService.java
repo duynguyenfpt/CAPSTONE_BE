@@ -7,33 +7,23 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.web_service.converter.RequestConvertor;
-import com.web_service.converter.SyncTableConverter;
-import com.web_service.dto.AccountDTO;
 import com.web_service.dto.RequestDTO;
-import com.web_service.dto.SchemaChangeHistoryDTO;
-import com.web_service.entity.AccountEntity;
 import com.web_service.entity.AddColumnDetailEntity;
 import com.web_service.entity.AddColumnTableRequestEntity;
 import com.web_service.entity.CurrentTableSchemaEntity;
 import com.web_service.entity.RequestEntity;
-import com.web_service.entity.SchemaChangeHistoryEntity;
 import com.web_service.entity.SyncTableRequestEntity;
 import com.web_service.entity.TableEntity;
-import com.web_service.repository.AccountRepository;
 import com.web_service.repository.AddColumnDetailRepository;
 import com.web_service.repository.AddColumnTableRequestRepository;
 import com.web_service.repository.CurrentTableSchemaRepository;
 import com.web_service.repository.RequestRepository;
 import com.web_service.repository.SyncTableRequestRepository;
 import com.web_service.repository.TableRepository;
-import com.web_service.services.IAccountService;
 import com.web_service.services.IRequestService;
 
 @Service
@@ -43,10 +33,7 @@ public class RequestService implements IRequestService {
 	
 	@Autowired
 	private RequestConvertor requestConvertor;
-	
-	@Autowired
-	private AccountRepository accountRepository;
-	
+		
 	@Autowired
 	private TableRepository tableRepository;
 	
@@ -69,6 +56,7 @@ public class RequestService implements IRequestService {
 	public List<RequestDTO> findAll(String requestType, String status, String approvedBy, int page, int limit) {
 		String query = createSearchQuery(requestType, status, approvedBy);
 		
+		@SuppressWarnings("unchecked")
 		List<RequestEntity> requestEntities = em.createNativeQuery(query, RequestEntity.class)
 				.setFirstResult((page - 1) * limit)
 				.setMaxResults(limit)
