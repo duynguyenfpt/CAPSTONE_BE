@@ -34,7 +34,7 @@ public class RightAPI {
 								@RequestParam("limit") int limit) {
 		
 		ListObjOutput<RightDTO> result = new ListObjOutput<RightDTO>();
-//		try {
+		try {
 			Pageable pageable = new PageRequest(page - 1, limit);
 			result.setData(rightService.findAll(pageable));
 			int totalPage = (int) Math.ceil((double) (rightService.totalItem()) / limit);
@@ -43,12 +43,12 @@ public class RightAPI {
 			result.setCode("200");
 
 			return new ResponseEntity<ListObjOutput<RightDTO>>(result, HttpStatus.OK);
-//		}catch (Exception e) {
-//			result.setMessage("Can not get data");
-//			result.setCode("500");
-//			
-//			return new ResponseEntity<ListObjOutput<RightDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
-//		}
+		}catch (Exception e) {
+			result.setMessage("Can not get data");
+			result.setCode("500");
+			
+			return new ResponseEntity<ListObjOutput<RightDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	@GetMapping(value = "/api/accounts/{account_id}/rights")
