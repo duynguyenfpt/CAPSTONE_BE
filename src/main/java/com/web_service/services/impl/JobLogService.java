@@ -1,9 +1,14 @@
 package com.web_service.services.impl;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.stereotype.Service;
 
 import com.web_service.entity.mongo.JobLogEntity;
@@ -43,9 +48,16 @@ public class JobLogService implements IJobLogService{
 
 	@Override
 	public int totalItemByJobId(long jobId) {
-		return jobLogRepository.getAllNoteByJobId(jobId).size();
+		return jobLogRepository.getAllJobLogByJobId(jobId).size();
 	}
-	
-	
-	
+
+	@Override
+	public JobLogEntity getLastJobLog(long jobId) {
+		List<JobLogEntity> entities = jobLogRepository.getAllJobLogByJobId(jobId);
+		
+		JobLogEntity lastJobLog = entities.stream().filter(e -> e.getStatus() != "processing")
+										  .max(Comparator.comparing(JobLogEntity::getCreatedAt)).get();
+		
+		return lastJobLog;
+	}
 }
