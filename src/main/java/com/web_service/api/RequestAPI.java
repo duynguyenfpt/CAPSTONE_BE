@@ -21,6 +21,7 @@ import com.web_service.api.output.PagingOutput;
 import com.web_service.dto.JobDTO;
 import com.web_service.dto.NoteDTO;
 import com.web_service.dto.RequestDTO;
+import com.web_service.dto.SchemaChangeHistoryDTO;
 import com.web_service.services.IRequestService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
@@ -28,18 +29,19 @@ import com.web_service.services.IRequestService;
 public class RequestAPI {
 	@Autowired
 	private IRequestService requestService;
-
+	
 	@GetMapping(value = "/api/requests")
 	public ResponseEntity<ListObjOutput<RequestDTO>> showRequests(@RequestParam("page") int page,
-								@RequestParam("limit") int limit) {
+								@RequestParam("limit") int limit, @RequestParam(required = false) String requestType,
+								@RequestParam(required = false) String status,
+								@RequestParam(required = false) String approvedBy) {
 		
 		ListObjOutput<RequestDTO> result = new ListObjOutput<RequestDTO>();
-		try {
-			Pageable pageable = new PageRequest(page - 1, limit);
-			result.setData(requestService.findAll(pageable));
-			int totalPage = (int) Math.ceil((double) (requestService.totalItem()) / limit);
-			int totalItem = requestService.totalItem();
-			result.setMetaData(new PagingOutput(totalPage, totalItem));
+		try {			
+			result.setData(requestService.findAll(requestType, status, approvedBy, page, limit));
+			int totalItemSearch = requestService.totalItemSearch(requestType, status, approvedBy);
+			int totalPage = (int) Math.ceil((double) (totalItemSearch) / limit);
+			result.setMetaData(new PagingOutput(totalPage, totalItemSearch));
 			result.setCode("200");
 
 			return new ResponseEntity<ListObjOutput<RequestDTO>>(result, HttpStatus.OK);
@@ -49,29 +51,28 @@ public class RequestAPI {
 			
 			return new ResponseEntity<ListObjOutput<RequestDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
 	}
 	
 	@PutMapping(value = "/api/requests/{id}")
 	public ResponseEntity<ObjectOuput<RequestDTO>> updateRequest(@RequestBody RequestDTO model, @PathVariable("id") long id) {
 		ObjectOuput<RequestDTO> result = new ObjectOuput<RequestDTO>();
-//		try {
+		try {
 			model.setId(id);
 			requestService.update(model);		
 			result.setCode("200");
 			
 			return new ResponseEntity<ObjectOuput<RequestDTO>>(result, HttpStatus.OK);
-//		}catch (NullPointerException e) {
-//			result.setMessage("Not found record");
-//			result.setCode("404");
-//			
-//			return new ResponseEntity<ObjectOuput<RequestDTO>>(result, HttpStatus.NOT_FOUND);
-//		}catch (Exception e) {
-//			result.setMessage("Can not update data");
-//			result.setCode("500");
-//			
-//			return new ResponseEntity<ObjectOuput<RequestDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
-//		}
+		}catch (NullPointerException e) {
+			result.setMessage("Not found record");
+			result.setCode("404");
+			
+			return new ResponseEntity<ObjectOuput<RequestDTO>>(result, HttpStatus.NOT_FOUND);
+		}catch (Exception e) {
+			result.setMessage("Can not update data");
+			result.setCode("500");
+			
+			return new ResponseEntity<ObjectOuput<RequestDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		
 	}
 	
@@ -133,6 +134,5 @@ public class RequestAPI {
 			
 			return new ResponseEntity<ObjectOuput<RequestDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-	
 	}
 }

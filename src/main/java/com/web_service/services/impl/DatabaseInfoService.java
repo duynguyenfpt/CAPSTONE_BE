@@ -75,8 +75,12 @@ public class DatabaseInfoService implements IDatabaseInfoService {
 	}
 
 	@Override
-	public int totalItem() {
-		return (int) databaseInfoRepository.count();
+	public int totalItem(String keyword) {
+		if(keyword.isEmpty()) {
+			return (int) databaseInfoRepository.count();
+		}else {
+			return databaseInfoRepository.search(keyword);
+		}
 	}
 
 	@Override

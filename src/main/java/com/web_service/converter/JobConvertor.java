@@ -10,20 +10,18 @@ import com.web_service.entity.JobEntity;
 
 @Component
 public class JobConvertor {
-	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	public JobEntity toEntity(JobDTO dto) {
 		JobEntity entity = new JobEntity();
-		try {
-			entity.setJobSchedule(dateFormat.parse(dto.getJobSchedule()));
-		} catch (ParseException e) {
-
-		}
+		entity.setJobSchedule(dto.getJobSchedule());
 		entity.setActive(dto.isActive());
 		entity.setMaxRetries(dto.getMaxRetries());
-		entity.setStatus(dto.getStatus());
-		entity.setNumberRetries(dto.getNumberRetries());
-		
+		if(dto.getStatus() != null) {
+			entity.setStatus(dto.getStatus());
+		}
+		if(dto.getNumberRetries() != null) {
+			entity.setNumberRetries(dto.getNumberRetries());
+		}
 		return entity;
 	}
 	
@@ -36,7 +34,7 @@ public class JobConvertor {
 			dto.setId(entity.getId());
 		}
 		if(entity.getJobSchedule() != null) {
-			dto.setJobSchedule(dateFormat.format(entity.getJobSchedule()).toString());
+			dto.setJobSchedule(entity.getJobSchedule());
 		}
 
 		if(entity.getExecutedBy() != null) {
@@ -59,15 +57,15 @@ public class JobConvertor {
 	}
 	
 	public JobEntity toEntity(JobDTO dto, JobEntity entity) {
-		try {
-			entity.setJobSchedule(dateFormat.parse(dto.getJobSchedule()));
-		} catch (ParseException e) {
-
+		entity.setJobSchedule(dto.getJobSchedule());
+		if(dto.getNumberRetries() != null) {
+			entity.setNumberRetries(dto.getNumberRetries());
 		}
-		entity.setNumberRetries(dto.getNumberRetries());
 		entity.setActive(dto.isActive());
 		entity.setMaxRetries(dto.getMaxRetries());
-		entity.setStatus(dto.getStatus());
+		if(dto.getStatus() != null) {
+			entity.setStatus(dto.getStatus());
+		}
 		
 		return entity;
 	}

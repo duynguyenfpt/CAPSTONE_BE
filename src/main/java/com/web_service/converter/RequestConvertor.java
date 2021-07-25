@@ -10,7 +10,9 @@ public class RequestConvertor {
 	public RequestEntity toEntity(RequestDTO dto) {
 		RequestEntity entity = new RequestEntity();
 		entity.setRequestType(dto.getRequestType());
-		entity.setStatus(dto.getStatus());
+		if(dto.getStatus() != null) {
+			entity.setStatus(dto.getStatus());
+		}
 		entity.setApprovedBy(dto.getApprovedBy());
 		
 		return entity;

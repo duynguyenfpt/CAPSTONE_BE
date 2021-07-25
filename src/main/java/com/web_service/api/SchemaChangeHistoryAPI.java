@@ -90,7 +90,6 @@ public class SchemaChangeHistoryAPI {
 			result.setCode("500");
 			
 			return new ResponseEntity<ObjectOuput<SchemaChangeHistoryDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-			
+		}	
 	}
 }

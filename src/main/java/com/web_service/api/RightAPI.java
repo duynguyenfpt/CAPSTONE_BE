@@ -1,6 +1,7 @@
 package com.web_service.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -8,14 +9,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.web_service.api.output.ListObjOutput;
 import com.web_service.api.output.ObjectOuput;
 import com.web_service.api.output.PagingOutput;
-import com.web_service.dto.RequestDTO;
 import com.web_service.dto.RightDTO;
+import com.web_service.entity.AccountEntity;
 import com.web_service.services.IRightService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
@@ -45,7 +49,6 @@ public class RightAPI {
 			
 			return new ResponseEntity<ListObjOutput<RightDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-	
 	}
 	
 	@GetMapping(value = "/api/accounts/{account_id}/rights")
@@ -73,6 +76,48 @@ public class RightAPI {
 			
 			return new ResponseEntity<ListObjOutput<RightDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
+	}
+	
+	@PostMapping(value = "/api/rights")
+	public ResponseEntity<ObjectOuput<RightDTO>> createRight(@RequestBody RightDTO model) {
+		ObjectOuput<RightDTO> result = new ObjectOuput<RightDTO>();
+		try {
+			result.setData(rightService.save(model));
+			result.setMessage("Create permision successfully");
+			result.setCode("201");
+			
+			return new ResponseEntity<ObjectOuput<RightDTO>>(result, HttpStatus.CREATED);
+		}catch (DataIntegrityViolationException e) {
+			result.setCode("422");
+			result.setMessage("Code of permission exist");
+			
+			return new ResponseEntity<ObjectOuput<RightDTO>>(result, HttpStatus.UNPROCESSABLE_ENTITY);
+		}catch (Exception e) {
+			result.setCode("500");
+			result.setMessage("Can not create permision");
+			return new ResponseEntity<ObjectOuput<RightDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@PutMapping(value = "/api/rights/{id}")
+	public ResponseEntity<ObjectOuput<RightDTO>> updateRight(@RequestBody RightDTO model, @PathVariable("id") long id) {
+		ObjectOuput<RightDTO> result = new ObjectOuput<RightDTO>();
+		try {
+			model.setId(id);
+			rightService.save(model);
+			result.setCode("200");
+			
+			return new ResponseEntity<ObjectOuput<RightDTO>>(result, HttpStatus.OK);
+		}catch (NullPointerException e) {
+			result.setMessage("Not found record");
+			result.setCode("404");
+			
+			return new ResponseEntity<ObjectOuput<RightDTO>>(result, HttpStatus.NOT_FOUND);
+		}catch (Exception e) {
+			result.setMessage("Can not update permision");
+			result.setCode("500");
+			
+			return new ResponseEntity<ObjectOuput<RightDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}	
 	}
 }

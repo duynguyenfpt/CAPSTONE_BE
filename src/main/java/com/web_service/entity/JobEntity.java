@@ -27,16 +27,16 @@ public class JobEntity extends BaseEntity{
 	private boolean isActive;
 	
 	@Column
-	private Date jobSchedule;
+	private String jobSchedule;
 	
 	@Column(name = "max_retries")
 	private Integer maxRetries;
 	
 	@Column
-	private String status;
+	private String status="pending";
 	
 	@Column(name = "number_retries")
-	private Integer numberRetries;
+	private Integer numberRetries=0;
 	
 	@Column
 	private String description;
@@ -70,11 +70,11 @@ public class JobEntity extends BaseEntity{
 		this.isActive = isActive;
 	}
 
-	public Date getJobSchedule() {
+	public String getJobSchedule() {
 		return jobSchedule;
 	}
 
-	public void setJobSchedule(Date jobSchedule) {
+	public void setJobSchedule(String jobSchedule) {
 		this.jobSchedule = jobSchedule;
 	}
 

@@ -12,11 +12,15 @@ public interface RightRepository extends JpaRepository<RightEntity, Long> {
 	@Query(value = "SELECT r.* FROM rights as r "
 			+ "inner join account_right as a "
 			+ "on r.id = a.right_id where a.account_id = ?1 "
-			+ " ORDER BY id \n#pageable\n",
+			+ "ORDER BY id \n#pageable\n",
+			 countQuery = "SELECT r.* FROM rights as r "
+						+ "inner join account_right as a "
+						+ "on r.id = a.right_id where a.account_id = ?1 "
+						+ "ORDER BY id \n#pageable\n",
 			nativeQuery = true)
     Page<RightEntity> findRightByAccountId(long accountId, Pageable pageable);
 	
-	@Query(value = "SELECT r.* FROM rights as r"
+	@Query(value = "SELECT count(r.id) FROM rights as r"
 			+ "	inner join account_right as a"
 			+ "	on r.id = a.right_id where a.account_id = ?1 ",
 	        countQuery = "SELECT r.* FROM rights as r"
@@ -24,5 +28,5 @@ public interface RightRepository extends JpaRepository<RightEntity, Long> {
 	    			+ "	on r.id = a.right_id where a.account_id = ?1" ,
 	        nativeQuery = true
 	)
-    List<RightEntity> countByAccountId(long accountId);
+    int countByAccountId(long accountId);
 }

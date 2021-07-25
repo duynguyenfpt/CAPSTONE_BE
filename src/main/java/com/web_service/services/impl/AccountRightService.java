@@ -1,5 +1,11 @@
 package com.web_service.services.impl;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,23 +34,28 @@ public class AccountRightService implements IAccountRightService{
 	RightRepository rightRepository;
 
 	@Override
-	public AccountRightDTO create(AccountRightDTO accountRightDTO) {
+	@Transactional
+	public List<AccountRightDTO> create(AccountRightDTO accountRightDTO) {
 		AccountRightEntity accountRightEntity = new AccountRightEntity();
-		
-		RightEntity rightEntity = rightRepository.findOne(accountRightDTO.getRightId());
-		AccountEntity accountEntity = accountRepository.findOne(accountRightDTO.getAccountId());
-		
-		if(rightEntity != null && accountEntity != null) {
-			accountRightEntity.setAccount(accountEntity);
-			accountRightEntity.setRight(rightEntity);
-			accountRightEntity = accountRightRepository.save(accountRightEntity);
-		}
-		return accountRightConverter.toDTO(accountRightEntity);		
+		List<AccountRightDTO> result = new ArrayList<AccountRightDTO>();
+		for (long rightId : accountRightDTO.getRightIds()) {
+			RightEntity rightEntity = rightRepository.findOne(rightId);
+			AccountEntity accountEntity = accountRepository.findOne(accountRightDTO.getAccountId());
+			if(rightEntity != null && accountEntity != null) {
+				accountRightEntity.setAccount(accountEntity);
+				accountRightEntity.setRight(rightEntity);
+				accountRightEntity = accountRightRepository.save(accountRightEntity);
+				result.add(accountRightConverter.toDTO(accountRightEntity));
+			}
+		}	
+		return result;
 	}
 
 	@Override
-	public void delete(long id) {
-		accountRightRepository.delete(id);
+	@Transactional
+	public void delete(Long[] ids) {
+		for (Long id : ids) {
+			accountRightRepository.delete(id);
+		}
 	}
-
 }

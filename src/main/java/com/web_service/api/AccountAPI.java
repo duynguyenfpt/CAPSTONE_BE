@@ -79,7 +79,6 @@ public class AccountAPI {
 	@GetMapping(value = "/api/me")
 	public ResponseEntity<ObjectOuput<AccountDTO>> getCurrentUser() throws Exception {
 		ObjectOuput<AccountDTO> result = new ObjectOuput<AccountDTO>();
-
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
 		AccountDTO accountDTO = accountService.findByUserName(auth.getName());

@@ -3,6 +3,9 @@ package com.web_service.services.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
@@ -14,11 +17,13 @@ import com.web_service.converter.RequestConvertor;
 import com.web_service.converter.SyncTableConverter;
 import com.web_service.dto.AccountDTO;
 import com.web_service.dto.RequestDTO;
+import com.web_service.dto.SchemaChangeHistoryDTO;
 import com.web_service.entity.AccountEntity;
 import com.web_service.entity.AddColumnDetailEntity;
 import com.web_service.entity.AddColumnTableRequestEntity;
 import com.web_service.entity.CurrentTableSchemaEntity;
 import com.web_service.entity.RequestEntity;
+import com.web_service.entity.SchemaChangeHistoryEntity;
 import com.web_service.entity.SyncTableRequestEntity;
 import com.web_service.entity.TableEntity;
 import com.web_service.repository.AccountRepository;
@@ -57,18 +62,26 @@ public class RequestService implements IRequestService {
 	@Autowired
 	private AddColumnDetailRepository addColumnDetailRepository;
 	
+	@PersistenceContext
+	private EntityManager em;
 	
 	@Override
-	public List<RequestDTO> findAll(Pageable pageable) {
+	public List<RequestDTO> findAll(String requestType, String status, String approvedBy, int page, int limit) {
+		String query = createSearchQuery(requestType, status, approvedBy);
+		
+		List<RequestEntity> requestEntities = em.createNativeQuery(query, RequestEntity.class)
+				.setFirstResult((page - 1) * limit)
+				.setMaxResults(limit)
+				.getResultList();
 		List<RequestDTO> results = new ArrayList<>();
-		List<RequestEntity> entities = requestRepository.findAll(pageable).getContent();
-		for (RequestEntity item: entities) {
+		for (RequestEntity item: requestEntities) {
 			RequestDTO requestDTO = requestConvertor.toDTO(item);
 			results.add(requestDTO);
 		}
 		return results;
 	}
 
+	
 	@Override
 	public int totalItem() {
 		return (int) requestRepository.count();
@@ -155,5 +168,31 @@ public class RequestService implements IRequestService {
 			addColumnDetailRepository.save(addColumnDetailEntity);
 			
 		};
+	}
+	
+	private String createSearchQuery(String requestType, String status, String approvedBy) {
+		if(requestType == null) requestType = "";
+		String query = "select * from request where LOWER(request_type) LIKE '%"
+				+ requestType.toLowerCase() + "%'";
+		if(status != null) {
+			query += " and status LIKE '%"+ status +"%'";
+		}
+		
+		if(approvedBy != null) {
+			query += " and approved_by LIKE '%"+ approvedBy +"%'" ;
+		}
+
+		return query;
+	}
+	
+	@Override
+	public int totalItemSearch(String requestType, String status, String approvedBy) {
+		String query = createSearchQuery(requestType, status, approvedBy);
+
+		@SuppressWarnings("unchecked")
+		List<RequestEntity> requestEntities = em
+				.createNativeQuery(query, RequestEntity.class).getResultList();
+
+		return requestEntities.size();
 	}
 }
