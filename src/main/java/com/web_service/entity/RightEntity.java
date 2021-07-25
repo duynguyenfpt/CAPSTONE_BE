@@ -7,20 +7,28 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
-@Table(name = "rights")
+@Table(name = "rights",
+	   uniqueConstraints = {
+		   @UniqueConstraint(columnNames = "code")
+})
 @SQLDelete(sql = "UPDATE rights SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
 public class RightEntity extends BaseEntity{
+	@NotBlank
 	@Column(name = "right_name")
 	private String rightName;
 	
+	@NotBlank
 	@Column(name = "code")
 	private String code;
 	

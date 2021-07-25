@@ -31,13 +31,16 @@ public class TableAPI {
 
 	@GetMapping(value = "api/tables")
 	public ResponseEntity<ListObjOutput<TableDTO>> showTables(@RequestParam("page") int page,
-								@RequestParam("limit") int limit) {
+								@RequestParam("limit") int limit, @RequestParam(required = false) String keyword) {
 		ListObjOutput<TableDTO> result = new ListObjOutput<TableDTO>();
+		if (keyword == null || keyword.isEmpty()) keyword = "";
+		keyword = keyword.toLowerCase();
+		
 		try {
 			Pageable pageable = new PageRequest(page - 1, limit);
-			result.setData(tableService.findAll(pageable));
-			int totalPage = (int) Math.ceil((double) (tableService.totalItem()) / limit);
-			int totalItem = tableService.totalItem();
+			result.setData(tableService.findAll(keyword, pageable));
+			int totalPage = (int) Math.ceil((double) (tableService.totalItem(keyword)) / limit);
+			int totalItem = tableService.totalItem(keyword);
 			result.setMetaData(new PagingOutput(totalPage, totalItem));
 			result.setCode("200");
 			

@@ -2,7 +2,6 @@ package com.web_service.api;
 
 import java.util.Map;
 
-import javax.persistence.Cache;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.web_service.api.output.ListObjOutput;
 import com.web_service.api.output.ObjectOuput;
 import com.web_service.api.output.PagingOutput;
-import com.web_service.dto.CurrentTableSchemaDTO;
 import com.web_service.dto.DatabaseInfoDTO;
 import com.web_service.services.IDatabaseInfoService;
 
@@ -35,15 +33,14 @@ public class DatabaseInfoAPI {
 	@GetMapping(value = "/api/database_infors")
 	public ResponseEntity<ListObjOutput<DatabaseInfoDTO>> showDatabaseInfors(@RequestParam("page") int page,
 								@RequestParam("limit") int limit, @RequestParam(required = false) String keyword) {
-		
 		if (keyword == null || keyword.isEmpty()) keyword = "";
 		
 		ListObjOutput<DatabaseInfoDTO> result = new ListObjOutput<DatabaseInfoDTO>();
 		try {
 			Pageable pageable = new PageRequest(page - 1, limit);
 			result.setData(databaseInfoService.findAll(pageable, keyword));
-			int totalPage = (int) Math.ceil((double) (databaseInfoService.totalItem()) / limit);
-			int totalItem = databaseInfoService.totalItem();
+			int totalPage = (int) Math.ceil((double) (databaseInfoService.totalItem(keyword)) / limit);
+			int totalItem = databaseInfoService.totalItem(keyword);
 			result.setMetaData(new PagingOutput(totalPage, totalItem));
 			result.setCode("200");
 
@@ -81,12 +78,17 @@ public class DatabaseInfoAPI {
 	@PostMapping(value = "/api/database_infors")
 	public ResponseEntity<ObjectOuput<DatabaseInfoDTO>> createDatabaseInfo(@RequestBody DatabaseInfoDTO model) {
 		ObjectOuput<DatabaseInfoDTO> result = new ObjectOuput<DatabaseInfoDTO>();
+		try {
 			result.setData(databaseInfoService.save(model));
+			result.setMessage("Create database info successfully");
 			result.setCode("201");
 			
 			return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.CREATED);
-		
-		
+		}catch (Exception e) {
+			result.setCode("500");
+			result.setMessage("Can not create database info");
+			return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	@PutMapping(value = "/api/database_infors/{id}")

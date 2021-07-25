@@ -10,19 +10,43 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document(collection = "job_logs")
 public class JobLogEntity {
 	@Id
-	public ObjectId id;
+	private ObjectId id;
 	
 	@Field("job_id")
-	public Long jobId;
+	private Long jobId;
+	
+	@Field("request_id")
+	private Long requestId;
+	
+	@Field("host")
+	private String host;
+	
+	@Field("port")
+	private String port;
+	
+	@Field("database_name")
+	private String databaseName;
+	
+	@Field("table_name")
+	private String tableName;
+	
+	@Field("step")
+	private int step;
+	
+	@Field("request_type")
+	private String requestType;
+	
+	@Field("number_step")
+	private int numberStep;
 	
 	@Field("message")
-	public String message;
+	private String message;
 	
 	@Field("status")
-	public String status;
+	private String status;
 	
-	@Field("created_date")
-	public Date createdDate = new Date();	
+	@Field("created_at")
+	public Date createdAt = new Date();	
 
 	// ObjectId needs to be converted to string
 	public ObjectId get_id() {
@@ -57,11 +81,77 @@ public class JobLogEntity {
 		this.status = status;
 	}
 
-	public Date getCreatedDate() {
-		return createdDate;
+	public Long getRequestId() {
+		return requestId;
 	}
 
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
+	public void setRequestId(Long requestId) {
+		this.requestId = requestId;
 	}
+
+	public String getHost() {
+		return host;
+	}
+
+	public void setHost(String host) {
+		this.host = host;
+	}
+
+	public String getPort() {
+		return port;
+	}
+
+	public void setPort(String port) {
+		this.port = port;
+	}
+
+	public String getDatabaseName() {
+		return databaseName;
+	}
+
+	public void setDatabaseName(String databaseName) {
+		this.databaseName = databaseName;
+	}
+
+	public String getTableName() {
+		return tableName;
+	}
+
+	public void setTableName(String tableName) {
+		this.tableName = tableName;
+	}
+
+	public int getStep() {
+		return step;
+	}
+
+	public void setStep(int step) {
+		this.step = step;
+	}
+
+	public String getRequestType() {
+		return requestType;
+	}
+
+	public void setRequestType(String requestType) {
+		this.requestType = requestType;
+	}
+
+	public int getNumberStep() {
+		return numberStep;
+	}
+
+	public void setNumberStep(int numberStep) {
+		this.numberStep = numberStep;
+	}
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	
 }

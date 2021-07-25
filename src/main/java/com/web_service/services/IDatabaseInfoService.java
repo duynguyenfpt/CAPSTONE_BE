@@ -14,7 +14,7 @@ public interface IDatabaseInfoService {
 	void delete(long id);
 	List<DatabaseInfoDTO> findAll(Pageable pageable, String keyword);
 //	List<NewDTO> findAll();
-	int totalItem();
+	int totalItem(String keyword);
 	DatabaseInfoDTO getById(long id);
 	ResponseEntity<Map<String,Object>> trackingConnection(DatabaseInfoDTO databaseInfoDTO);
 }

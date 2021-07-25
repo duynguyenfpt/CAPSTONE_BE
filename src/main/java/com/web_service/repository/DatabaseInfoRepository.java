@@ -27,4 +27,23 @@ public interface DatabaseInfoRepository extends JpaRepository<DatabaseInfoEntity
 	        nativeQuery = true
 	)
     Page<DatabaseInfoEntity> search(String keyword, Pageable pageable);
+	
+	@Query(value = "select COUNT(*) from database_infos " +
+	        "where (username LIKE %?1% ) " +
+	        "or (port LIKE %?1% ) " +
+	        "or (database_type LIKE %?1%) " +
+	        "or (database_name LIKE %?1%) " +
+	        "or (modified_date LIKE %?1%) " +
+	        "or (modified_by LIKE %?1%) ",
+	        countQuery = "select * from database_infos " +
+	    	        "where (username LIKE %?1% ) " +
+	    	        "or (port LIKE %?1% ) " +
+	    	        "or (database_type LIKE %?1%) " +
+	    	        "or (database_name LIKE %?1%) " +
+	    	        "or (modified_date LIKE %?1%) " +
+	    	        "or (modified_by LIKE %?1%) ",
+	        nativeQuery = true
+	)
+    int search(String keyword);
 }
+	

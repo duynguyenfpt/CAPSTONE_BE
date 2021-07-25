@@ -20,6 +20,7 @@ import com.web_service.api.output.ObjectOuput;
 import com.web_service.api.output.PagingOutput;
 import com.web_service.dto.DatabaseInfoDTO;
 import com.web_service.dto.JobDTO;
+import com.web_service.dto.JobDetailDTO;
 import com.web_service.dto.NoteDTO;
 import com.web_service.services.IJobService;
 
@@ -128,5 +129,29 @@ public class JobAPI {
 			return new ResponseEntity<ObjectOuput<JobDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
+	}
+	
+	@GetMapping(value = "/api/jobs/{job_id}/job_details")
+	public ResponseEntity<ListObjOutput<JobDetailDTO>> showJobDetails(@RequestParam("page") int page,
+			@RequestParam("limit") int limit,  @PathVariable("job_id") long jobId) {
+		
+		ListObjOutput<JobDetailDTO> result = new ListObjOutput<JobDetailDTO>();
+		try {
+			result.setData(jobService.getJobDetails(jobId, page, limit));
+			int totalItem = jobService.totalItemJobDetails(jobId);
+			int totalPage = (int) Math.ceil((double) (totalItem) / limit);
+			result.setMetaData(new PagingOutput(totalPage, totalItem));
+			result.setCode("200");
+			result.setMessage("Get job detail sucessfully");
+
+			
+			return new ResponseEntity<ListObjOutput<JobDetailDTO>>(result, HttpStatus.OK);
+		}catch (Exception e) {
+			result.setCode("500");
+			result.setMessage("Can not get job detail");
+			
+			return new ResponseEntity<ListObjOutput<JobDetailDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+
+		}
 	}
 }

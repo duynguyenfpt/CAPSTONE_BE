@@ -47,9 +47,9 @@ public class TableService implements ITableService {
 	}
 
 	@Override
-	public List<TableDTO> findAll(Pageable pageable) {
+	public List<TableDTO> findAll(String keyword, Pageable pageable) {
 		List<TableDTO> results = new ArrayList<>();
-		List<TableEntity> entities = tableRepository.findAll(pageable).getContent();
+		List<TableEntity> entities = tableRepository.search(keyword, pageable).getContent();
 		for (TableEntity item: entities) {
 			TableDTO tableDTO = tableConverter.toDTO(item);
 			results.add(tableDTO);
@@ -58,8 +58,8 @@ public class TableService implements ITableService {
 	}
 
 	@Override
-	public int totalItem() {
-		return (int) tableRepository.count();
+	public int totalItem(String keyword) {
+		return (int) tableRepository.countSearchTotalItem(keyword);
 	}
 
 	@Override

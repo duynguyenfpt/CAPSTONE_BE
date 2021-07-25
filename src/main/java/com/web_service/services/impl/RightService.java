@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.web_service.converter.RightConverter;
 import com.web_service.dto.RightDTO;
+import com.web_service.dto.ServerInfoDTO;
 import com.web_service.entity.RightEntity;
+import com.web_service.entity.ServerInfoEntity;
 import com.web_service.repository.RightRepository;
 import com.web_service.services.IRightService;
 
@@ -50,7 +52,21 @@ public class RightService implements IRightService{
 
 	@Override
 	public int countRightByAccountId(long accountId) {
-		return (int) rightRepository.countByAccountId(accountId).size();
+		return (int) rightRepository.countByAccountId(accountId);
+	}
+	
+	@Override
+	public RightDTO save(RightDTO rightDTO ) {
+		RightEntity rightEntity = new RightEntity();
+		if (rightDTO.getId() != null) {
+			RightEntity oldRightEntity = rightRepository.findOne(rightDTO.getId());
+			rightEntity = rightConverter.toEntity(rightDTO, oldRightEntity);
+		} else {
+			rightEntity = rightConverter.toEntity(rightDTO);
+		}	
+
+		rightEntity = rightRepository.save(rightEntity);
+		return rightConverter.toDTO(rightEntity);
 	}
 
 }

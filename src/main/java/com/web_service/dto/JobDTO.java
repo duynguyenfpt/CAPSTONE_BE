@@ -5,7 +5,7 @@ public class JobDTO extends AbstractDTO<JobDTO> {
 	private long requestId;
 	private long executedById;
 	private String jobSchedule;
-	private boolean isActive;
+	private Boolean isActive;
 	private Integer maxRetries;
 	private Integer numberRetries;
 	private String status;
@@ -52,11 +52,11 @@ public class JobDTO extends AbstractDTO<JobDTO> {
 		this.jobSchedule = jobSchedule;
 	}
 
-	public boolean isActive() {
+	public Boolean isActive() {
 		return isActive;
 	}
 
-	public void setActive(boolean isActive) {
+	public void setActive(Boolean isActive) {
 		this.isActive = isActive;
 	}
 

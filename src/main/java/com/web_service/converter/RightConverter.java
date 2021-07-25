@@ -26,8 +26,8 @@ public class RightConverter {
 	}
 	
 	public RightEntity toEntity(RightDTO dto, RightEntity entity) {
-		dto.setCode(entity.getCode());
-		dto.setRightName(entity.getRightName());
+		entity.setCode(dto.getCode());
+		entity.setRightName(dto.getRightName());
 		return entity;
 	}
 }

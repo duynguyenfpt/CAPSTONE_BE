@@ -2,7 +2,7 @@ package com.web_service.dto;
 
 public class AccountRightDTO extends AbstractDTO<AccountRightDTO>{
 	private long accountId;
-	private long rightId;
+	private long[] rightIds;
 	private AccountDTO account;
 	private RightDTO right;
 	
@@ -12,11 +12,11 @@ public class AccountRightDTO extends AbstractDTO<AccountRightDTO>{
 	public void setAccountId(long accountId) {
 		this.accountId = accountId;
 	}
-	public long getRightId() {
-		return rightId;
+	public long[] getRightIds() {
+		return rightIds;
 	}
-	public void setRightId(long rightId) {
-		this.rightId = rightId;
+	public void setRightId(long[] rightIds) {
+		this.rightIds = rightIds;
 	}
 	public AccountDTO getAccount() {
 		return account;
