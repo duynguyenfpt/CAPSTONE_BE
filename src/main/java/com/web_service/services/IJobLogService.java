@@ -13,4 +13,5 @@ public interface IJobLogService {
 	int totalItem();
 	List<JobLogEntity> findAllByJobId(long jobId, Pageable pageable);
 	int totalItemByJobId(long jobId);
+	JobLogEntity getLastJobLog(long jobId);
 }

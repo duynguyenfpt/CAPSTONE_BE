@@ -14,5 +14,5 @@ public interface JobLogRepository extends MongoRepository<JobLogEntity, ObjectId
 	
 	Page<JobLogEntity> findByJobId(long jobId, Pageable pageable);
 	
-	List<JobLogEntity> getAllNoteByJobId(long requestId);
+	List<JobLogEntity> getAllJobLogByJobId(long jobId);	
 }

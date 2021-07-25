@@ -83,4 +83,28 @@ public class JobLogAPI {
 		
 		return new ResponseEntity<ObjectOuput<JobLogEntity>>(result, HttpStatus.CREATED);
 	}
+	
+	@GetMapping(value = "/api/jobs/{job_id}/last_job_log")
+	public ResponseEntity<ObjectOuput<JobLogEntity>> getLastJobLog(@PathVariable("job_id") long jobId) {
+		
+		ObjectOuput<JobLogEntity> result = new ObjectOuput<JobLogEntity>();
+		try {			
+			
+			result.setData(jobLogService.getLastJobLog(jobId));
+			result.setMessage("Get data successfully");
+			result.setCode("200");
+
+			return new ResponseEntity<ObjectOuput<JobLogEntity>>(result, HttpStatus.OK);
+		}catch (NullPointerException e) {
+			result.setMessage("Not found record");
+			result.setCode("404");
+			
+			return new ResponseEntity<ObjectOuput<JobLogEntity>>(result, HttpStatus.NOT_FOUND);
+		}catch (Exception e) {
+			result.setMessage("Can not get data");
+			result.setCode("500");
+			
+			return new ResponseEntity<ObjectOuput<JobLogEntity>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 }
