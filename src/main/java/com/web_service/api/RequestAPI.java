@@ -18,10 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.web_service.api.output.ListObjOutput;
 import com.web_service.api.output.ObjectOuput;
 import com.web_service.api.output.PagingOutput;
-import com.web_service.dto.JobDTO;
-import com.web_service.dto.NoteDTO;
 import com.web_service.dto.RequestDTO;
-import com.web_service.dto.SchemaChangeHistoryDTO;
 import com.web_service.services.IRequestService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
