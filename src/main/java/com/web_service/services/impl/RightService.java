@@ -11,12 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.web_service.converter.RightConverter;
-import com.web_service.dto.RequestDTO;
 import com.web_service.dto.RightDTO;
-import com.web_service.dto.ServerInfoDTO;
-import com.web_service.entity.RequestEntity;
 import com.web_service.entity.RightEntity;
-import com.web_service.entity.ServerInfoEntity;
 import com.web_service.repository.RightRepository;
 import com.web_service.services.IRightService;
 
@@ -32,8 +28,8 @@ public class RightService implements IRightService{
 	private EntityManager em;
 	
 	@Override
-	public List<RightDTO> findAll(String rightName, String code, int page, int limit) {
-		String query = createSearchQuery(rightName, code);
+	public List<RightDTO> findAll(String keyword, int page, int limit) {
+		String query = createSearchQuery(keyword);
 		
 		@SuppressWarnings("unchecked")
 		List<RightEntity> rightEntities = em.createNativeQuery(query, RightEntity.class)
@@ -49,8 +45,8 @@ public class RightService implements IRightService{
 	}
 	
 	@Override
-	public int totalItemSearch(String rightName, String code) {
-		String query = createSearchQuery(rightName, code);
+	public int totalItemSearch(String keyword) {
+		String query = createSearchQuery(keyword);
 
 		@SuppressWarnings("unchecked")
 		List<RightEntity> rightEntities = em
@@ -95,14 +91,11 @@ public class RightService implements IRightService{
 		return rightConverter.toDTO(rightEntity);
 	}
 	
-	private String createSearchQuery(String rightName, String code) {
-		if(rightName == null) rightName = "";
+	private String createSearchQuery(String keyword) {
+		if(keyword == null) keyword = "";
 		String query = "select * from rights where LOWER(right_name) LIKE '%"
-				+ rightName.toLowerCase() + "%'";
-		if(code != null) {
-			query += " and code LIKE '%"+ code +"%'";
-		}
-
+					   + keyword.toLowerCase() + "%'"
+					   + " or code LIKE '%" + keyword +"%'";
 		return query;
 	}
 }

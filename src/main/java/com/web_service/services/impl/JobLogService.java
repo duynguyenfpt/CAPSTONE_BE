@@ -1,5 +1,7 @@
 package com.web_service.services.impl;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -29,7 +31,7 @@ public class JobLogService implements IJobLogService{
 
 	@Override
 	public List<JobLogEntity> findAll(Pageable pageable) {
-		List<JobLogEntity> entities = jobLogRepository.findAll(pageable).getContent();
+		List<JobLogEntity> entities = jobLogRepository.findAllByOrderByCreatedTimeDesc(pageable).getContent();
 		
 		return entities;
 	}
@@ -41,7 +43,7 @@ public class JobLogService implements IJobLogService{
 
 	@Override
 	public List<JobLogEntity> findAllByJobId(long jobId, Pageable pageable) {
-		List<JobLogEntity> entities = jobLogRepository.findByJobId(jobId, pageable).getContent();
+		List<JobLogEntity> entities = jobLogRepository.findByJobIdOrderByCreatedTimeDesc(jobId, pageable).getContent();
 		
 		return entities;
 	}
@@ -54,9 +56,9 @@ public class JobLogService implements IJobLogService{
 	@Override
 	public JobLogEntity getLastJobLog(long jobId) {
 		List<JobLogEntity> entities = jobLogRepository.getAllJobLogByJobId(jobId);
-		
+		if(entities.isEmpty()) return null;
 		JobLogEntity lastJobLog = entities.stream().filter(e -> e.getStatus() != "processing")
-										  .max(Comparator.comparing(JobLogEntity::getCreatedAt)).get();
+										  .max(Comparator.comparing(JobLogEntity::getCreatedTime)).get();
 		
 		return lastJobLog;
 	}

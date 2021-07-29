@@ -12,6 +12,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Sort.Order;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.web_service.converter.NoteConvertor;
 import com.web_service.dto.NoteDTO;
@@ -34,7 +36,9 @@ public class NoteService implements INoteService{
 			NoteEntity oldNoteEntity = noteRepository.findById(noteDTO.getId());
 			noteEntity = noteConvertor.toEntity(noteDTO, oldNoteEntity);
 		} else {
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			noteEntity = noteConvertor.toEntity(noteDTO);
+			noteEntity.setCreatedBy(auth.getName());
 		}
 
 		noteEntity = noteRepository.save(noteEntity);

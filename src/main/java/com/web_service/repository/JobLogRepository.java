@@ -11,8 +11,7 @@ import com.web_service.entity.mongo.JobLogEntity;
 
 public interface JobLogRepository extends MongoRepository<JobLogEntity, ObjectId> {
 	JobLogEntity findById(ObjectId _id);
-	
-	Page<JobLogEntity> findByJobId(long jobId, Pageable pageable);
-	
-	List<JobLogEntity> getAllJobLogByJobId(long jobId);	
+	Page<JobLogEntity> findByJobIdOrderByCreatedTimeDesc(long jobId, Pageable pageable);
+	List<JobLogEntity> getAllJobLogByJobId(long jobId);
+	Page<JobLogEntity> findAllByOrderByCreatedTimeDesc(Pageable pageable);
 }

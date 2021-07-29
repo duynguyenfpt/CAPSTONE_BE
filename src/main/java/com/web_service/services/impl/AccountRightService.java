@@ -36,12 +36,12 @@ public class AccountRightService implements IAccountRightService{
 	@Override
 	@Transactional
 	public List<AccountRightDTO> create(AccountRightDTO accountRightDTO) {
-		AccountRightEntity accountRightEntity = new AccountRightEntity();
 		List<AccountRightDTO> result = new ArrayList<AccountRightDTO>();
 		for (long rightId : accountRightDTO.getRightIds()) {
 			RightEntity rightEntity = rightRepository.findOne(rightId);
 			AccountEntity accountEntity = accountRepository.findOne(accountRightDTO.getAccountId());
 			if(rightEntity != null && accountEntity != null) {
+				AccountRightEntity accountRightEntity = new AccountRightEntity();
 				accountRightEntity.setAccount(accountEntity);
 				accountRightEntity.setRight(rightEntity);
 				accountRightEntity = accountRightRepository.save(accountRightEntity);
@@ -53,9 +53,9 @@ public class AccountRightService implements IAccountRightService{
 
 	@Override
 	@Transactional
-	public void delete(Long[] ids) {
-		for (Long id : ids) {
-			accountRightRepository.delete(id);
+	public void delete(Long accountId, Long[] rightIds) {
+		for (Long id : rightIds) {
+			accountRightRepository.deleteRight(accountId, id);
 		}
 	}
 }

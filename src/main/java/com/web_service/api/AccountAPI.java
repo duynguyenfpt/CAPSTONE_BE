@@ -25,6 +25,7 @@ import com.web_service.api.output.ListObjOutput;
 import com.web_service.api.output.ObjectOuput;
 import com.web_service.api.output.PagingOutput;
 import com.web_service.dto.AccountDTO;
+import com.web_service.dto.ChangePasswordDTO;
 import com.web_service.dto.CurrentTableSchemaDTO;
 import com.web_service.dto.JobDTO;
 import com.web_service.dto.JwtResponse;
@@ -141,6 +142,31 @@ public class AccountAPI {
 			result.setMessage("Can not reset password");
 			
 			return new ResponseEntity<ObjectOuput<AccountDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@PostMapping(value = "/api/change_password")
+	public ResponseEntity<ObjectOuput<String>> changePassword(@RequestBody ChangePasswordDTO dto) throws Exception {
+		ObjectOuput<String> result = new ObjectOuput<String>();
+		try {
+			String message = userDetailsService.changePassword(dto.getOldPassword(), dto.getNewPassword());
+			
+			if(message.equals("success")) {
+				result.setCode("200");
+				result.setMessage("Change password successfully");
+				
+				return new ResponseEntity<ObjectOuput<String>>(result, HttpStatus.OK);
+			}else {
+				result.setCode("400");
+				result.setMessage("Invalid password");
+				
+				return new ResponseEntity<ObjectOuput<String>>(result, HttpStatus.BAD_REQUEST);
+			}
+		}catch (Exception e) {
+			result.setCode("500");
+			result.setMessage("Can not change password");
+			
+			return new ResponseEntity<ObjectOuput<String>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	

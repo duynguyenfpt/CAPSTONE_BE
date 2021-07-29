@@ -24,6 +24,7 @@ public class NoteConvertor {
 	
 		dto.setRequestId(entity.getRequestId());
 		dto.setContent(entity.getContent());
+		dto.setCreatedBy(entity.getCreatedBy());
 		
 		return dto;
 	}

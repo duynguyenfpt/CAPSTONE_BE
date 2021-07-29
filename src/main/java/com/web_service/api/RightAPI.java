@@ -31,13 +31,12 @@ public class RightAPI {
 	@GetMapping(value = "/api/rights")
 	public ResponseEntity<ListObjOutput<RightDTO>> showRights(@RequestParam("page") int page,
 								@RequestParam("limit") int limit,
-								@RequestParam(required = false) String rightName,
-								@RequestParam(required = false) String code) {
+								@RequestParam(required = false) String keyword) {
 		
 		ListObjOutput<RightDTO> result = new ListObjOutput<RightDTO>();
 		try {
-			result.setData(rightService.findAll(rightName, code, page, limit));
-			int totalItem = rightService.totalItemSearch(rightName, code);
+			result.setData(rightService.findAll(keyword, page, limit));
+			int totalItem = rightService.totalItemSearch(keyword);
 			int totalPage = (int) Math.ceil((double) (totalItem) / limit);
 			result.setMetaData(new PagingOutput(totalPage, totalItem));
 			result.setCode("200");

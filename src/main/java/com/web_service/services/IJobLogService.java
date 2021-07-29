@@ -2,7 +2,6 @@ package com.web_service.services;
 
 import java.util.List;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.domain.Pageable;
 
 import com.web_service.entity.mongo.JobLogEntity;
