@@ -1,5 +1,7 @@
 package com.web_service.entity.mongo;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.bson.types.ObjectId;
@@ -45,8 +47,8 @@ public class JobLogEntity {
 	@Field("status")
 	private String status;
 	
-	@Field("created_at")
-	public Date createdAt = new Date();	
+	@Field("create_time")
+	public String createdTime;	
 
 	// ObjectId needs to be converted to string
 	public ObjectId get_id() {
@@ -145,13 +147,18 @@ public class JobLogEntity {
 		this.numberStep = numberStep;
 	}
 
-	public Date getCreatedAt() {
-		return createdAt;
+	public Date getCreatedTime() {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
+		try {
+			return dateFormat.parse(createdTime.toString());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			return null;
+		}
 	}
 
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
+	public void setCreatedTime(String createdTime) {
+		this.createdTime = createdTime;
 
-	
+	}	
 }

@@ -8,10 +8,10 @@ import com.web_service.dto.RightDTO;
 import com.web_service.dto.ServerInfoDTO;
 
 public interface IRightService {
-	List<RightDTO> findAll(String rightName, String code, int page, int limit);
+	List<RightDTO> findAll(String keyword, int page, int limit);
 	RightDTO save(RightDTO rightDTO);
 	int totalItem();
 	List<RightDTO> findAllByAccountId(long accountId, Pageable pageable);
 	int countRightByAccountId(long accountId);
-	int totalItemSearch(String rightName, String code);
+	int totalItemSearch(String keyword);
 }

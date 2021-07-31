@@ -7,5 +7,5 @@ import com.web_service.dto.AccountRightDTO;
 
 public interface IAccountRightService {
 	List<AccountRightDTO> create(AccountRightDTO accountRightDTO);
-	void delete(Long[] ids);
+	void delete(Long accountId, Long[] rightIds);
 }

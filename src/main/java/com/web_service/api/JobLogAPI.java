@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.web_service.api.output.ListObjOutput;
 import com.web_service.api.output.ObjectOuput;
 import com.web_service.api.output.PagingOutput;
+import com.web_service.dto.JobDetailDTO;
 import com.web_service.entity.mongo.JobLogEntity;
 import com.web_service.services.IJobLogService;
 
@@ -89,12 +90,20 @@ public class JobLogAPI {
 		
 		ObjectOuput<JobLogEntity> result = new ObjectOuput<JobLogEntity>();
 		try {			
-			
-			result.setData(jobLogService.getLastJobLog(jobId));
-			result.setMessage("Get data successfully");
-			result.setCode("200");
+			JobLogEntity lastJobLog = jobLogService.getLastJobLog(jobId);
+			if(lastJobLog != null) {
+				result.setData(lastJobLog);
+				result.setMessage("Get data successfully");
+				result.setCode("200");
 
-			return new ResponseEntity<ObjectOuput<JobLogEntity>>(result, HttpStatus.OK);
+				return new ResponseEntity<ObjectOuput<JobLogEntity>>(result, HttpStatus.OK);
+			}else {
+				result.setData(lastJobLog);
+				result.setCode("200");
+				result.setMessage("No value present");
+
+				return new ResponseEntity<ObjectOuput<JobLogEntity>>(result, HttpStatus.OK);
+			}
 		}catch (NullPointerException e) {
 			result.setMessage("Not found record");
 			result.setCode("404");
