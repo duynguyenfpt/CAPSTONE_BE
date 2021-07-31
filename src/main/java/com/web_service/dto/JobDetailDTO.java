@@ -2,8 +2,6 @@ package com.web_service.dto;
 
 import java.math.BigInteger;
 
-import javax.persistence.Column;
-
 public class JobDetailDTO {
 	private String serverDomain;
 	
@@ -32,6 +30,12 @@ public class JobDetailDTO {
 	private String database;
 
 	private String createdDate;
+	
+	private String executedBy;
+	
+	private String createdBy;
+	
+	private Boolean active;
 	
 	public String getServerDomain() {
 		return serverDomain;
@@ -144,6 +148,28 @@ public class JobDetailDTO {
 	public void setCreatedDate(String createdDate) {
 		this.createdDate = createdDate;
 	}
-	
-	
+
+	public String getExecutedBy() {
+		return executedBy;
+	}
+
+	public void setExecutedBy(String executedBy) {
+		this.executedBy = executedBy;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
 }

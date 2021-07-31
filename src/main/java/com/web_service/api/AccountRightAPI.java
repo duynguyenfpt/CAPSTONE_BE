@@ -42,23 +42,25 @@ public class AccountRightAPI {
 		}
 	}
 	
-	@DeleteMapping(value = "/api/account_rights")
-	public ResponseEntity<ObjectOuput<AccountRightDTO>> deleteAccountRight(@RequestBody Long[] ids) {
-		ObjectOuput<AccountRightDTO> result = new ObjectOuput<AccountRightDTO>();
+	@DeleteMapping(value = "/api/accounts/{account_id}/account_rights")
+	public ResponseEntity<ObjectOuput<String>> deleteAccountRight(@RequestBody AccountRightDTO model,
+																		   @PathVariable("account_id") Long accountId) {
+		ObjectOuput<String> result = new ObjectOuput<String>();
 		try {
-			accountRightService.delete(ids);
+			accountRightService.delete(accountId, model.getRightIds());
 			result.setCode("200");
+			result.setMessage("Delete permission successfully");
 			
-			return new ResponseEntity<ObjectOuput<AccountRightDTO>>(result, HttpStatus.OK);
+			return new ResponseEntity<ObjectOuput<String>>(result, HttpStatus.OK);
 		}catch (NullPointerException e) {
 			result.setCode("404");
 			result.setMessage("Not found");
-			return new ResponseEntity<ObjectOuput<AccountRightDTO>>(result, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<ObjectOuput<String>>(result, HttpStatus.NOT_FOUND);
 		}catch (Exception e) {
 			result.setCode("500");
 			
 			result.setMessage("Can not delete permision");
-			return new ResponseEntity<ObjectOuput<AccountRightDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<ObjectOuput<String>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }

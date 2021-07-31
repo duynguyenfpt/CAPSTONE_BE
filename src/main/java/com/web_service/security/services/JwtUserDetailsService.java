@@ -3,7 +3,10 @@ package com.web_service.security.services;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -48,6 +51,20 @@ public class JwtUserDetailsService implements UserDetailsService {
 		accountEntity.setPassword(bcryptEncoder.encode(DEFAULT_PASSWORD));
 		
 		accountRepository.save(accountEntity);	
+	}
+	
+	public String changePassword(String oldPassword, String newPassword) {
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		AccountEntity accountEntity = accountRepository.findByUsername(auth.getName());
+		
+		if (passwordEncoder.matches(oldPassword, accountEntity.getPassword())) {
+			accountEntity.setPassword(bcryptEncoder.encode(newPassword));
+			accountRepository.save(accountEntity);
+			return "success";
+		} else {
+			return "invalide_password";
+		}
 	}
 
 }

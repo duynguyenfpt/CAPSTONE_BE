@@ -13,6 +13,6 @@ public interface IJobService {
 	int totalItem();
 	JobDTO getById(long id);
 	void delete(long id);
-	List<JobDetailDTO> getJobDetails(long jobId, int page, int limit);
+	JobDetailDTO getJobDetail(long jobId);
 	int totalItemJobDetails(long jobId);
 }

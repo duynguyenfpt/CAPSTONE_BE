@@ -1,5 +1,6 @@
 package com.web_service.api;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -42,8 +43,7 @@ public class JobAPI {
 			result.setMetaData(new PagingOutput(totalPage, totalItem));
 			result.setCode("200");
 			
-			return new ResponseEntity<ListObjOutput<JobDTO>>(result, HttpStatus.OK);
-		
+			return new ResponseEntity<ListObjOutput<JobDTO>>(result, HttpStatus.OK);	
 	}
 	
 	@PutMapping(value = "/api/jobs/{id}")
@@ -131,27 +131,22 @@ public class JobAPI {
 		
 	}
 	
-	@GetMapping(value = "/api/jobs/{job_id}/job_details")
-	public ResponseEntity<ListObjOutput<JobDetailDTO>> showJobDetails(@RequestParam("page") int page,
-			@RequestParam("limit") int limit,  @PathVariable("job_id") long jobId) {
-		
-		ListObjOutput<JobDetailDTO> result = new ListObjOutput<JobDetailDTO>();
+	@GetMapping(value = "/api/jobs/{job_id}/job_detail")
+	public ResponseEntity<ObjectOuput<JobDetailDTO>> showJobDetail(@PathVariable("job_id") long jobId) {
+		ObjectOuput<JobDetailDTO> result = new ObjectOuput<JobDetailDTO>();
 		try {
-			result.setData(jobService.getJobDetails(jobId, page, limit));
-			int totalItem = jobService.totalItemJobDetails(jobId);
-			int totalPage = (int) Math.ceil((double) (totalItem) / limit);
-			result.setMetaData(new PagingOutput(totalPage, totalItem));
+			result.setData(jobService.getJobDetail(jobId));
 			result.setCode("200");
 			result.setMessage("Get job detail sucessfully");
 
-			
-			return new ResponseEntity<ListObjOutput<JobDetailDTO>>(result, HttpStatus.OK);
+			return new ResponseEntity<ObjectOuput<JobDetailDTO>>(result, HttpStatus.OK);
 		}catch (Exception e) {
 			result.setCode("500");
 			result.setMessage("Can not get job detail");
-			
-			return new ResponseEntity<ListObjOutput<JobDetailDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
 
+			return new ResponseEntity<ObjectOuput<JobDetailDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+			
+		
 	}
 }

@@ -1,21 +1,21 @@
 package com.web_service.dto;
 
 public class AccountRightDTO extends AbstractDTO<AccountRightDTO>{
-	private long accountId;
-	private long[] rightIds;
+	private Long accountId;
+	private Long[] rightIds;
 	private AccountDTO account;
 	private RightDTO right;
 	
-	public long getAccountId() {
+	public Long getAccountId() {
 		return accountId;
 	}
-	public void setAccountId(long accountId) {
+	public void setAccountId(Long accountId) {
 		this.accountId = accountId;
 	}
-	public long[] getRightIds() {
+	public Long[] getRightIds() {
 		return rightIds;
 	}
-	public void setRightId(long[] rightIds) {
+	public void setRightId(Long[] rightIds) {
 		this.rightIds = rightIds;
 	}
 	public AccountDTO getAccount() {
