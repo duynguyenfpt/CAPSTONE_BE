@@ -17,16 +17,20 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sun.jersey.api.NotFoundException;
 import com.web_service.api.output.ListObjOutput;
 import com.web_service.api.output.ObjectOuput;
 import com.web_service.api.output.PagingOutput;
 import com.web_service.dto.AccountDTO;
+import com.web_service.dto.AccountRightDTO;
 import com.web_service.dto.ChangePasswordDTO;
 import com.web_service.dto.CurrentTableSchemaDTO;
+import com.web_service.dto.DatabaseInfoDTO;
 import com.web_service.dto.JobDTO;
 import com.web_service.dto.JwtResponse;
 import com.web_service.dto.NoteDTO;
@@ -115,13 +119,15 @@ public class AccountAPI {
 
 	@GetMapping(value = "/api/accounts")
 	public ResponseEntity<ListObjOutput<AccountDTO>> showAccount(@RequestParam("page") int page,
-								@RequestParam("limit") int limit) {
+								@RequestParam("limit") int limit, @RequestParam(required = false) String keyword) {
 		
+		if (keyword == null || keyword.isEmpty()) keyword = "";
+
 		ListObjOutput<AccountDTO> result = new ListObjOutput<AccountDTO>();
 		Pageable pageable = new PageRequest(page - 1, limit);
-		result.setData(accountService.findAll(pageable));
-		int totalPage = (int) Math.ceil((double) (accountService.totalItem()) / limit);
-		int totalItem = accountService.totalItem();
+		result.setData(accountService.findAll(keyword, pageable));
+		int totalPage = (int) Math.ceil((double) (accountService.totalItem(keyword)) / limit);
+		int totalItem = accountService.totalItem(keyword);
 		result.setMetaData(new PagingOutput(totalPage, totalItem));
 		result.setCode("200");
 
@@ -170,6 +176,74 @@ public class AccountAPI {
 		}
 	}
 	
+	@PostMapping(value = "/api/accounts")
+	public ResponseEntity<ObjectOuput<AccountEntity>> saveAccountWithRights(@RequestBody AccountRightDTO account) throws Exception {
+		ObjectOuput<AccountEntity> result = new ObjectOuput<AccountEntity>();
+		try {
+			accountService.createAccountWithRights(account);
+			
+			result.setCode("201");
+			result.setMessage("success");
+			
+			return new ResponseEntity<ObjectOuput<AccountEntity>>(result, HttpStatus.CREATED);
+		}catch (DataIntegrityViolationException e) {
+			result.setCode("422");
+			result.setMessage("User or Email exist");
+			
+			return new ResponseEntity<ObjectOuput<AccountEntity>>(result, HttpStatus.UNPROCESSABLE_ENTITY);
+		}catch (Exception e) {
+			result.setCode("500");
+			result.setMessage("Can not create account");
+			
+			return new ResponseEntity<ObjectOuput<AccountEntity>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@PutMapping(value = "/api/accounts/{id}")
+	public ResponseEntity<ObjectOuput<AccountEntity>> updateAccount(@RequestBody AccountDTO model, @PathVariable("id") long id) throws Exception {
+		ObjectOuput<AccountEntity> result = new ObjectOuput<AccountEntity>();
+		try {
+			model.setId(id);
+			accountService.save(model);
+			
+			result.setCode("200");
+			result.setMessage("success");
+			
+			return new ResponseEntity<ObjectOuput<AccountEntity>>(result, HttpStatus.CREATED);
+		}catch (NotFoundException e) {
+			result.setCode("404");
+			result.setMessage("Not found account");
+			
+			return new ResponseEntity<ObjectOuput<AccountEntity>>(result, HttpStatus.NOT_FOUND);
+		}catch (Exception e) {
+			result.setCode("500");
+			result.setMessage("Can not create account");
+			
+			return new ResponseEntity<ObjectOuput<AccountEntity>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping(value = "/api/accounts/{id}")
+	public ResponseEntity<ObjectOuput<AccountDTO>> showAccount(@PathVariable("id") long id) {
+		ObjectOuput<AccountDTO> result = new ObjectOuput<AccountDTO>();
+		try{
+			AccountDTO accountDTO =  accountService.getById(id);
+			result.setData(accountDTO);
+			result.setCode("200");
+			
+			return new ResponseEntity<ObjectOuput<AccountDTO>>(result, HttpStatus.OK);
+		}catch (NullPointerException e) {
+			result.setMessage("Not found record");
+			result.setCode("404");
+			
+			return new ResponseEntity<ObjectOuput<AccountDTO>>(result, HttpStatus.NOT_FOUND);
+		}catch (Exception e) {
+			result.setCode("500");
+			result.setMessage("Can not get data");
+			
+			return new ResponseEntity<ObjectOuput<AccountDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 	private void authenticate(String username, String password) throws Exception {
 		try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));

@@ -47,6 +47,9 @@ public class AccountEntity extends BaseEntity {
 	@Column(name = "role")
 	private String role;
 	
+	@Column(name = "active")
+	private Boolean active = true;
+	
 	@JsonManagedReference
 	@OneToMany(mappedBy = "executedBy")
     private List<JobEntity> listJob;
@@ -117,5 +120,13 @@ public class AccountEntity extends BaseEntity {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
 	}
 }

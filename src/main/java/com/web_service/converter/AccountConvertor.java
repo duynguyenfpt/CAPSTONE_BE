@@ -13,6 +13,7 @@ public class AccountConvertor {
 		entity.setEmail(dto.getEmail());
 		entity.setPhone(dto.getPhone());
 		entity.setRole(dto.getRole());
+		entity.setActive(dto.getActive());
 		
 		return entity;
 	}
@@ -26,6 +27,7 @@ public class AccountConvertor {
 		dto.setEmail(entity.getEmail());
 		dto.setPhone(entity.getPhone());
 		dto.setRole(entity.getRole());
+		dto.setActive(entity.getActive());
 		
 		return dto;
 	}
@@ -33,7 +35,8 @@ public class AccountConvertor {
 		entity.setUserName(dto.getUsername());
 		entity.setEmail(dto.getEmail());
 		entity.setPhone(dto.getPhone());
-		
+		entity.setRole(dto.getRole());
+		entity.setActive(dto.getActive());
 		return entity;
 	}
 }

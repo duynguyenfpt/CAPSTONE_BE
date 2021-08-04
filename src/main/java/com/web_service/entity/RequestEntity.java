@@ -2,6 +2,7 @@ package com.web_service.entity;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -29,7 +30,7 @@ public class RequestEntity extends BaseEntity {
     private String approvedBy;
 	
 	@JsonManagedReference
-	@OneToMany(mappedBy = "request")
+	@OneToMany(mappedBy = "request", cascade = CascadeType.ALL)
     private List<JobEntity> listJob;
 	
 	@Column

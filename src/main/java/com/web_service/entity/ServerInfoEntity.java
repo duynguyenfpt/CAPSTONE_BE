@@ -3,6 +3,7 @@ package com.web_service.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -30,7 +31,7 @@ public class ServerInfoEntity extends BaseEntity {
 	private boolean deleted = Boolean.FALSE;
 	
 	@JsonManagedReference
-	@OneToMany(mappedBy = "serverInfo", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy = "serverInfo", cascade = CascadeType.ALL)
 	private List<DatabaseInfoEntity> databaseInfoes = new ArrayList<>();
 
 	public String getServerHost() {

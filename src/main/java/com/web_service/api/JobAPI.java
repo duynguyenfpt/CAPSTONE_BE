@@ -110,8 +110,7 @@ public class JobAPI {
 			result.setCode("500");
 			
 			return new ResponseEntity<ObjectOuput<JobDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		
+		}	
 	}
 	
 	@PostMapping(value = "/api/jobs")

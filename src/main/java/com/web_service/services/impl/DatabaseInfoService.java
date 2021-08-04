@@ -91,7 +91,7 @@ public class DatabaseInfoService implements IDatabaseInfoService {
 	}
 
 	@Override
-	public ResponseEntity<Map<String,Object>> trackingConnection(DatabaseInfoDTO databaseInfoDTO) {
+	public boolean trackingConnection(DatabaseInfoDTO databaseInfoDTO) {
 		ServerInfoEntity serverInfoEntity = serverInfoRepository.findOne(databaseInfoDTO.getServerInforId());
 		String USER = databaseInfoDTO.getUsername();
 		String PASS = databaseInfoDTO.getPassword();
@@ -101,11 +101,10 @@ public class DatabaseInfoService implements IDatabaseInfoService {
 		String URL = "";
 		Connection conn;
 		boolean trackingConnection;
-		Map<String, Object> response = new LinkedHashMap<>();
 		try {
 			switch (databaseInfoDTO.getDatabaseType()) {
 			case "mysql":
-				URL = "jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASENAME;
+				URL = "jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASENAME +"?useSSL=false&serverTimezone=UTC";
 				conn = DriverManager.getConnection(URL, USER, PASS);
 
 				break;
@@ -134,13 +133,8 @@ public class DatabaseInfoService implements IDatabaseInfoService {
 		} catch (SQLException e) {
 			trackingConnection = false;
 		}
-		response.put("success: ", trackingConnection);
 		
-		if(trackingConnection) {
-			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
-		}
-		
-		return new ResponseEntity<Map<String,Object>>(response, HttpStatus.BAD_REQUEST);
+		return trackingConnection;
 	}
 
 }

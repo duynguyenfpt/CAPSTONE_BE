@@ -15,7 +15,8 @@ public interface DatabaseInfoRepository extends JpaRepository<DatabaseInfoEntity
 	        "or (database_name LIKE %?1%) " +
 	        "or (modified_date LIKE %?1%) " +
 	        "or (modified_by LIKE %?1%) " +
-	        "ORDER BY id \n#pageable\n" ,
+	        "and deleted = false" +
+	        "ORDER BY id DESC \n#pageable\n" ,
 	        countQuery = "select * from database_infos " +
 	    	        "where (username LIKE %?1% ) " +
 	    	        "or (port LIKE %?1% ) " +
@@ -23,7 +24,7 @@ public interface DatabaseInfoRepository extends JpaRepository<DatabaseInfoEntity
 	    	        "or (database_name LIKE %?1%) " +
 	    	        "or (modified_date LIKE %?1%) " +
 	    	        "or (modified_by LIKE %?1%) " +
-	    	        "ORDER BY id \n#pageable\n" ,
+	    	        "ORDER BY id DESC \n#pageable\n" ,
 	        nativeQuery = true
 	)
     Page<DatabaseInfoEntity> search(String keyword, Pageable pageable);
@@ -34,14 +35,16 @@ public interface DatabaseInfoRepository extends JpaRepository<DatabaseInfoEntity
 	        "or (database_type LIKE %?1%) " +
 	        "or (database_name LIKE %?1%) " +
 	        "or (modified_date LIKE %?1%) " +
-	        "or (modified_by LIKE %?1%) ",
+	        "or (modified_by LIKE %?1%) " +
+	        "and deleted = false",
 	        countQuery = "select * from database_infos " +
 	    	        "where (username LIKE %?1% ) " +
 	    	        "or (port LIKE %?1% ) " +
 	    	        "or (database_type LIKE %?1%) " +
 	    	        "or (database_name LIKE %?1%) " +
 	    	        "or (modified_date LIKE %?1%) " +
-	    	        "or (modified_by LIKE %?1%) ",
+	    	        "or (modified_by LIKE %?1%) " +
+	    	        "and deleted = false",
 	        nativeQuery = true
 	)
     int search(String keyword);

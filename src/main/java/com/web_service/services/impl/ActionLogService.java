@@ -18,7 +18,7 @@ public class ActionLogService  implements IActionLogService{
 	
 	@Override
 	public List<ActionLogEntity> findAll(Pageable pageable) {
-		List<ActionLogEntity> entities = actionLogRepository.findAll(pageable).getContent();
+		List<ActionLogEntity> entities = actionLogRepository.findAllByOrderByCreatedAtDesc(pageable).getContent();
 		
 		return entities;
 	}

@@ -5,7 +5,17 @@ public class AccountRightDTO extends AbstractDTO<AccountRightDTO>{
 	private Long[] rightIds;
 	private AccountDTO account;
 	private RightDTO right;
+	private boolean isCopyRight;
 	
+	public boolean isCopyRight() {
+		return isCopyRight;
+	}
+	public void setCopyRight(boolean isCopyRight) {
+		this.isCopyRight = isCopyRight;
+	}
+	public void setRightIds(Long[] rightIds) {
+		this.rightIds = rightIds;
+	}
 	public Long getAccountId() {
 		return accountId;
 	}

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.web_service.api.output.ListObjOutput;
 import com.web_service.api.output.ObjectOuput;
 import com.web_service.api.output.PagingOutput;
+import com.web_service.dto.BooleanDTO;
 import com.web_service.dto.DatabaseInfoDTO;
 import com.web_service.services.IDatabaseInfoService;
 
@@ -72,7 +73,6 @@ public class DatabaseInfoAPI {
 			
 			return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
 	}
 	
 	@PostMapping(value = "/api/database_infors")
@@ -117,16 +117,46 @@ public class DatabaseInfoAPI {
 	@DeleteMapping(value = "/api/database_infors/{id}")
 	public ResponseEntity<ObjectOuput<DatabaseInfoDTO>> deleteDatabaseInfo(@PathVariable("id") long id) {
 		ObjectOuput<DatabaseInfoDTO> result = new ObjectOuput<DatabaseInfoDTO>();
-
+		try {
 			databaseInfoService.delete(id);
 			result.setCode("200");
 			
 			return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.OK);
-		
+		}catch (NullPointerException e) {
+			result.setMessage("Not found record");
+			result.setCode("404");
+			
+			return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.NOT_FOUND);
+		}catch (Exception e) {
+			result.setMessage("Can not delete data");
+			result.setCode("500");
+			
+			return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	@PostMapping(value = "/api/database_infors/test_connection")
-	public ResponseEntity<Map<String,Object>> checkingConnection(@RequestBody DatabaseInfoDTO model) {
-		 return databaseInfoService.trackingConnection(model);
+	public ResponseEntity<ObjectOuput<BooleanDTO>> checkingConnection(@RequestBody DatabaseInfoDTO model) {
+		ObjectOuput<BooleanDTO> result = new ObjectOuput<BooleanDTO>();
+		try {
+			BooleanDTO booleanDTO = new BooleanDTO();
+			
+			booleanDTO.setSuccess(databaseInfoService.trackingConnection(model));
+			result.setCode("200");
+			result.setData(booleanDTO);
+			result.setMessage("Tracking connection successfully");
+			
+			return new ResponseEntity<ObjectOuput<BooleanDTO>>(result, HttpStatus.OK);
+		}catch (NullPointerException e) {
+			result.setMessage("Not found server");
+			result.setCode("404");
+			
+			return new ResponseEntity<ObjectOuput<BooleanDTO>>(result, HttpStatus.NOT_FOUND);
+		}catch (Exception e) {
+			result.setMessage("Can not tracking connection");
+			result.setCode("500");
+			
+			return new ResponseEntity<ObjectOuput<BooleanDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 }
