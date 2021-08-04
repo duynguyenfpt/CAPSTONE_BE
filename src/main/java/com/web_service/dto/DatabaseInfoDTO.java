@@ -23,6 +23,8 @@ public class DatabaseInfoDTO extends AbstractDTO<DatabaseInfoDTO> {
 	private List<TableEntity> tables = new ArrayList<>();
 	
 	private ServerInfoDTO serverInfor;
+	
+	private String sid;
 
 	public String getPort() {
 		return port;
@@ -96,5 +98,11 @@ public class DatabaseInfoDTO extends AbstractDTO<DatabaseInfoDTO> {
 		this.serverInfor = serverInfor;
 	}
 
-	
+	public String getSid() {
+		return sid;
+	}
+
+	public void setSid(String sid) {
+		this.sid = sid;
+	}
 }

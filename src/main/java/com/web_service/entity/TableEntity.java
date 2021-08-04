@@ -3,6 +3,7 @@ package com.web_service.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -34,11 +35,11 @@ public class TableEntity extends BaseEntity{
 	private boolean deleted = Boolean.FALSE;
 	
 	@JsonManagedReference
-	@OneToMany(mappedBy = "tableInfo")
+	@OneToMany(mappedBy = "tableInfo", cascade = CascadeType.ALL)
 	private List<SchemaChangeHistoryEntity> schemaChangeHistories = new ArrayList<>();
 	
 	@JsonManagedReference
-	@OneToMany(mappedBy = "tableInfo")
+	@OneToMany(mappedBy = "tableInfo", cascade = CascadeType.ALL)
 	private List<CurrentTableSchemaEntity> currentTableSchemaEntities  = new ArrayList<>();
 	
 //	@JsonManagedReference

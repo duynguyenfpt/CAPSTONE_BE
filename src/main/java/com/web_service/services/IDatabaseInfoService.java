@@ -16,5 +16,5 @@ public interface IDatabaseInfoService {
 //	List<NewDTO> findAll();
 	int totalItem(String keyword);
 	DatabaseInfoDTO getById(long id);
-	ResponseEntity<Map<String,Object>> trackingConnection(DatabaseInfoDTO databaseInfoDTO);
+	boolean trackingConnection(DatabaseInfoDTO databaseInfoDTO);
 }

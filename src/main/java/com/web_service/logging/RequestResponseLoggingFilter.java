@@ -43,16 +43,16 @@ public class RequestResponseLoggingFilter implements Filter {
 		chain.doFilter(wrappedRequest, responseCacheWrapperObject);
 		String uri = req.getRequestURI();
 
-		if(!uri.contains("/authenticate") || !uri.contains("/register") || !uri.contains("/change_password")) {
+		if(!uri.contains("/authenticate") && !uri.contains("/register") && !uri.contains("/change_password")) {
 			String requestBody = logRequestBody(wrappedRequest);
-	        String responseBody = getResponseBody(responseCacheWrapperObject);
+//	        String responseBody = getResponseBody(responseCacheWrapperObject);
 
 			ActionLogEntity actionLogEntity = new ActionLogEntity();
 			
 			actionLogEntity.setRequestMethod(req.getMethod());
 			actionLogEntity.setUserName(getUserName());
 			actionLogEntity.setBodyRequest(requestBody);
-			actionLogEntity.setResponse(responseBody);
+//			actionLogEntity.setResponse(responseBody);
 			actionLogEntity.setPath(req.getRequestURI());
 			actionLogEntity.setStatusCode(responseCacheWrapperObject.getStatusCode());
 			

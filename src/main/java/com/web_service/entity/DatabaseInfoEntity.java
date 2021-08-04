@@ -3,12 +3,14 @@ package com.web_service.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -36,11 +38,15 @@ public class DatabaseInfoEntity extends BaseEntity{
 	@Column(name = "database_type")
 	private String databaseType;
 	
+	@NotNull
+	@Column(name = "sid")
+	private String sid;
+	
 	@Column
 	private boolean deleted = Boolean.FALSE;
 	
 	@JsonManagedReference
-	@OneToMany(mappedBy = "databaseInfo")
+	@OneToMany(mappedBy = "databaseInfo", cascade = CascadeType.ALL)
 	private List<TableEntity> tables = new ArrayList<>();
 	
 	@JsonBackReference
@@ -110,5 +116,13 @@ public class DatabaseInfoEntity extends BaseEntity{
 
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;
+	}
+
+	public String getSid() {
+		return sid;
+	}
+
+	public void setSid(String sid) {
+		this.sid = sid;
 	}
 }

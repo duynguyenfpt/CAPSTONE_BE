@@ -10,7 +10,9 @@ public class AccountDTO extends AbstractDTO<AccountDTO>{
 	private String phone;
 
 	private String password;
-
+	
+	private Boolean active;
+	
 	public String getUsername() {
 		return username;
 	}
@@ -51,5 +53,11 @@ public class AccountDTO extends AbstractDTO<AccountDTO>{
 		this.password = password;
 	}
 
-	
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
 }
