@@ -30,16 +30,17 @@ public class ServerInfoAPI {
 
 	@GetMapping(value = "/api/server_infors")
 	public ResponseEntity<ListObjOutput<ServerInfoDTO>> showServerInfors(@RequestParam("page") int page,
-								@RequestParam("limit") int limit) {
+								@RequestParam("limit") int limit, @RequestParam(required = false) String keyword) {
 		
 		ListObjOutput<ServerInfoDTO> result = new ListObjOutput<ServerInfoDTO>();
 		try {
 			Pageable pageable = new PageRequest(page - 1, limit);
-			result.setData(serverInfoService.findAll(pageable));
-			int totalPage = (int) Math.ceil((double) (serverInfoService.totalItem()) / limit);
-			int totalItem = serverInfoService.totalItem();
+			result.setData(serverInfoService.findAll(keyword, pageable));
+			int totalPage = (int) Math.ceil((double) (serverInfoService.totalItem(keyword)) / limit);
+			int totalItem = serverInfoService.totalItem(keyword);
 			result.setMetaData(new PagingOutput(totalPage, totalItem));
 			result.setCode("200");
+			result.setMessage("Get database info successfully");
 
 			return new ResponseEntity<ListObjOutput<ServerInfoDTO>>(result, HttpStatus.OK);
 		}catch (Exception e) {
@@ -48,7 +49,6 @@ public class ServerInfoAPI {
 			
 			return new ResponseEntity<ListObjOutput<ServerInfoDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
 	}
 	
 	@GetMapping(value = "/api/server_infors/{id}")
@@ -71,7 +71,6 @@ public class ServerInfoAPI {
 			
 			return new ResponseEntity<ObjectOuput<ServerInfoDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
 	}
 	
 	@PostMapping(value = "/api/server_infors")

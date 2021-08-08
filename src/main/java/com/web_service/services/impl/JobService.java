@@ -1,11 +1,8 @@
 package com.web_service.services.impl;
 
-import java.math.BigInteger;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -16,14 +13,11 @@ import org.springframework.stereotype.Service;
 import com.web_service.converter.JobConvertor;
 import com.web_service.dto.JobDTO;
 import com.web_service.dto.JobDetailDTO;
-import com.web_service.dto.SchemaChangeHistoryDTO;
 import com.web_service.entity.AccountEntity;
-import com.web_service.entity.AddColumnDetailEntity;
 import com.web_service.entity.AddColumnTableRequestEntity;
 import com.web_service.entity.DatabaseInfoEntity;
 import com.web_service.entity.JobEntity;
 import com.web_service.entity.RequestEntity;
-import com.web_service.entity.SchemaChangeHistoryEntity;
 import com.web_service.entity.ServerInfoEntity;
 import com.web_service.entity.SyncTableRequestEntity;
 import com.web_service.entity.TableEntity;
@@ -62,9 +56,9 @@ public class JobService implements IJobService{
 	private EntityManager em;
 	
 	@Override
-	public List<JobDTO> findAll(Pageable pageable) {
+	public List<JobDTO> findAll(String keyword, Pageable pageable) {
 		List<JobDTO> results = new ArrayList<>();
-		List<JobEntity> entities = jobRepository.findAll(pageable).getContent();
+		List<JobEntity> entities = jobRepository.getAllJob(keyword, pageable).getContent();
 		for (JobEntity item: entities) {
 			JobDTO jobDTO = jobConvertor.toDTO(item);
 			results.add(jobDTO);
@@ -73,8 +67,8 @@ public class JobService implements IJobService{
 	}
 
 	@Override
-	public int totalItem() {
-		return (int) jobRepository.count();
+	public int totalItem(String keyword) {
+		return (int) jobRepository.countJob(keyword);
 	}
 
 	@Override
@@ -140,6 +134,7 @@ public class JobService implements IJobService{
 		jobDetailDTO.setActive(jobEntity.isActive());
 		jobDetailDTO.setExecutedBy(executedBy.getUsername());
 		jobDetailDTO.setCreatedBy(jobEntity.getCreatedBy());
+		jobDetailDTO.setRequestId(jobEntity.getRequest().getId());
 
 		return jobDetailDTO;
 	}
@@ -147,14 +142,14 @@ public class JobService implements IJobService{
 	@Override
 	public int totalItemJobDetails(long jobId) {
 		String query = "SELECT si.server_domain,si.server_host,di.`port`,di.database_type,str.identity_id,str.partition_by,str.id as str_id, jobs.id as job_id,\n" +
-                "jobs.max_retries, jobs.number_retries, tm.latest_offset, tm.`table`, tm.database, jobs.created_date FROM\n" +
+                "jobs.max_retries, jobs.number_retries, tm.latest_offset, tm.`table`, tm.database, jobs.created_date, jobs.request_id FROM\n" +
                 "webservice_test.database_infos di\n" +
                 "inner join \n" +
                 "(select * from webservice_test.`tables`)tbls\n" +
                 "inner join webservice_test.server_infos si\n" +
                 "inner join webservice_test.sync_table_requests as str\n" +
                 "inner join webservice_test.request \n" +
-                "inner join webservice_test.jobs\n" +
+                "inner join webservice_test.jobs \n" +
                 "inner join cdc.table_monitor as tm\n" +
                 "on di.id = tbls.database_info_id\n" +
                 "and di.server_info_id = si.id\n" +

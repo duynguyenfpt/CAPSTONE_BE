@@ -7,6 +7,10 @@ import org.springframework.data.domain.Pageable;
 import com.web_service.entity.mongo.ActionLogEntity;
 
 public interface IActionLogService {
-	List<ActionLogEntity> findAll(Pageable pageable);
-	int totalItem();
+	List<ActionLogEntity> findAll(String username, String path,
+			String bodyRequest, String requestMethod,
+			Integer statusCode, Pageable pageable);
+	int totalItem(String username, String path,
+			String bodyRequest,
+			String requestMethod, Integer statusCode);
 }

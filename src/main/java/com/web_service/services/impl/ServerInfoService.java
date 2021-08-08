@@ -41,9 +41,11 @@ public class ServerInfoService implements IServerInfoService {
 	}
 
 	@Override
-	public List<ServerInfoDTO> findAll(Pageable pageable) {
+	public List<ServerInfoDTO> findAll(String keyword, Pageable pageable) {
+		if(keyword == null) keyword = "";
+
 		List<ServerInfoDTO> results = new ArrayList<>();
-		List<ServerInfoEntity> entities = serverInfoRepository.findAll(pageable).getContent();
+		List<ServerInfoEntity> entities = serverInfoRepository.getAllServerInfo(keyword, pageable).getContent();
 		for (ServerInfoEntity item: entities) {
 			ServerInfoDTO serverInfoDTO = serverInfoConverter.toDTO(item);
 			results.add(serverInfoDTO);
@@ -52,8 +54,8 @@ public class ServerInfoService implements IServerInfoService {
 	}
 
 	@Override
-	public int totalItem() {
-		return (int) serverInfoRepository.count();
+	public int totalItem(String keyword) {
+		return (int) serverInfoRepository.countServerInfo(keyword);
 	}
 
 	@Override

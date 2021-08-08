@@ -37,6 +37,8 @@ public class JobDetailDTO {
 	
 	private Boolean active;
 	
+	private Long requestId;
+	
 	public String getServerDomain() {
 		return serverDomain;
 	}
@@ -171,5 +173,13 @@ public class JobDetailDTO {
 
 	public void setActive(Boolean active) {
 		this.active = active;
+	}
+
+	public Long getRequestId() {
+		return requestId;
+	}
+
+	public void setRequestId(Long requestId) {
+		this.requestId = requestId;
 	}
 }

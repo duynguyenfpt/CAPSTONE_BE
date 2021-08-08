@@ -1,16 +1,24 @@
 package com.web_service.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "etl_request")
-public class ETLEntity {
-	@Id
-	@Column(name = "request_type_id")
-	private Integer requestId;
+public class ETLEntity extends BaseEntity{
+	@OneToOne(optional = false)
+    @JoinColumn(name = "request_type_id", nullable = false)
+	private RequestEntity request;
 	
 	@Column(name="query_type")
 	private String queryType;
@@ -19,15 +27,12 @@ public class ETLEntity {
 	private String query;
 	
 	@Column(name="result_status")
-	private Boolean resultStatus;
+	private Boolean resultStatus = false;
 
-	public Integer getRequestId() {
-		return requestId;
-	}
-
-	public void setRequestId(Integer requestId) {
-		this.requestId = requestId;
-	}
+	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinTable(name = "share_etl_requests", joinColumns = {
+			@JoinColumn(name = "etl_request_id") }, inverseJoinColumns = { @JoinColumn(name = "account_id") })
+	private List<AccountEntity> accounts;
 
 	public String getQueryType() {
 		return queryType;
@@ -51,5 +56,21 @@ public class ETLEntity {
 
 	public void setResultStatus(Boolean resultStatus) {
 		this.resultStatus = resultStatus;
+	}
+
+	public RequestEntity getRequest() {
+		return request;
+	}
+
+	public void setRequest(RequestEntity request) {
+		this.request = request;
+	}
+
+	public List<AccountEntity> getAccounts() {
+		return accounts;
+	}
+
+	public void setAccounts(List<AccountEntity> accounts) {
+		this.accounts = accounts;
 	}
 }

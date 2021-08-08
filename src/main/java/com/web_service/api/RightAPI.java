@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.web_service.api.output.ListObjOutput;
 import com.web_service.api.output.ObjectOuput;
 import com.web_service.api.output.PagingOutput;
+import com.web_service.dto.DatabaseInfoDTO;
 import com.web_service.dto.RightDTO;
+import com.web_service.dto.ServerInfoDTO;
 import com.web_service.services.IRightService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
@@ -118,5 +121,49 @@ public class RightAPI {
 			
 			return new ResponseEntity<ObjectOuput<RightDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
 		}	
+	}
+	
+	@GetMapping(value = "/api/rights/{id}")
+	public ResponseEntity<ObjectOuput<RightDTO>> showRight(@PathVariable("id") Long id) {
+		ObjectOuput<RightDTO> result = new ObjectOuput<RightDTO>();
+		try{
+			RightDTO rightDTO =  rightService.getById(id);
+			
+			result.setMessage("get data successfull");
+			result.setData(rightDTO);
+			result.setCode("200");
+			return new ResponseEntity<ObjectOuput<RightDTO>>(result, HttpStatus.OK);
+		}catch (NullPointerException e) {
+			result.setMessage("Not found record");
+			result.setCode("404");
+			return new ResponseEntity<ObjectOuput<RightDTO>>(result, HttpStatus.NOT_FOUND);
+		}catch (Exception e) {
+			result.setCode("500");
+			result.setMessage("Can not get data");
+			
+			return new ResponseEntity<ObjectOuput<RightDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@DeleteMapping(value = "/api/rights/{id}")
+	public ResponseEntity<ObjectOuput<RightDTO>> deleteRight(@PathVariable("id") long id) {
+		ObjectOuput<RightDTO> result = new ObjectOuput<RightDTO>();
+
+		try {
+			rightService.delete(id);
+			result.setCode("200");
+			
+			return new ResponseEntity<ObjectOuput<RightDTO>>(result, HttpStatus.OK);
+		}catch (NullPointerException e) {
+			result.setMessage("Not found record");
+			result.setCode("404");
+			
+			return new ResponseEntity<ObjectOuput<RightDTO>>(result, HttpStatus.NOT_FOUND);
+		}catch (Exception e) {
+			result.setMessage("Can not delete data");
+			result.setCode("500");
+			
+			return new ResponseEntity<ObjectOuput<RightDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 }

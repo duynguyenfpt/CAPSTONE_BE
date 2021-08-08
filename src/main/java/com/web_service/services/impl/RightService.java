@@ -98,4 +98,16 @@ public class RightService implements IRightService{
 					   + " or code LIKE '%" + keyword +"%'";
 		return query;
 	}
+
+	@Override
+	public RightDTO getById(Long id) {
+		RightEntity rightEntity = rightRepository.findOne(id);
+		RightDTO rightDTO = rightConverter.toDTO(rightEntity);
+		return rightDTO;
+	}
+
+	@Override
+	public void delete(Long id) {
+		rightRepository.delete(id);
+	}
 }

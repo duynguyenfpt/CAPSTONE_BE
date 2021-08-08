@@ -1,36 +1,43 @@
-//package com.web_service.hdfs;
-//
-//import org.apache.commons.io.IOUtils;
-//import org.apache.hadoop.conf.Configuration;
-//import org.apache.hadoop.fs.FSDataInputStream;
-//import org.apache.hadoop.fs.FileSystem;
-//import org.apache.hadoop.fs.Path;
-//
-//import java.io.*;
-//
-//public class HdfsService {
-//	public static void readFileFromHDFS() throws IOException {
-//        Configuration configuration = new Configuration();
-//        configuration.set("fs.defaultFS", "hdfs://10.8.0.1:9870");
-//        ///user/csv/test/part-00000-80c9c331-1ffc-4c2c-8f0c-4fe97d0f1124-c000.csv
-//        FileSystem fileSystem = FileSystem.get(configuration);
-//        //Create a path
-//        String fileName = "read_write_hdfs_example.txt";
-//        Path hdfsReadPath = new Path("/user/csv/test/part-00000-80c9c331-1ffc-4c2c-8f0c-4fe97d0f1124-c000.csv");
-//        //Init input stream
-//        FSDataInputStream inputStream = fileSystem.open(hdfsReadPath);
-//        //Classical input stream usage
-//        System.out.println(inputStream.readChar());
-//
-//        /*BufferedReader bufferedReader = new BufferedReader(
-//                new InputStreamReader(inputStream, StandardCharsets.UTF_8));
-//
-//        String line = null;
-//        while ((line=bufferedReader.readLine())!=null){
-//            System.out.println(line);
-//        }*/
-//
-//        inputStream.close();
-//        fileSystem.close();
-//    }
-//}
+package com.web_service.hdfs;
+
+import org.apache.hadoop.io.IOUtils;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FSDataInputStream;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+
+import java.io.*;
+
+public class HdfsService {
+	public static String readFileFromHDFS() throws IOException {
+		Configuration conf = new Configuration();
+		conf.addResource(new Path("/etc/hadoop/conf/hdfs-site.xml"));
+		conf.addResource(new Path("/etc/hadoop/conf/core-site.xml"));
+		conf.set("hadoop.security.authentication", "kerberos");
+		conf.set("fs.defaultFS", "hdfs://127.0.0.1:9000");
+		FSDataInputStream in = null;
+		// OutputStream out = null;
+		try {
+			FileSystem fs = FileSystem.get(conf);
+			// Input file path
+			Path inFile = new Path("/user/csv/test/part-00000-80c9c331-1ffc-4c2c-8f0c-4fe97d0f1124-c000.csv");
+
+			// Check if file exists at the given location
+			if (!fs.exists(inFile)) {
+				throw new IOException("Input file not found");
+			}
+			OutputStream os = new ByteArrayOutputStream();
+			in = fs.open(inFile);
+			IOUtils.copyBytes(in, os, 512, false);
+			String content = os.toString();
+			os.close();
+			in.close();
+			
+			return content;
+		} catch (IOException e) {
+			return "";
+		} finally {
+			IOUtils.closeStream(in);
+		}
+	}
+}
