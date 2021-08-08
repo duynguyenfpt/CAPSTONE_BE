@@ -32,11 +32,19 @@ public class AccountConvertor {
 		return dto;
 	}
 	public AccountEntity toEntity(AccountDTO dto, AccountEntity entity) {
-		entity.setUserName(dto.getUsername());
-		entity.setEmail(dto.getEmail());
-		entity.setPhone(dto.getPhone());
-		entity.setRole(dto.getRole());
-		entity.setActive(dto.getActive());
+		if(dto.getEmail() != null) {
+			entity.setEmail(dto.getEmail());
+		}
+		if(dto.getPhone() != null) {
+			entity.setPhone(dto.getPhone());
+		}
+		if(dto.getRole() != null) {
+			entity.setRole(dto.getRole());
+		}
+		
+		if(dto.getActive() != null) {
+			entity.setActive(dto.getActive());
+		}
 		return entity;
 	}
 }

@@ -33,13 +33,14 @@ public class JobAPI {
 
 	@GetMapping(value = "/api/jobs")
 	public ResponseEntity<ListObjOutput<JobDTO>> showJobs(@RequestParam("page") int page,
-								@RequestParam("limit") int limit) {
+								@RequestParam("limit") int limit, @RequestParam(required = false) String keyword) {
 		
 		ListObjOutput<JobDTO> result = new ListObjOutput<JobDTO>();
+		if(keyword == null) keyword = "";
 			Pageable pageable = new PageRequest(page - 1, limit);
-			result.setData(jobService.findAll(pageable));
-			int totalPage = (int) Math.ceil((double) (jobService.totalItem()) / limit);
-			int totalItem = jobService.totalItem();
+			result.setData(jobService.findAll(keyword, pageable));
+			int totalPage = (int) Math.ceil((double) (jobService.totalItem(keyword)) / limit);
+			int totalItem = jobService.totalItem(keyword);
 			result.setMetaData(new PagingOutput(totalPage, totalItem));
 			result.setCode("200");
 			

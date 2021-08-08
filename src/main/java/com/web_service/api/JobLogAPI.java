@@ -33,13 +33,19 @@ public class JobLogAPI {
 	
 	@GetMapping(value = "/api/job_logs")
 	public ResponseEntity<ListObjOutput<JobLogEntity>> getAllJobLog(@RequestParam("page") int page,
-			@RequestParam("limit") int limit) {
+			@RequestParam("limit") int limit,
+			@RequestParam(required = false) String host, 
+			@RequestParam(required = false) String port,
+			@RequestParam(required = false) String databaseName,
+			@RequestParam(required = false) String tableName,
+			@RequestParam(required = false) String requestType,
+			@RequestParam(required = false) String status) {
 		
 		ListObjOutput<JobLogEntity> result = new ListObjOutput<JobLogEntity>();
 		Pageable pageable = new PageRequest(page - 1, limit);
-		result.setData(jobLogService.findAll(pageable));
-		int totalPage = (int) Math.ceil((double) (jobLogService.totalItem()) / limit);
-		int totalItem = jobLogService.totalItem();
+		result.setData(jobLogService.findAll(host, port, databaseName, tableName, requestType, status, pageable));
+		int totalItem = jobLogService.totalItem(host, port, databaseName, tableName, requestType, status);
+		int totalPage = (int) Math.ceil((double) (totalItem) / limit);
 		result.setMetaData(new PagingOutput(totalPage, totalItem));
 		result.setCode("200");
 
@@ -52,9 +58,8 @@ public class JobLogAPI {
 		
 		ListObjOutput<JobLogEntity> result = new ListObjOutput<JobLogEntity>();
 		try {
-			Pageable pageable = new PageRequest(page - 1, limit, new Sort(new Order(Direction.DESC, "timestamp")));
-			
-			
+			Pageable pageable = new PageRequest(page - 1, limit);
+		
 			result.setData(jobLogService.findAllByJobId(jobId, pageable));
 			int totalPage = (int) Math.ceil((double) (jobLogService.totalItemByJobId(jobId)) / limit);
 			int totalItem = jobLogService.totalItemByJobId(jobId);

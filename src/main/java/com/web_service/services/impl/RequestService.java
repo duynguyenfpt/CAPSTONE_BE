@@ -161,7 +161,7 @@ public class RequestService implements IRequestService {
 	private String createSearchQuery(String requestType, String status, String approvedBy) {
 		if(requestType == null) requestType = "";
 		String query = "select * from request where LOWER(request_type) LIKE '%"
-				+ requestType.toLowerCase() + "%'";
+				+ requestType.toLowerCase() + "%' and deleted = false";
 		if(status != null) {
 			query += " and status LIKE '%"+ status +"%'";
 		}

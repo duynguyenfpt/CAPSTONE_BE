@@ -1,16 +1,16 @@
 package com.web_service.services.impl;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.repository.support.PageableExecutionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import com.web_service.entity.mongo.JobLogEntity;
@@ -23,6 +23,10 @@ public class JobLogService implements IJobLogService{
 	@Autowired
 	private JobLogRepository jobLogRepository;
 	
+	@Autowired
+	private MongoTemplate mongoTemplate;
+
+	
 	@Override
 	public JobLogEntity save(JobLogEntity jobLogEntity) {
 		jobLogEntity = jobLogRepository.save(jobLogEntity);
@@ -30,15 +34,34 @@ public class JobLogService implements IJobLogService{
 	}
 
 	@Override
-	public List<JobLogEntity> findAll(Pageable pageable) {
-		List<JobLogEntity> entities = jobLogRepository.findAllByOrderByCreatedTimeDesc(pageable).getContent();
+	public List<JobLogEntity> findAll(String host, String port, String databaseName, String tableName,
+			String requestType, String status, Pageable pageable) {
+		Query query = new Query().with(pageable).with(new Sort(Sort.Direction.DESC, "create_time"));
 		
-		return entities;
+		final List<Criteria> criteria = createFilter(host, port, databaseName, tableName, requestType, status);		
+
+		if(!criteria.isEmpty()) {
+			query.addCriteria(new Criteria().andOperator(criteria.toArray(new Criteria[0])));
+		}
+		
+		return PageableExecutionUtils.getPage(mongoTemplate.find(query, JobLogEntity.class),
+				pageable,
+				() -> mongoTemplate.count(query.skip(0).limit(0), JobLogEntity.class)).getContent();		
 	}
 
 	@Override
-	public int totalItem() {
-		return (int) jobLogRepository.count();
+	public int totalItem(String host, String port, String databaseName, String tableName,
+			String requestType, String status) {
+		Query query = new Query();
+		final List<Criteria> criteria = createFilter(host, port, databaseName, tableName, requestType, status);
+		
+		if(!criteria.isEmpty()) {
+			query.addCriteria(new Criteria().andOperator(criteria.toArray(new Criteria[0])));
+		}
+		
+		int totalItem = mongoTemplate.find(query, JobLogEntity.class).size();
+		
+		return totalItem;
 	}
 
 	@Override
@@ -61,5 +84,35 @@ public class JobLogService implements IJobLogService{
 										  .max(Comparator.comparing(JobLogEntity::getCreatedTime)).get();
 		
 		return lastJobLog;
+	}
+	
+	private List<Criteria> createFilter(String host, String port, String databaseName, String tableName,
+			String requestType, String status){
+		final List<Criteria> criteria = new ArrayList<>();		
+		if(host != null) {
+			criteria.add(Criteria.where("host").regex(host, "i"));
+		}
+		
+		if(databaseName != null) {
+			criteria.add(Criteria.where("database_name").regex(databaseName, "i"));
+		}
+		
+		if(tableName != null) {
+			criteria.add(Criteria.where("table_name").regex(tableName, "i"));
+		}
+		
+		if(port != null) {
+			criteria.add(Criteria.where("port").regex(port, "i"));
+		}
+		
+		if(requestType != null) {
+			criteria.add(Criteria.where("request_type").regex(requestType, "i"));
+		}
+		
+		if(status != null) {
+			criteria.add(Criteria.where("status").regex(status, "i"));
+		}
+		
+		return criteria;
 	}
 }

@@ -10,8 +10,8 @@ public interface IServerInfoService {
 	ServerInfoDTO save(ServerInfoDTO serverInfoDTO);
 //	NewDTO update(NewDTO newDTO);
 	void delete(long id);
-	List<ServerInfoDTO> findAll(Pageable pageable);
+	List<ServerInfoDTO> findAll(String keyword, Pageable pageable);
 //	List<NewDTO> findAll();
-	int totalItem();
+	int totalItem(String keyword);
 	ServerInfoDTO getById(long id);
 }

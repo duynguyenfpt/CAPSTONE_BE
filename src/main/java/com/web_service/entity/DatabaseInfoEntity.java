@@ -38,7 +38,6 @@ public class DatabaseInfoEntity extends BaseEntity{
 	@Column(name = "database_type")
 	private String databaseType;
 	
-	@NotNull
 	@Column(name = "sid")
 	private String sid;
 	

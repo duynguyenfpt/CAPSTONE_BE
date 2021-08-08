@@ -9,8 +9,8 @@ import com.web_service.dto.JobDetailDTO;
 
 public interface IJobService {
 	JobDTO save(JobDTO jobDTO);
-	List<JobDTO> findAll(Pageable pageable);
-	int totalItem();
+	List<JobDTO> findAll(String keyword, Pageable pageable);
+	int totalItem(String keyword);
 	JobDTO getById(long id);
 	void delete(long id);
 	JobDetailDTO getJobDetail(long jobId);

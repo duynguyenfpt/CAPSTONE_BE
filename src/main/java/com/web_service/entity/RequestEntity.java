@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.SQLDelete;
@@ -32,6 +33,9 @@ public class RequestEntity extends BaseEntity {
 	@JsonManagedReference
 	@OneToMany(mappedBy = "request", cascade = CascadeType.ALL)
     private List<JobEntity> listJob;
+	
+	@OneToOne(cascade =  CascadeType.ALL,mappedBy = "request")
+    private ETLEntity etlEntity;
 	
 	@Column
 	private boolean deleted = Boolean.FALSE;

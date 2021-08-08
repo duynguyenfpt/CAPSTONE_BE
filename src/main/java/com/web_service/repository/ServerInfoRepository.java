@@ -5,24 +5,24 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.web_service.entity.AccountEntity;
 import com.web_service.entity.ServerInfoEntity;
 
 public interface ServerInfoRepository extends JpaRepository<ServerInfoEntity, Long> {
-	@Query(value = "select * from server_infors " +
+	@Query(value = "select * from server_infos " +
 	        "where (server_domain LIKE %?1% ) " +
 	        "or (server_host LIKE %?1% ) " +
-	        "and deleted = false" +
+	        "and deleted = false " +
 	        "ORDER BY id DESC \n#pageable\n" ,
-	        countQuery = "select * from server_infors " +
+	        countQuery = "select * from server_infos " +
 	    	        "where (server_domain LIKE %?1% ) " +
 	    	        "or (server_host LIKE %?1% ) " +
+	    	        "and deleted = false " +
 	    	        "ORDER BY id DESC \n#pageable\n" ,
 	        nativeQuery = true
 	)
-    Page<AccountEntity> getAllServerInfo(String keyword, Pageable pageable);
+    Page<ServerInfoEntity> getAllServerInfo(String keyword, Pageable pageable);
 	
-	@Query(value = "select count(*) from server_infors " +
+	@Query(value = "select count(*) from server_infos " +
 	        "where (server_domain LIKE %?1% ) " +
 	        "or (server_host LIKE %?1% ) " +
 	        "and deleted = false",

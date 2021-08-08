@@ -3,9 +3,11 @@ package com.web_service.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -57,7 +59,10 @@ public class AccountEntity extends BaseEntity {
 	@JsonManagedReference
 	@OneToMany(mappedBy = "account")
 	private List<AccountRightEntity> accountRights = new ArrayList<>();
-	
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "accounts")
+	private List<ETLEntity> etlRequest;
+
 	public String getUsername() {
 		return username;
 	}
@@ -128,5 +133,13 @@ public class AccountEntity extends BaseEntity {
 
 	public void setActive(Boolean active) {
 		this.active = active;
+	}
+
+	public List<ETLEntity> getEtlRequest() {
+		return etlRequest;
+	}
+
+	public void setEtlRequest(List<ETLEntity> etlRequest) {
+		this.etlRequest = etlRequest;
 	}
 }
