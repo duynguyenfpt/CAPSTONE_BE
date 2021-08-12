@@ -6,6 +6,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -15,7 +17,11 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "etl_request")
-public class ETLEntity extends BaseEntity{
+public class ETLEntity{
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
 	@OneToOne(optional = false)
     @JoinColumn(name = "request_type_id", nullable = false)
 	private RequestEntity request;
@@ -26,13 +32,30 @@ public class ETLEntity extends BaseEntity{
 	@Column(name="query")
 	private String query;
 	
-	@Column(name="result_status")
-	private Boolean resultStatus = false;
-
+	@Column(name="result_path")
+	private String resultPath;
+	
+	@Column(name="total_rows")
+	private int totalRows;
+	
+	@Column(name="status")
+	private String status = "processing";
+	
+	@Column(name="message_fail")
+	private String messageFail;
+	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinTable(name = "share_etl_requests", joinColumns = {
 			@JoinColumn(name = "etl_request_id") }, inverseJoinColumns = { @JoinColumn(name = "account_id") })
 	private List<AccountEntity> accounts;
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public String getQueryType() {
 		return queryType;
@@ -50,14 +73,6 @@ public class ETLEntity extends BaseEntity{
 		this.query = query;
 	}
 
-	public Boolean getResultStatus() {
-		return resultStatus;
-	}
-
-	public void setResultStatus(Boolean resultStatus) {
-		this.resultStatus = resultStatus;
-	}
-
 	public RequestEntity getRequest() {
 		return request;
 	}
@@ -72,5 +87,37 @@ public class ETLEntity extends BaseEntity{
 
 	public void setAccounts(List<AccountEntity> accounts) {
 		this.accounts = accounts;
+	}
+
+	public String getResultPath() {
+		return resultPath;
+	}
+
+	public void setResultPath(String resultPath) {
+		this.resultPath = resultPath;
+	}
+
+	public int getTotalRows() {
+		return totalRows;
+	}
+
+	public void setTotalRows(int totalRows) {
+		this.totalRows = totalRows;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getMessageFail() {
+		return messageFail;
+	}
+
+	public void setMessageFail(String messageFail) {
+		this.messageFail = messageFail;
 	}
 }

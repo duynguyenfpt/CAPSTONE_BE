@@ -3,6 +3,7 @@ package com.web_service.services.impl;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.SQLNonTransientConnectionException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -42,7 +43,12 @@ public class DatabaseInfoService implements IDatabaseInfoService {
 			DatabaseInfoEntity oldDatabaseInfoEntity = databaseInfoRepository.findOne(databaseInfoDTO.getId());
 			databaseInfoEntity = databaseInfoConverter.toEntity(databaseInfoDTO, oldDatabaseInfoEntity);
 		} else {
-			databaseInfoEntity = databaseInfoConverter.toEntity(databaseInfoDTO);
+			boolean trackingConnection = trackingConnection(databaseInfoDTO);
+			if(trackingConnection) {
+				databaseInfoEntity = databaseInfoConverter.toEntity(databaseInfoDTO);
+			}else {
+				return null;
+			}
 		}
 		
 		ServerInfoEntity serverInfoEntity = serverInfoRepository.findOne(databaseInfoDTO.getServerInforId());
@@ -98,8 +104,9 @@ public class DatabaseInfoService implements IDatabaseInfoService {
 		String HOST = serverInfoEntity.getServerHost();
 		String PORT = databaseInfoDTO.getPort();
 		String DATABASENAME = databaseInfoDTO.getDatabaseName();
+		String SID = databaseInfoDTO.getSid();
 		String URL = "";
-		Connection conn;
+		Connection conn = null;
 		boolean trackingConnection;
 		try {
 			switch (databaseInfoDTO.getDatabaseType()) {
@@ -113,24 +120,24 @@ public class DatabaseInfoService implements IDatabaseInfoService {
 				conn = DriverManager.getConnection(URL, USER, PASS);
 
 				break;
-			case "sql":
-				URL = "jdbc:sqlserver://" + HOST + ":" + PORT + ";databaseName=" + DATABASENAME
-						+ ";integratedSecurity=true";
-				conn = DriverManager.getConnection(URL, USER, PASS);
-
-				break;
 			case "oracle":
-				URL = "jdbc:oracal:thin:" + USER + "/" + PASS + "@" + HOST + ":" + PORT + ":" + DATABASENAME;
-				conn = DriverManager.getConnection(URL);
+				Class.forName("oracle.jdbc.driver.OracleDriver");
+	            conn = DriverManager.getConnection(String.format("jdbc:oracle:thin:%s/%s@%s:%s:%s", USER, PASS, HOST, PORT, SID));
 
 				break;
 			default:
 				trackingConnection = false;
 			}
-			conn = DriverManager.getConnection(URL, USER, PASS);
-			trackingConnection = true;
+			
+			if(conn == null) {
+				trackingConnection = false;
+			}else {
+				trackingConnection = true;
+			}
 			conn.close();
-		} catch (SQLException e) {
+		} catch (SQLException | ClassNotFoundException e) {
+			trackingConnection = false;
+		} catch (Exception e) {
 			trackingConnection = false;
 		}
 		

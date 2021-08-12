@@ -15,6 +15,7 @@ public class DatabaseInfoConverter {
 		entity.setDatabaseType(dto.getDatabaseType());
 		entity.setDatabaseName(dto.getDatabaseName());
 		entity.setSid(dto.getSid());
+		entity.setAlias(dto.getAlias());
 		return entity;
 	}
 	
@@ -32,6 +33,7 @@ public class DatabaseInfoConverter {
 		dto.setTables(entity.getTables());
 		dto.setServerInfor(serverInfoConverter.toDTODefault(entity.getServerInfo()));
 		dto.setSid(entity.getSid());
+		dto.setAlias(entity.getAlias());
 		dto.setCreatedDate(entity.getCreatedDate());
 		dto.setCreatedBy(entity.getCreatedBy());
 		dto.setModifiedDate(entity.getModifiedDate());
@@ -58,6 +60,7 @@ public class DatabaseInfoConverter {
 		entity.setSid(dto.getSid());
 		entity.setDatabaseType(dto.getDatabaseType());
 		entity.setDatabaseName(dto.getDatabaseName());
+		entity.setAlias(dto.getAlias());
 		return entity;
 	}
 }

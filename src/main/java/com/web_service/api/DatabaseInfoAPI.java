@@ -59,7 +59,7 @@ public class DatabaseInfoAPI {
 	public ResponseEntity<ObjectOuput<DatabaseInfoDTO>> showDatabaseInfo(@PathVariable("id") long id) {
 		ObjectOuput<DatabaseInfoDTO> result = new ObjectOuput<DatabaseInfoDTO>();
 		try{
-			DatabaseInfoDTO databaseInfoDTO =  databaseInfoService.getById(id);
+			DatabaseInfoDTO databaseInfoDTO = databaseInfoService.getById(id);
 			result.setData(databaseInfoDTO);
 			result.setCode("200");
 			return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.OK);
@@ -79,11 +79,21 @@ public class DatabaseInfoAPI {
 	public ResponseEntity<ObjectOuput<DatabaseInfoDTO>> createDatabaseInfo(@RequestBody DatabaseInfoDTO model) {
 		ObjectOuput<DatabaseInfoDTO> result = new ObjectOuput<DatabaseInfoDTO>();
 		try {
-			result.setData(databaseInfoService.save(model));
-			result.setMessage("Create database info successfully");
-			result.setCode("201");
+			DatabaseInfoDTO databaseInfoDTO = databaseInfoService.save(model);
+			if(databaseInfoDTO != null) {
+				result.setData(databaseInfoDTO);
+				result.setMessage("Create database info successfully");
+				result.setCode("201");
+				
+				return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.CREATED);
+			} else {
+				result.setData(databaseInfoDTO);
+				result.setMessage("Database not exist");
+				result.setCode("400");
+				
+				return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.BAD_REQUEST);
+			}
 			
-			return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.CREATED);
 		}catch (Exception e) {
 			result.setCode("500");
 			result.setMessage("Can not create database info");

@@ -1,5 +1,7 @@
 package com.web_service.dto;
 
+import javax.persistence.Column;
+
 public class ETLRequestDTO extends AbstractDTO<ETLRequestDTO>{
 	private String query;
 	
@@ -10,6 +12,12 @@ public class ETLRequestDTO extends AbstractDTO<ETLRequestDTO>{
 	private Long requestId;
 	
 	private RequestDTO request;
+	
+	private int maxRetries;
+	
+	private int numberRetries;
+		
+	private String status;
 
 	public String getQuery() {
 		return query;
@@ -49,5 +57,29 @@ public class ETLRequestDTO extends AbstractDTO<ETLRequestDTO>{
 
 	public void setRequest(RequestDTO request) {
 		this.request = request;
+	}
+
+	public int getMaxRetries() {
+		return maxRetries;
+	}
+
+	public void setMaxRetries(int maxRetries) {
+		this.maxRetries = maxRetries;
+	}
+
+	public int getNumberRetries() {
+		return numberRetries;
+	}
+
+	public void setNumberRetries(int numberRetries) {
+		this.numberRetries = numberRetries;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 }

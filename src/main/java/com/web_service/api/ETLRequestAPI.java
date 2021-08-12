@@ -1,13 +1,27 @@
 package com.web_service.api;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,9 +36,10 @@ import com.web_service.api.output.ListObjOutput;
 import com.web_service.api.output.ObjectOuput;
 import com.web_service.api.output.PagingOutput;
 import com.web_service.dto.AccountDTO;
+import com.web_service.dto.ContentETLRequestDTO;
 import com.web_service.dto.ETLRequestDTO;
 import com.web_service.dto.ShareETLRequestDTO;
-import com.web_service.entity.ETLEntity;
+import com.web_service.repository.ETLRequestRepository;
 import com.web_service.services.IAccountService;
 import com.web_service.services.IETLService;
 
@@ -37,7 +52,10 @@ public class ETLRequestAPI {
 	@Autowired
 	private IAccountService accountService;
 	
-	@GetMapping(value = "/api/elt_requests")
+	@Autowired
+	private ETLRequestRepository ETLRequestRepository;
+	
+	@GetMapping(value = "/api/etl_requests")
 	public ResponseEntity<ListObjOutput<ETLRequestDTO>> showETLRequests(@RequestParam("page") int page,
 								@RequestParam("limit") int limit) {
 		
@@ -81,34 +99,26 @@ public class ETLRequestAPI {
 	}
 	
 	@GetMapping(value = "/api/request/{request_id}/etl_requests")
-	public ResponseEntity<ObjectOuput<String>> showJob(@PathVariable("request_id") Long requestId) {
-		ObjectOuput<String> result = new ObjectOuput<String>();
+	public ResponseEntity<ObjectOuput<ContentETLRequestDTO>> showJob(@PathVariable("request_id") Long requestId) {
+		ObjectOuput<ContentETLRequestDTO> result = new ObjectOuput<ContentETLRequestDTO>();
 
 		try {
-			String content =  etlService.getResult(requestId);
-			if(content != "") {
-				result.setMessage("Excute query successfully");
-				result.setData(content);
-				result.setCode("200");
+			ContentETLRequestDTO contentETLRequestDTO = etlService.getResult(requestId);
+			result.setData(contentETLRequestDTO);
+			result.setMessage("Get data successfully");
+			result.setCode("200");
 				
-				return new ResponseEntity<ObjectOuput<String>>(result, HttpStatus.OK);
-			}else {
-				result.setMessage("Executing query ...");
-				result.setData(content);
-				result.setCode("200");
-				
-				return new ResponseEntity<ObjectOuput<String>>(result, HttpStatus.OK);
-			}
+			return new ResponseEntity<ObjectOuput<ContentETLRequestDTO>>(result, HttpStatus.OK);
 		}catch (NullPointerException e) {
 			result.setMessage("Not found record");
 			result.setCode("404");
 			
-			return new ResponseEntity<ObjectOuput<String>>(result, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<ObjectOuput<ContentETLRequestDTO>>(result, HttpStatus.NOT_FOUND);
 		}catch (Exception e) {
 			result.setMessage("Can not get data");
 			result.setCode("500");
 			
-			return new ResponseEntity<ObjectOuput<String>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<ObjectOuput<ContentETLRequestDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
 		}	
 	}
 	
@@ -223,6 +233,37 @@ public class ETLRequestAPI {
 			result.setMessage("Can not get data");
 			
 			return new ResponseEntity<ListObjOutput<ETLRequestDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping(value = "/api/requests/{request_id}/etl_request/dowload_csv")
+	public ResponseEntity<Object> downloadCSV(@PathVariable("request_id") Long requestId) throws IOException {
+		HttpHeaders responseHeader = new HttpHeaders();
+		try {
+			boolean isSuccess =  etlService.downloadCSV(requestId);
+			if(isSuccess) {
+				String fileName = "/home/public/data.txt";
+				File file = new File(fileName);
+				InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+//				byte[] data = FileUtils.readFileToByteArray(file);
+				responseHeader.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+				// Thiết lập thông tin trả về
+				responseHeader.set("Content-disposition", "attachment; filename=" + file.getName());
+				responseHeader.setContentLength(file.length());
+				responseHeader.setContentType(MediaType.parseMediaType("application/txt"));
+				responseHeader.setPragma("no-cache");
+				responseHeader.setExpires(0);
+//				InputStream inputStream = new BufferedInputStream(new ByteArrayInputStream(data));
+//				InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+				ResponseEntity<Object> responseEntity = ResponseEntity.ok().headers(responseHeader).body(resource);
+				return responseEntity;
+			}else {
+				ResponseEntity<Object> responseEntity = ResponseEntity.ok().headers(responseHeader).body(null);
+				return responseEntity;
+			}
+		}catch (Exception e) {
+			ResponseEntity<Object> responseEntity = ResponseEntity.ok().headers(responseHeader).body(null);
+			return responseEntity;
 		}
 	}
 }

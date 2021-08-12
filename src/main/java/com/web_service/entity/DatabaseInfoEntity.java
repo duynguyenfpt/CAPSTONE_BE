@@ -41,6 +41,10 @@ public class DatabaseInfoEntity extends BaseEntity{
 	@Column(name = "sid")
 	private String sid;
 	
+	@NotNull
+	@Column(name = "alias")
+	private String alias;
+	
 	@Column
 	private boolean deleted = Boolean.FALSE;
 	
@@ -123,5 +127,13 @@ public class DatabaseInfoEntity extends BaseEntity{
 
 	public void setSid(String sid) {
 		this.sid = sid;
+	}
+
+	public String getAlias() {
+		return alias;
+	}
+
+	public void setAlias(String alias) {
+		this.alias = alias;
 	}
 }
