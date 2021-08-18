@@ -95,7 +95,7 @@ public class ETLService implements IETLService{
 			
 			RequestEntity requestEntity = new RequestEntity();
 			requestEntity.setRequestType("ETLRequest");
-			requestEntity =  requestRepository.save(requestEntity);
+			requestEntity = requestRepository.save(requestEntity);
 			
 			JobEntity jobEntity = new JobEntity();
 			jobEntity.setMaxRetries(MAX_RETRIES);
