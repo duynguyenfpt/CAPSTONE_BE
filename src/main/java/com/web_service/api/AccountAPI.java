@@ -6,6 +6,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -244,6 +246,29 @@ public class AccountAPI {
 			return new ResponseEntity<ObjectOuput<AccountDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	@GetMapping(value = "/api/accounts/forgot_password")
+	public ResponseEntity<ObjectOuput<String>> forgotPassword(@RequestParam("username") String username) {
+		ObjectOuput<String> result = new ObjectOuput<String>();
+//		try{
+			accountService.forgotPassword(username);
+			result.setData("Success");
+			result.setCode("200");
+			
+			return new ResponseEntity<ObjectOuput<String>>(result, HttpStatus.OK);
+//		}catch (NullPointerException e) {
+//			result.setMessage("Not found user");
+//			result.setCode("404");
+//			
+//			return new ResponseEntity<ObjectOuput<String>>(result, HttpStatus.NOT_FOUND);
+//		}catch (Exception e) {
+//			result.setCode("500");
+//			result.setMessage("Can not send email");
+//			
+//			return new ResponseEntity<ObjectOuput<String>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+//		}
+	}
+	
 	private void authenticate(String username, String password) throws Exception {
 		try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));

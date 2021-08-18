@@ -93,9 +93,10 @@ public class RightService implements IRightService{
 	
 	private String createSearchQuery(String keyword) {
 		if(keyword == null) keyword = "";
-		String query = "select * from rights where LOWER(right_name) LIKE '%"
+		String query = "select * from rights where (LOWER(right_name) LIKE '%"
 					   + keyword.toLowerCase() + "%'"
-					   + " or code LIKE '%" + keyword +"%'";
+					   + " or code LIKE '%" + keyword +"%')"
+					   + " and deleted = false";
 		return query;
 	}
 

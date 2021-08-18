@@ -70,9 +70,10 @@ public class ColumnService implements IColumnService{
 				e.printStackTrace();
 			}
 		}else if (databaseType.equals("oracal")) {
-			Connection connection = getConnectionOracle(getConnectionOracleString(serverInfoEntity.getServerHost(),
-					databaseInfoEntity.getPort(), databaseInfoEntity.getSid()),
-					databaseInfoEntity.getUsername() , databaseInfoEntity.getPassword());
+			
+			Connection connection = getConnectionOracle(getConnectionOracleString(databaseInfoEntity.getUsername(),
+					databaseInfoEntity.getPassword(), serverInfoEntity.getServerHost(),
+					databaseInfoEntity.getPort(), databaseInfoEntity.getSid()));
 			
 			try {
 				Statement statement = connection.createStatement();
@@ -105,10 +106,10 @@ public class ColumnService implements IColumnService{
 				host, port, db, userName, password);
 	}
 	
-	public static String getConnectionOracleString(String host, String port, String sid) {
+	public static String getConnectionOracleString(String host, String port, String username,
+			String password, String sid) {
 		return String.format(
-				"jdbc:oracle:thin:@%s:%s/%s",
-				host, port, sid);
+				"jdbc:oracle:thin:%s/%s@%s:%s:%s", username, password, host, port, sid);
 	}
 	
 //	public static Connection getConnectionOracle(String username, String password, String host, String port, String SID) {
@@ -147,12 +148,12 @@ public class ColumnService implements IColumnService{
 	    return conn;
 	}
 	
-	public static Connection getConnectionOracle(String dbURL, String username, String password) {
+	public static Connection getConnectionOracle(String dbURL) {
 		Connection conn = null;
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
-			conn = DriverManager.getConnection(dbURL, username, password);
+			conn = DriverManager.getConnection(dbURL);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

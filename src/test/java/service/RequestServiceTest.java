@@ -1,23 +1,6 @@
-//package api;
+//package service;
 //
-//import static org.junit.Assert.assertEquals;
-//import static org.junit.Assert.assertTrue;
-//
-//import org.junit.Before;
-//import org.junit.Test;
-//import org.springframework.http.MediaType;
-//import org.springframework.test.web.servlet.MvcResult;
-//import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-//
-//import com.web_service.dto.RequestDTO;
-//
-//public class RequestAPITest extends AbstractTest{
-//	@Override
-//	@Before
-//	public void setUp() {
-//		super.setUp();
-//	}
-//	
+//public class RequestServiceTest{
 //	@Test
 //	public void getRequests() throws Exception {
 //		int page = 1;

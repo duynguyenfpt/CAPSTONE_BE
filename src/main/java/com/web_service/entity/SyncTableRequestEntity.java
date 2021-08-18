@@ -5,6 +5,9 @@ import java.sql.Time;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -17,7 +20,11 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "sync_table_requests")
-public class SyncTableRequestEntity extends BaseEntity{
+public class SyncTableRequestEntity {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
 	@Column(name = "is_all")
 	private boolean isAll;
 	
@@ -27,14 +34,17 @@ public class SyncTableRequestEntity extends BaseEntity{
 	@Column(name = "to_date")
 	private Date toDate;
 	
-	@Column(name = "time_request")
-	private Time timeRequest;
-	
 	@Column(name = "partition_by")
 	private String partitionBy;
 	
 	@Column(name = "identity_id")
 	private String identityId;
+	
+	@Column(name = "message")
+	private String message;
+	
+	@Column(name = "is_process")
+	private Boolean isProcess;
 	
 	@JsonBackReference
 	@ManyToOne
@@ -70,14 +80,6 @@ public class SyncTableRequestEntity extends BaseEntity{
 		this.toDate = toDate;
 	}
 
-	public Time getTimeRequest() {
-		return timeRequest;
-	}
-
-	public void setTimeRequest(Time timeRequest) {
-		this.timeRequest = timeRequest;
-	}
-
 	public TableEntity getTableInfo() {
 		return tableInfo;
 	}
@@ -110,6 +112,32 @@ public class SyncTableRequestEntity extends BaseEntity{
 	public void setPartitionBy(String partitionBy) {
 		this.partitionBy = partitionBy;
 	}
-	
-	
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public void setAll(boolean isAll) {
+		this.isAll = isAll;
+	}
+
+	public Boolean getIsProcess() {
+		return isProcess;
+	}
+
+	public void setIsProcess(Boolean isProcess) {
+		this.isProcess = isProcess;
+	}
 }

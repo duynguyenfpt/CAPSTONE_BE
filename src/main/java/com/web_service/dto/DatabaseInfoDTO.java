@@ -25,6 +25,8 @@ public class DatabaseInfoDTO extends AbstractDTO<DatabaseInfoDTO> {
 	private ServerInfoDTO serverInfor;
 	
 	private String sid;
+	
+	private String alias;
 
 	public String getPort() {
 		return port;
@@ -104,5 +106,13 @@ public class DatabaseInfoDTO extends AbstractDTO<DatabaseInfoDTO> {
 
 	public void setSid(String sid) {
 		this.sid = sid;
+	}
+
+	public String getAlias() {
+		return alias;
+	}
+
+	public void setAlias(String alias) {
+		this.alias = alias;
 	}
 }

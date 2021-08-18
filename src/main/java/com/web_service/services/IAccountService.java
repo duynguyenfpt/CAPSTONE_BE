@@ -16,4 +16,5 @@ public interface IAccountService {
 	void resetPassword(long id);
 	AccountDTO findByUserName(String username);
 	void createAccountWithRights(AccountRightDTO accountRightDTO);
+	void forgotPassword(String username);
 }

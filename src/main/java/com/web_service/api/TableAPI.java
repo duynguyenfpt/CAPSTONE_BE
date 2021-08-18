@@ -36,21 +36,22 @@ public class TableAPI {
 		if (keyword == null || keyword.isEmpty()) keyword = "";
 		keyword = keyword.toLowerCase();
 		
-//		try {
+		try {
 			Pageable pageable = new PageRequest(page - 1, limit);
 			result.setData(tableService.findAll(keyword, pageable));
 			int totalPage = (int) Math.ceil((double) (tableService.totalItem(keyword)) / limit);
 			int totalItem = tableService.totalItem(keyword);
 			result.setMetaData(new PagingOutput(totalPage, totalItem));
 			result.setCode("200");
+			result.setMessage("Get tables successfully");
 			
 			return new ResponseEntity<ListObjOutput<TableDTO>>(result, HttpStatus.OK);
-//		}catch (Exception e) {
-//			result.setMessage("Can not get data");
-//			result.setCode("500");
-//			
-//			return new ResponseEntity<ListObjOutput<TableDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
-//		}
+		}catch (Exception e) {
+			result.setMessage("Can not get data");
+			result.setCode("500");
+			
+			return new ResponseEntity<ListObjOutput<TableDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		
 	}
 	

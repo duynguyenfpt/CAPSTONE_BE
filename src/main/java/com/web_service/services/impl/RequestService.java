@@ -123,7 +123,6 @@ public class RequestService implements IRequestService {
 		syncTableRequestEntity.setIsAll(requestDTO.isAll());
 		syncTableRequestEntity.setFromDate(requestDTO.getFromDate());
 		syncTableRequestEntity.setToDate(requestDTO.getToDate());
-		syncTableRequestEntity.setTimeRequest(requestDTO.getTimeRequest());
 		syncTableRequestEntity.setRequest(requestEntity);
 		syncTableRequestEntity.setTableInfo(tableEntity);
 		syncTableRequestEntity.setIdentityId(requestDTO.getIdentityId());

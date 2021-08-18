@@ -12,7 +12,6 @@ public class SyncTableConverter {
 		entity.setIsAll(dto.isAll());
 		entity.setFromDate(dto.getFromDate());
 		entity.setToDate(dto.getToDate());
-		entity.setTimeRequest(dto.getTimeRequest());
 		entity.setPartitionBy(dto.getPartitionBy());
 		entity.setIdentityId(dto.getIdentityId());
 		
@@ -25,9 +24,9 @@ public class SyncTableConverter {
 		dto.setIsAll(entity.isAll());
 		dto.setFromDate(entity.getFromDate());
 		dto.setToDate(entity.getToDate());
-		dto.setTimeRequest(entity.getTimeRequest());
 		dto.setPartitionBy(entity.getPartitionBy());
 		dto.setIdentityId(entity.getIdentityId());
+		dto.setIsProcess(entity.getIsProcess());
 		
 		return dto;
 	}
@@ -40,20 +39,15 @@ public class SyncTableConverter {
 		dto.setIsAll(entity.isAll());
 		dto.setFromDate(entity.getFromDate());
 		dto.setToDate(entity.getToDate());
-		dto.setTimeRequest(entity.getTimeRequest());
 		dto.setPartitionBy(entity.getPartitionBy());
 		dto.setIdentityId(entity.getIdentityId());
-		dto.setCreatedDate(entity.getCreatedDate());
-		dto.setCreatedBy(entity.getCreatedBy());
-		dto.setModifiedDate(entity.getModifiedDate());
-		dto.setModifiedBy(entity.getModifiedBy());
+		dto.setMessage(entity.getMessage());
 		return dto;
 	}
 	public SyncTableRequestEntity toEntity(SyncTableRequestDTO dto, SyncTableRequestEntity entity) {
 		dto.setIsAll(entity.isAll());
 		dto.setFromDate(entity.getFromDate());
 		dto.setToDate(entity.getToDate());
-		dto.setTimeRequest(entity.getTimeRequest());
 		dto.setPartitionBy(entity.getPartitionBy());
 		dto.setIdentityId(entity.getIdentityId());
 		

@@ -1,5 +1,6 @@
 package com.web_service.services.impl;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +8,8 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -37,8 +40,10 @@ public class AccountService implements IAccountService {
 	
 	@Autowired
 	RightRepository rightRepository;
-
 	
+	@Autowired
+	JavaMailSender emailSender;
+
 	String PASSWORD_DEFAULT = "123456";
 	
 	@Override
@@ -122,4 +127,52 @@ public class AccountService implements IAccountService {
 			}
 		}
 	}
+
+	@Transactional
+	@Override
+	public void forgotPassword(String username) {
+		SimpleMailMessage message = new SimpleMailMessage();
+		
+		AccountEntity accountEntity = accountRepository.findByUsername(username);
+		String newPassword = generateRandomPassword(6);
+		accountEntity.setPassword(bcryptEncoder.encode(newPassword));
+		accountRepository.save(accountEntity);
+		
+        message.setTo(accountEntity.getEmail());
+        message.setSubject("Change your password");
+        message.setText(createMessage(username, newPassword));
+         
+        emailSender.send(message);		
+	}
+	
+	private String createMessage(String username, String password) {
+		String message = "";
+		message += "Hello, " + username + ".\n";
+		message += "The password of " + username + ": " + password;
+		message += "\n\nThank you";
+		message += "\n-------------";
+		message += "\nThis message is sent from warning system. Please do not reply to this message.";
+		
+		return message;
+	}
+	
+	public static String generateRandomPassword(int len)
+    {
+        // ASCII range – alphanumeric (0-9, a-z, A-Z)
+        final String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+ 
+        SecureRandom random = new SecureRandom();
+        StringBuilder sb = new StringBuilder();
+ 
+        // each iteration of the loop randomly chooses a character from the given
+        // ASCII range and appends it to the `StringBuilder` instance
+ 
+        for (int i = 0; i < len; i++)
+        {
+            int randomIndex = random.nextInt(chars.length());
+            sb.append(chars.charAt(randomIndex));
+        }
+ 
+        return sb.toString();
+    }
 }
