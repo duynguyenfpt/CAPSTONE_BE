@@ -14,7 +14,7 @@ public interface TableRepository extends JpaRepository<TableEntity, Long> {
 	Page<TableEntity> findByDatabaseInfo(DatabaseInfoEntity databaseInfoEntity, Pageable pageable);
 	
 	@Query(value = "select * from tables where LOWER(table_name) LIKE %?1% AND deleted = false ORDER BY id DESC \n#pageable\n",
-			countQuery = "select * from tables where LOWER(table_name) LIKE %?1% ORDER BY id DESC \n#pageable\n" ,
+			countQuery = "select * from tables where LOWER(table_name) LIKE %?1% AND deleted = false ORDER BY id DESC \n#pageable\n" ,
 	        nativeQuery = true
 	)
     Page<TableEntity> search(String keyword, Pageable pageable);

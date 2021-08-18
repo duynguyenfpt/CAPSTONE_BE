@@ -1,17 +1,11 @@
 package com.web_service.api;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +15,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,7 +32,6 @@ import com.web_service.dto.AccountDTO;
 import com.web_service.dto.ContentETLRequestDTO;
 import com.web_service.dto.ETLRequestDTO;
 import com.web_service.dto.ShareETLRequestDTO;
-import com.web_service.repository.ETLRequestRepository;
 import com.web_service.services.IAccountService;
 import com.web_service.services.IETLService;
 
@@ -51,9 +43,6 @@ public class ETLRequestAPI {
 	
 	@Autowired
 	private IAccountService accountService;
-	
-	@Autowired
-	private ETLRequestRepository ETLRequestRepository;
 	
 	@GetMapping(value = "/api/etl_requests")
 	public ResponseEntity<ListObjOutput<ETLRequestDTO>> showETLRequests(@RequestParam("page") int page,

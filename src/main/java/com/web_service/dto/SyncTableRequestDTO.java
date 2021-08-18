@@ -18,7 +18,9 @@ public class SyncTableRequestDTO extends AbstractDTO<SyncTableRequestDTO> {
 	
 	private String identityId;
 	
-
+	private String message;
+	
+	private Boolean isProcess;
 
 	public long getTableId() {
 		return tableId;
@@ -74,5 +76,21 @@ public class SyncTableRequestDTO extends AbstractDTO<SyncTableRequestDTO> {
 
 	public void setIdentityId(String identityId) {
 		this.identityId = identityId;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public Boolean getIsProcess() {
+		return isProcess;
+	}
+
+	public void setIsProcess(Boolean isProcess) {
+		this.isProcess = isProcess;
 	}
 }

@@ -52,7 +52,6 @@ public class DatabaseInfoAPI {
 			
 			return new ResponseEntity<ListObjOutput<DatabaseInfoDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
 	}
 	
 	@GetMapping(value = "/api/database_infors/{id}")
@@ -88,7 +87,7 @@ public class DatabaseInfoAPI {
 				return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.CREATED);
 			} else {
 				result.setData(databaseInfoDTO);
-				result.setMessage("Database not exist");
+				result.setMessage("Database not exist`aaaq");
 				result.setCode("400");
 				
 				return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.BAD_REQUEST);
@@ -108,6 +107,7 @@ public class DatabaseInfoAPI {
 			model.setId(id);
 			databaseInfoService.save(model);
 			result.setCode("200");
+			result.setMessage("Update database info successfully");
 			
 			return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.OK);
 		}catch (NullPointerException e) {
