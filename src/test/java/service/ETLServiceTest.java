@@ -20,10 +20,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import com.web_service.converter.ETLRequestConverter;
+import com.web_service.dto.DatabaseInfoDTO;
 import com.web_service.dto.ETLRequestDTO;
+import com.web_service.dto.ShareETLRequestDTO;
+import com.web_service.entity.AccountEntity;
 import com.web_service.entity.ETLEntity;
 import com.web_service.entity.JobEntity;
 import com.web_service.entity.RequestEntity;
+import com.web_service.repository.AccountRepository;
 import com.web_service.repository.ETLRequestRepository;
 import com.web_service.repository.JobRepository;
 import com.web_service.repository.RequestRepository;
@@ -46,6 +50,9 @@ public class ETLServiceTest {
 	@Mock
     private static JobRepository jobRepository;
 	
+	@Mock
+	private static AccountRepository accountRepository;
+	
 	private ETLEntity etlEntity;
 	
 	private ETLRequestDTO etlRequestDTO;
@@ -53,6 +60,10 @@ public class ETLServiceTest {
 	private RequestEntity requestEntity;
 	
 	private JobEntity jobEntity;
+	
+	private ShareETLRequestDTO shareETLRequestDTO;
+	
+	private AccountEntity accountEntity;
 		
 	@Before
     public void setup() {
@@ -68,6 +79,7 @@ public class ETLServiceTest {
 		etlRequestDTO.setQuery("select * from tables");
 		etlRequestDTO.setQueryType("sql");
 		etlRequestDTO.setStatus("pending");
+		etlRequestDTO.setRequestId(1L);
 		
 		requestEntity = new RequestEntity();
 		requestEntity.setId(1L);
@@ -78,6 +90,17 @@ public class ETLServiceTest {
 		jobEntity.setId(1L);
 		jobEntity.setActive(false);
 		jobEntity.setStatus("pending");
+		
+		Long[] accountIds = {1L};
+		shareETLRequestDTO = new ShareETLRequestDTO();
+		shareETLRequestDTO.setRequestId(1L);
+		shareETLRequestDTO.setAccountIds(accountIds);
+		
+		accountEntity = new AccountEntity();
+		accountEntity.setActive(true);
+		accountEntity.setEmail("longvthe130282@fpt.edu.vn");
+		accountEntity.setUsername("longvt");
+		accountEntity.setId(1L);
     }
 	
 	@Test
@@ -162,5 +185,25 @@ public class ETLServiceTest {
         Mockito.when(etlRequestRepository.findAll(pageable)).thenReturn(etlRequestPage);
         Page<ETLEntity> etlEntities = etlRequestRepository.findAll(pageable);
         assertEquals(etlEntities.getNumberOfElements(), 1);
+	}
+	
+	@Test
+	public void getETLRequestById() {
+		Long id = new Long(1);
+		etlRequestDTO.setId(id);
+		Mockito.when(etlRequestRepository.findOne(id)).thenReturn(etlEntity);
+		
+		Mockito.when(etlRequestConverter.toDTO(etlEntity)).thenReturn(etlRequestDTO);
+		
+		ETLRequestDTO result = etlService.getById(id);
+		
+		assertTrue(result.getId() == 1);
+	}
+	
+	@Test
+	public void shareETLRequest() {
+		Mockito.when(etlRequestRepository.findOne(1L)).thenReturn(etlEntity);
+		
+		Mockito.when(accountRepository.findOne(1L)).thenReturn(accountEntity);
 	}
 }
