@@ -6,12 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.web_service.dto.ColumnDTO;
 import com.web_service.entity.DatabaseInfoEntity;
 import com.web_service.entity.ServerInfoEntity;
 import com.web_service.entity.TableEntity;
@@ -47,6 +45,8 @@ public class ColumnService implements IColumnService{
 				while (rs.next()) {
 					result.add(rs.getString("Field"));
 				}
+				
+				connection.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -65,6 +65,8 @@ public class ColumnService implements IColumnService{
 				while (rs.next()) {
 					result.add(rs.getString("column_name"));
 				}
+				
+				connection.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -83,6 +85,8 @@ public class ColumnService implements IColumnService{
 				while (rs.next()) {
 					result.add(rs.getString("COLUMN_NAME"));
 				}
+				
+				connection.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
