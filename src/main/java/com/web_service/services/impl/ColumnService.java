@@ -47,6 +47,8 @@ public class ColumnService implements IColumnService{
 				while (rs.next()) {
 					result.add(rs.getString("Field"));
 				}
+				
+				connection.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -65,6 +67,8 @@ public class ColumnService implements IColumnService{
 				while (rs.next()) {
 					result.add(rs.getString("column_name"));
 				}
+				
+				connection.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -83,6 +87,8 @@ public class ColumnService implements IColumnService{
 				while (rs.next()) {
 					result.add(rs.getString("COLUMN_NAME"));
 				}
+				
+				connection.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

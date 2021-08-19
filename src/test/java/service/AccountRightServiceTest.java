@@ -53,8 +53,8 @@ public class AccountRightServiceTest {
 		
 		rightEntity = new RightEntity();
 		rightEntity.setId(id);
-		rightEntity.setRightName("View db");
-		rightEntity.setCode("V01");
+		rightEntity.setPath("database_infors");
+		rightEntity.setMethod("POST");
 		
 		Long rightIds[] = {1L};
 		accountRightDTO = new AccountRightDTO();

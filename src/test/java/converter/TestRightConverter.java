@@ -27,12 +27,12 @@ public class TestRightConverter {
 		Long id = new Long(1);
 		
 		rightEntity.setId(id);
-		rightEntity.setCode("V01");
-		rightEntity.setRightName("View database");
+		rightEntity.setPath("database_infors");
+		rightEntity.setMethod("POST");
 		
 		rightDTO = new RightDTO();
-		rightDTO.setCode("V01");
-		rightDTO.setRightName("View database");
+		rightDTO.setPath("database_infors");
+		rightDTO.setMethod("POST");
 	}
 	
 	@Test
@@ -41,8 +41,8 @@ public class TestRightConverter {
 		RightDTO rightDTOResult = rightConverter.toDTO(rightEntity);
 		
 		assertTrue(rightDTOResult.getId() == (long)1 
-				&& rightDTOResult.getCode().equals("V01")
-				&& rightDTOResult.getRightName().equals("View database"));
+				&& rightDTOResult.getPath().equals("database_infors")
+				&& rightDTOResult.getMethod().equals("POST"));
 	}
 	
 	@Test
@@ -50,8 +50,8 @@ public class TestRightConverter {
 		
 		RightEntity rightEntityResult = rightConverter.toEntity(rightDTO);
 		
-		assertTrue(rightEntityResult.getCode().equals("V01")
-				&& rightEntityResult.getRightName().equals("View database"));
+		assertTrue(rightEntityResult.getPath().equals("database_infors")
+				&& rightEntityResult.getMethod().equals("POST"));
 	}
 	
 	@Test
@@ -59,7 +59,7 @@ public class TestRightConverter {
 		
 		RightEntity rightEntityResult = rightConverter.toEntity(rightDTO, rightEntity);
 		
-		assertTrue(rightEntityResult.getCode().equals("V01")
-				&& rightEntityResult.getRightName().equals("View database"));
+		assertTrue(rightEntityResult.getPath().equals("database_infors")
+				&& rightEntityResult.getMethod().equals("POST"));
 	}
 }

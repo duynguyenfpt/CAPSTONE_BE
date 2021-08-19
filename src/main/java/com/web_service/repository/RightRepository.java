@@ -1,5 +1,7 @@
 package com.web_service.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -31,4 +33,15 @@ public interface RightRepository extends JpaRepository<RightEntity, Long> {
 	        nativeQuery = true
 	)
     int countByAccountId(long accountId);
+	
+	@Query(value = "SELECT r.* FROM rights as r "
+			+ "inner join account_right as a "
+			+ "on r.id = a.right_id where a.account_id = ?1 "
+			+ "and r.deleted = false ",
+			 countQuery = "SELECT r.* FROM rights as r "
+						+ "inner join account_right as a "
+						+ "on r.id = a.right_id where a.account_id = ?1 "
+						+ "and r.deleted = false ",
+			nativeQuery = true)
+    List<RightEntity> findRightByAccountId(long accountId);
 }

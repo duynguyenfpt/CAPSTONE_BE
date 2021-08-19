@@ -1,21 +1,19 @@
 package com.web_service.dto;
 
 public class RightDTO extends AbstractDTO<RightDTO>{
-	private String rightName;
-	private String code;
+	private String path;
+	private String method;
 	
-	public String getRightName() {
-		return rightName;
+	public String getPath() {
+		return path;
 	}
-	public void setRightName(String rightName) {
-		this.rightName = rightName;
+	public void setPath(String path) {
+		this.path = path;
 	}
-	public String getCode() {
-		return code;
+	public String getMethod() {
+		return method;
 	}
-	public void setCode(String code) {
-		this.code = code;
+	public void setMethod(String method) {
+		this.method = method;
 	}
-	
-	
 }

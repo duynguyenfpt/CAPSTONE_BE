@@ -250,23 +250,23 @@ public class AccountAPI {
 	@GetMapping(value = "/api/accounts/forgot_password")
 	public ResponseEntity<ObjectOuput<String>> forgotPassword(@RequestParam("username") String username) {
 		ObjectOuput<String> result = new ObjectOuput<String>();
-//		try{
+		try{
 			accountService.forgotPassword(username);
 			result.setData("Success");
 			result.setCode("200");
 			
 			return new ResponseEntity<ObjectOuput<String>>(result, HttpStatus.OK);
-//		}catch (NullPointerException e) {
-//			result.setMessage("Not found user");
-//			result.setCode("404");
-//			
-//			return new ResponseEntity<ObjectOuput<String>>(result, HttpStatus.NOT_FOUND);
-//		}catch (Exception e) {
-//			result.setCode("500");
-//			result.setMessage("Can not send email");
-//			
-//			return new ResponseEntity<ObjectOuput<String>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
-//		}
+		}catch (NullPointerException e) {
+			result.setMessage("Not found user");
+			result.setCode("404");
+			
+			return new ResponseEntity<ObjectOuput<String>>(result, HttpStatus.NOT_FOUND);
+		}catch (Exception e) {
+			result.setCode("500");
+			result.setMessage("Can not send email");
+			
+			return new ResponseEntity<ObjectOuput<String>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	private void authenticate(String username, String password) throws Exception {

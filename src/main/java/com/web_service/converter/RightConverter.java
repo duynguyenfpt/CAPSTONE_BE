@@ -11,8 +11,8 @@ import com.web_service.entity.ServerInfoEntity;
 public class RightConverter {
 	public RightEntity toEntity(RightDTO dto) {
 		RightEntity entity = new RightEntity();
-		entity.setCode(dto.getCode());
-		entity.setRightName(dto.getRightName());
+		entity.setMethod(dto.getMethod());
+		entity.setPath(dto.getPath());
 		return entity;
 	}
 	
@@ -20,14 +20,14 @@ public class RightConverter {
 		RightDTO dto = new RightDTO();
 
 		dto.setId(entity.getId());
-		dto.setCode(entity.getCode());
-		dto.setRightName(entity.getRightName());
+		dto.setPath(entity.getPath());
+		dto.setMethod(entity.getMethod());
 		return dto;
 	}
 	
 	public RightEntity toEntity(RightDTO dto, RightEntity entity) {
-		entity.setCode(dto.getCode());
-		entity.setRightName(dto.getRightName());
+		entity.setPath(dto.getPath());
+		entity.setMethod(dto.getMethod());
 		return entity;
 	}
 }
