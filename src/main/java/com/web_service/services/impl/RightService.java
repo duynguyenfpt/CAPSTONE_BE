@@ -29,8 +29,10 @@ public class RightService implements IRightService{
 	
 	@Override
 	public List<RightDTO> findAll(String keyword, int page, int limit) {
+		//create search query
 		String query = createSearchQuery(keyword);
 		
+		//get right from db
 		@SuppressWarnings("unchecked")
 		List<RightEntity> rightEntities = em.createNativeQuery(query, RightEntity.class)
 				.setFirstResult((page - 1) * limit)
@@ -61,8 +63,11 @@ public class RightService implements IRightService{
 		return (int) rightRepository.count();
 	}
 
+	
+	
 	@Override
 	public List<RightDTO> findAllByAccountId(long accountId, Pageable pageable) {
+		//get right of account
 		List<RightDTO> results = new ArrayList<>();
 		List<RightEntity> entities = rightRepository.findRightByAccountId(accountId, pageable).getContent();
 		for (RightEntity item: entities) {
@@ -81,9 +86,11 @@ public class RightService implements IRightService{
 	public RightDTO save(RightDTO rightDTO ) {
 		RightEntity rightEntity = new RightEntity();
 		if (rightDTO.getId() != null) {
+			//update right
 			RightEntity oldRightEntity = rightRepository.findOne(rightDTO.getId());
 			rightEntity = rightConverter.toEntity(rightDTO, oldRightEntity);
 		} else {
+			//create right
 			rightEntity = rightConverter.toEntity(rightDTO);
 		}	
 
@@ -93,9 +100,9 @@ public class RightService implements IRightService{
 	
 	private String createSearchQuery(String keyword) {
 		if(keyword == null) keyword = "";
-		String query = "select * from rights where (LOWER(right_name) LIKE '%"
+		String query = "select * from rights where (LOWER(path) LIKE '%"
 					   + keyword.toLowerCase() + "%'"
-					   + " or code LIKE '%" + keyword +"%')"
+					   + " or LOWER(method)LIKE '%" + keyword.toLowerCase()+"%')"
 					   + " and deleted = false";
 		return query;
 	}

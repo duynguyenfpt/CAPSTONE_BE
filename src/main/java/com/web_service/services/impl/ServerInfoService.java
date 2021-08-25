@@ -25,9 +25,11 @@ public class ServerInfoService implements IServerInfoService {
 	public ServerInfoDTO save(ServerInfoDTO serverInfoDTO ) {
 		ServerInfoEntity serverInfoEntity = new ServerInfoEntity();
 		if (serverInfoDTO.getId() != null) {
+			//update server infor
 			ServerInfoEntity oldServerInfoEntity = serverInfoRepository.findOne(serverInfoDTO.getId());
 			serverInfoEntity = serverInfoConverter.toEntity(serverInfoDTO, oldServerInfoEntity);
 		} else {
+			//create server infor
 			serverInfoEntity = serverInfoConverter.toEntity(serverInfoDTO);
 		}
 
@@ -43,7 +45,8 @@ public class ServerInfoService implements IServerInfoService {
 	@Override
 	public List<ServerInfoDTO> findAll(String keyword, Pageable pageable) {
 		if(keyword == null) keyword = "";
-
+		
+		//get all server infor
 		List<ServerInfoDTO> results = new ArrayList<>();
 		List<ServerInfoEntity> entities = serverInfoRepository.getAllServerInfo(keyword, pageable).getContent();
 		for (ServerInfoEntity item: entities) {
@@ -60,6 +63,7 @@ public class ServerInfoService implements IServerInfoService {
 
 	@Override
 	public ServerInfoDTO getById(long id) {
+		//get server infor by id
 		ServerInfoEntity serverInfoEntity = serverInfoRepository.findOne(id);
 		ServerInfoDTO serverInfoDTO = serverInfoConverter.toDTO(serverInfoEntity);
 		return serverInfoDTO;

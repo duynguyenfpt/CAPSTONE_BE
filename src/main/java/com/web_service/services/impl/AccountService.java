@@ -49,6 +49,7 @@ public class AccountService implements IAccountService {
 	@Override
 	public List<AccountDTO> findAll(String keyword, Pageable pageable) {
 		List<AccountDTO> results = new ArrayList<>();
+		//Get all account
 		List<AccountEntity> entities = accountRepository.getAllAccount(keyword, pageable).getContent();
 		for (AccountEntity item: entities) {
 			AccountDTO accountDTO = accountConvertor.toDTO(item);
@@ -104,10 +105,15 @@ public class AccountService implements IAccountService {
 	@Transactional
 	@Override
 	public void createAccountWithRights(AccountRightDTO accountRightDTO) {
+		//Create account
 		AccountEntity accountEntity = accountConvertor.toEntity(accountRightDTO.getAccount());
 		accountEntity.setPassword(bcryptEncoder.encode(PASSWORD_DEFAULT));
+		accountEntity.setActive(true);
 		accountRepository.save(accountEntity);
-		if(accountRightDTO.isCopyRight()) {
+		
+		
+		if(accountRightDTO.getRightOption().equals("copy")) {
+			//Get list right from another account
 			List<AccountRightEntity> accountRightEntities = accountRightRepository.findAllByAccountId(accountRightDTO.getAccountId());
 			for (AccountRightEntity accountRightEntity : accountRightEntities) {
 				AccountRightEntity newAccountRightEntity = new AccountRightEntity();
@@ -115,7 +121,8 @@ public class AccountService implements IAccountService {
 				newAccountRightEntity.setRight(accountRightEntity.getRight());
 				accountRightRepository.save(newAccountRightEntity);
 			}
-		} else {
+		} else if(accountRightDTO.getRightOption().equals("select")){
+			//Add right for account
 			for (long rightId : accountRightDTO.getRightIds()) {
 				RightEntity rightEntity = rightRepository.findOne(rightId);
 				if(rightEntity != null) {
@@ -125,6 +132,8 @@ public class AccountService implements IAccountService {
 					accountRightEntity = accountRightRepository.save(accountRightEntity);
 				}
 			}
+		} else {
+			setRightDefault(accountEntity);
 		}
 	}
 
@@ -133,8 +142,11 @@ public class AccountService implements IAccountService {
 	public void forgotPassword(String username) {
 		SimpleMailMessage message = new SimpleMailMessage();
 		
+		//Find account by username
 		AccountEntity accountEntity = accountRepository.findByUsername(username);
+		//Get random password
 		String newPassword = generateRandomPassword(6);
+		//Encode
 		accountEntity.setPassword(bcryptEncoder.encode(newPassword));
 		accountRepository.save(accountEntity);
 		
@@ -175,4 +187,45 @@ public class AccountService implements IAccountService {
  
         return sb.toString();
     }
+
+	@Override
+	public AccountEntity findByUserNameEntity(String username) {
+		return accountRepository.findByUsername(username);
+	}
+	
+	private void setRightDefault(AccountEntity accountEntity) {
+		if(accountEntity.getRole().equals("viewer")) {
+			createAccountRight("GET", "server_infor", accountEntity);
+			createAccountRight("POSTPUTDELETEGET", "database_infor", accountEntity);
+			createAccountRight("POSTPUTDELETEGET", "table", accountEntity);
+			createAccountRight("POSTPUTDELETEGET", "request", accountEntity);
+			createAccountRight("GET", "job", accountEntity);
+			createAccountRight("GET", "column", accountEntity);
+		}else if(accountEntity.getRole().equals("engineer")) {
+			createAccountRight("POSTPUTDELETEGET", "server_infor", accountEntity);
+			createAccountRight("POSTPUTDELETEGET", "database_infor", accountEntity);
+			createAccountRight("POSTPUTDELETEGET", "table", accountEntity);
+			createAccountRight("GET", "action_log", accountEntity);
+			createAccountRight("GET", "request", accountEntity);
+			createAccountRight("GETPOST", "note", accountEntity);
+			createAccountRight("POSTPUTDELETEGET", "job", accountEntity);
+			createAccountRight("GET", "column", accountEntity);
+		}
+	}
+	
+	private void createAccountRight(String methods, String path, AccountEntity accountEntity) {
+		List<RightEntity> listRight = rightRepository.findRightByPath(path);
+		
+		if(listRight.size() > 0) {
+			for (RightEntity rightEntity : listRight) {
+				if(methods.contains(rightEntity.getMethod())) {
+					AccountRightEntity accountRightEntity = new AccountRightEntity();
+					accountRightEntity.setAccount(accountEntity);
+					accountRightEntity.setRight(rightEntity);
+					accountRightEntity = accountRightRepository.save(accountRightEntity);
+				}
+			}
+		}
+
+	}
 }

@@ -9,6 +9,8 @@ public class TableDTO extends AbstractDTO<TableDTO>{
 	private Long databaseInforId;
 	private List<CurrentTableSchemaEntity> currentTableSchemas;
 	private DatabaseInfoDTO databaseInfo;
+	private String defaultKey;
+	
 	public String getTableName() {
 		return tableName;
 	}
@@ -32,5 +34,11 @@ public class TableDTO extends AbstractDTO<TableDTO>{
 	}
 	public void setDatabaseInfo(DatabaseInfoDTO databaseInfo) {
 		this.databaseInfo = databaseInfo;
+	}
+	public String getDefaultKey() {
+		return defaultKey;
+	}
+	public void setDefaultKey(String defaultKey) {
+		this.defaultKey = defaultKey;
 	}
 }

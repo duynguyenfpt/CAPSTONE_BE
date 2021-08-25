@@ -36,8 +36,10 @@ public class JobLogService implements IJobLogService{
 	@Override
 	public List<JobLogEntity> findAll(String host, String port, String databaseName, String tableName,
 			String requestType, String status, Pageable pageable) {
+		//create query
 		Query query = new Query().with(pageable).with(new Sort(Sort.Direction.DESC, "create_time"));
 		
+		//add condition for query
 		final List<Criteria> criteria = createFilter(host, port, databaseName, tableName, requestType, status);		
 
 		if(!criteria.isEmpty()) {
@@ -78,6 +80,7 @@ public class JobLogService implements IJobLogService{
 
 	@Override
 	public JobLogEntity getLastJobLog(long jobId) {
+		//get last log of job
 		List<JobLogEntity> entities = jobLogRepository.getAllJobLogByJobId(jobId);
 		if(entities.isEmpty()) return null;
 		JobLogEntity lastJobLog = entities.stream().filter(e -> e.getStatus() != "processing")
@@ -88,7 +91,8 @@ public class JobLogService implements IJobLogService{
 	
 	private List<Criteria> createFilter(String host, String port, String databaseName, String tableName,
 			String requestType, String status){
-		final List<Criteria> criteria = new ArrayList<>();		
+		final List<Criteria> criteria = new ArrayList<>();
+		
 		if(host != null) {
 			criteria.add(Criteria.where("host").regex(host, "i"));
 		}

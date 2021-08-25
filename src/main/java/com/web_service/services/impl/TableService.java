@@ -30,9 +30,11 @@ public class TableService implements ITableService {
 	public TableDTO save(TableDTO tableDTO) {
 		TableEntity tableEntity = new TableEntity();
 		if (tableDTO.getId() != null) {
+			//update table infor
 			TableEntity oldTableEntity = tableRepository.findOne(tableDTO.getId());
 			tableEntity = tableConverter.toEntity(tableDTO, oldTableEntity);
 		} else {
+			//create table infor
 			tableEntity = tableConverter.toEntity(tableDTO);
 		}
 		DatabaseInfoEntity databaseInfoEntity = databaseInfoRepository.findOne(tableDTO.getDatabaseInforId());
@@ -49,6 +51,7 @@ public class TableService implements ITableService {
 	@Override
 	public List<TableDTO> findAll(String keyword, Pageable pageable) {
 		List<TableDTO> results = new ArrayList<>();
+		//get all table infor
 		List<TableEntity> entities = tableRepository.search(keyword, pageable).getContent();
 		for (TableEntity item: entities) {
 			TableDTO tableDTO = tableConverter.toDTO(item);
@@ -64,6 +67,7 @@ public class TableService implements ITableService {
 
 	@Override
 	public TableDTO getById(long id) {
+		//get table by id
 		TableEntity tableEntity = tableRepository.findOne(id);
 		TableDTO tableDTO = tableConverter.toDTO(tableEntity);
 		return tableDTO;
@@ -71,6 +75,7 @@ public class TableService implements ITableService {
 
 	@Override
 	public List<TableDTO> findByDatabaseInfoId(long databaseInfoId, Pageable pageable) {
+		//get table by database
 		List<TableDTO> results = new ArrayList<>();
 		DatabaseInfoEntity databaseInfoEntity = databaseInfoRepository.findOne(databaseInfoId);
 		List<TableEntity> entities = tableRepository.findByDatabaseInfo(databaseInfoEntity, pageable).getContent();

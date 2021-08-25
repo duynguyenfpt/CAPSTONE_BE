@@ -54,8 +54,10 @@ public class RequestService implements IRequestService {
 	
 	@Override
 	public List<RequestDTO> findAll(String requestType, String status, String approvedBy, int page, int limit) {
+		//create search query
 		String query = createSearchQuery(requestType, status, approvedBy);
 		
+		//get request
 		@SuppressWarnings("unchecked")
 		List<RequestEntity> requestEntities = em.createNativeQuery(query, RequestEntity.class)
 				.setFirstResult((page - 1) * limit)
@@ -85,11 +87,13 @@ public class RequestService implements IRequestService {
 	@Override
 	@Transactional
 	public RequestDTO create(RequestDTO requestDTO) {
+		//create request
 		RequestEntity requestEntity = new RequestEntity();
 		requestEntity = requestConvertor.toEntity(requestDTO);
 		requestEntity = requestRepository.save(requestEntity);
 		
 		if(requestEntity.getId() != null) {
+			//create synctable request
 			if(requestDTO.getRequestType().equals("SyncTable")) {			
 				createSyncTableRequest(requestDTO, requestEntity);
 			}
@@ -104,6 +108,7 @@ public class RequestService implements IRequestService {
 	@Override
 	@Transactional
 	public RequestDTO update(RequestDTO requestDTO) {
+		//update request
 		RequestEntity requestEntity = new RequestEntity();
 		RequestEntity oldreRequestEntity = requestRepository.findOne(requestDTO.getId());
 		requestEntity = requestConvertor.toEntity(requestDTO, oldreRequestEntity);
@@ -117,6 +122,7 @@ public class RequestService implements IRequestService {
 	}
 	
 	private void createSyncTableRequest(RequestDTO requestDTO, RequestEntity requestEntity) {
+		//create synctable request
 		SyncTableRequestEntity syncTableRequestEntity = new SyncTableRequestEntity();
 		TableEntity tableEntity = getTable(requestDTO.getTableId());
 		

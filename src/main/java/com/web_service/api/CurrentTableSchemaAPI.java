@@ -56,7 +56,7 @@ public class CurrentTableSchemaAPI {
 	@GetMapping(value = "/api/current_table_schemas/{id}")
 	public ResponseEntity<ObjectOuput<CurrentTableSchemaDTO>> showCurrentTableSchema(@PathVariable("id") long id) {
 		CurrentTableSchemaDTO currentTableSchemaDTO  = null;
-		ObjectOuput<CurrentTableSchemaDTO> result =  new ObjectOuput<CurrentTableSchemaDTO>();
+		ObjectOuput<CurrentTableSchemaDTO> result = new ObjectOuput<CurrentTableSchemaDTO>();
 		try {
 			currentTableSchemaDTO =  currentTableSchemaService.getById(id);
 			result =  new ObjectOuput<CurrentTableSchemaDTO>();

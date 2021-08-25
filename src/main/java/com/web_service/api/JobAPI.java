@@ -132,21 +132,19 @@ public class JobAPI {
 	}
 	
 	@GetMapping(value = "/api/jobs/{job_id}/job_detail")
-	public ResponseEntity<ObjectOuput<JobDetailDTO>> showJobDetail(@PathVariable("job_id") long jobId) {
-		ObjectOuput<JobDetailDTO> result = new ObjectOuput<JobDetailDTO>();
+	public ResponseEntity<ListObjOutput<JobDetailDTO>> showJobDetail(@PathVariable("job_id") long jobId) {
+		ListObjOutput<JobDetailDTO> result = new ListObjOutput<JobDetailDTO>();
 		try {
 			result.setData(jobService.getJobDetail(jobId));
 			result.setCode("200");
 			result.setMessage("Get job detail sucessfully");
 
-			return new ResponseEntity<ObjectOuput<JobDetailDTO>>(result, HttpStatus.OK);
+			return new ResponseEntity<ListObjOutput<JobDetailDTO>>(result, HttpStatus.OK);
 		}catch (Exception e) {
 			result.setCode("500");
 			result.setMessage("Can not get job detail");
 
-			return new ResponseEntity<ObjectOuput<JobDetailDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<ListObjOutput<JobDetailDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-			
-		
 	}
 }

@@ -21,6 +21,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.web_service.converter.AccountConvertor;
 import com.web_service.dto.AccountDTO;
+import com.web_service.dto.JobDTO;
+import com.web_service.dto.TableDTO;
 import com.web_service.entity.AccountEntity;
 import com.web_service.repository.AccountRepository;
 import com.web_service.services.impl.AccountService;
@@ -87,6 +89,34 @@ public class AccountServiceTest{
 		AccountDTO result = accountService.getById(1L);
 		
 		assertTrue(result.getId() == 1);
+	}
+	
+	@Test
+	public void getTableByIdWithBoundary() {
+		Long id = new Long(9223372036854775807L);
+		
+		accountDTO.setId(id);
+		Mockito.when(accountRepository.findOne(id)).thenReturn(accountEntity);
+		
+		Mockito.when(accountConvertor.toDTO(accountEntity)).thenReturn(accountDTO);
+		
+		AccountDTO result = accountService.getById(id);
+		
+		assertTrue(result.getId() == 9223372036854775807L);
+	}
+	
+	@Test
+	public void getJobByIdWithZero() {
+		Long id = new Long(0);
+		
+		accountDTO.setId(id);
+		Mockito.when(accountRepository.findOne(id)).thenReturn(accountEntity);
+		
+		Mockito.when(accountConvertor.toDTO(accountEntity)).thenReturn(accountDTO);
+		
+		AccountDTO result = accountService.getById(id);
+		
+		assertTrue(result.getId() == 0);
 	}
 	
 	@Test

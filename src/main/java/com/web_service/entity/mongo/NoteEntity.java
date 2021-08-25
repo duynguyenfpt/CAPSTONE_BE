@@ -1,5 +1,7 @@
 package com.web_service.entity.mongo;
 
+import java.util.Date;
+
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -18,6 +20,9 @@ public class NoteEntity {
 
 	@Field("created_by")
 	private String createdBy;
+	
+	@Field("created_at")
+	private Date createdAt;
 
 	// Constructors
 	public NoteEntity() {
@@ -60,5 +65,13 @@ public class NoteEntity {
 
 	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
+	}
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
 	}
 }

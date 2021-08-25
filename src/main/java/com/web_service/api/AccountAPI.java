@@ -6,8 +6,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -24,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.web_service.services.IAccountService;
 import com.sun.jersey.api.NotFoundException;
 import com.web_service.api.output.ListObjOutput;
 import com.web_service.api.output.ObjectOuput;
@@ -31,17 +30,13 @@ import com.web_service.api.output.PagingOutput;
 import com.web_service.dto.AccountDTO;
 import com.web_service.dto.AccountRightDTO;
 import com.web_service.dto.ChangePasswordDTO;
-import com.web_service.dto.CurrentTableSchemaDTO;
-import com.web_service.dto.DatabaseInfoDTO;
-import com.web_service.dto.JobDTO;
 import com.web_service.dto.JwtResponse;
-import com.web_service.dto.NoteDTO;
-import com.web_service.dto.ServerInfoDTO;
 import com.web_service.entity.AccountEntity;
 import com.web_service.entity.JwtRequest;
 import com.web_service.security.config.JwtTokenUtil;
 import com.web_service.security.services.JwtUserDetailsService;
-import com.web_service.services.IAccountService;
+
+
 
 @CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
 @RestController
@@ -63,18 +58,33 @@ public class AccountAPI {
 		ObjectOuput<JwtResponse> result = new ObjectOuput<JwtResponse>();
 
 		try {
-			authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+			AccountEntity accountEntity = accountService.findByUserNameEntity(authenticationRequest.getUsername());
 			
-	
-			final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-	
-			final String token = JwtTokenUtil.generateToken(userDetails);
-			
-			result.setCode("200");
-			result.setData(new JwtResponse(token));
-			result.setMessage("Login success");
-	
-			return new ResponseEntity<ObjectOuput<JwtResponse>>(result, HttpStatus.OK);
+			if(accountEntity == null) {
+				result.setCode("401");
+				result.setData(new JwtResponse(""));
+				result.setMessage("Account not exist");
+				
+				return new ResponseEntity<ObjectOuput<JwtResponse>>(result, HttpStatus.UNAUTHORIZED);
+			}else if(accountEntity.getActive() == false) {
+				result.setCode("401");
+				result.setData(new JwtResponse(""));
+				result.setMessage("Account is deactive");
+				
+				return new ResponseEntity<ObjectOuput<JwtResponse>>(result, HttpStatus.UNAUTHORIZED);
+			}else {
+				authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+				
+				final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+		
+				final String token = JwtTokenUtil.generateToken(userDetails);
+				
+				result.setCode("200");
+				result.setData(new JwtResponse(token));
+				result.setMessage("Login success");
+				
+				return new ResponseEntity<ObjectOuput<JwtResponse>>(result, HttpStatus.OK);
+			}
 		} catch (Exception e) {
 			result.setCode("401");
 			result.setMessage("Login fail");
@@ -250,23 +260,23 @@ public class AccountAPI {
 	@GetMapping(value = "/api/accounts/forgot_password")
 	public ResponseEntity<ObjectOuput<String>> forgotPassword(@RequestParam("username") String username) {
 		ObjectOuput<String> result = new ObjectOuput<String>();
-//		try{
+		try{
 			accountService.forgotPassword(username);
 			result.setData("Success");
 			result.setCode("200");
 			
 			return new ResponseEntity<ObjectOuput<String>>(result, HttpStatus.OK);
-//		}catch (NullPointerException e) {
-//			result.setMessage("Not found user");
-//			result.setCode("404");
-//			
-//			return new ResponseEntity<ObjectOuput<String>>(result, HttpStatus.NOT_FOUND);
-//		}catch (Exception e) {
-//			result.setCode("500");
-//			result.setMessage("Can not send email");
-//			
-//			return new ResponseEntity<ObjectOuput<String>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
-//		}
+		}catch (NullPointerException e) {
+			result.setMessage("Not found user");
+			result.setCode("404");
+			
+			return new ResponseEntity<ObjectOuput<String>>(result, HttpStatus.NOT_FOUND);
+		}catch (Exception e) {
+			result.setCode("500");
+			result.setMessage("Can not send email");
+			
+			return new ResponseEntity<ObjectOuput<String>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	private void authenticate(String username, String password) throws Exception {

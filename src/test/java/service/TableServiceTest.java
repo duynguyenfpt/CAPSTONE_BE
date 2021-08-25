@@ -27,6 +27,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import com.web_service.converter.DatabaseInfoConverter;
 import com.web_service.converter.TableConverter;
 import com.web_service.dto.DatabaseInfoDTO;
+import com.web_service.dto.RequestDTO;
 import com.web_service.dto.ServerInfoDTO;
 import com.web_service.dto.TableDTO;
 import com.web_service.entity.DatabaseInfoEntity;
@@ -121,6 +122,35 @@ public class TableServiceTest{
 	}
 	
 	@Test
+	public void getTableByIdWithBoundary() {
+		Long id = new Long(9223372036854775807L);
+		
+		tableDTO.setId(id);
+		Mockito.when(tableRepository.findOne(id)).thenReturn(tableEntity);
+		
+		Mockito.when(tableConverter.toDTO(tableEntity)).thenReturn(tableDTO);
+		
+		TableDTO result = tableService.getById(id);
+		
+		assertTrue(result.getId() == 9223372036854775807L);
+	}
+	
+	@Test
+	public void getTableByIdWithZero() {
+		Long id = new Long(0);
+		
+		tableDTO.setId(id);
+		Mockito.when(tableRepository.findOne(id)).thenReturn(tableEntity);
+		
+		Mockito.when(tableConverter.toDTO(tableEntity)).thenReturn(tableDTO);
+		
+		TableDTO result = tableService.getById(id);
+		
+		assertTrue(result.getId() == 0);
+	}
+
+	
+	@Test
 	public void totalItem() {		
 		Mockito.when(tableRepository.countSearchTotalItem("")).thenReturn(1);
 				
@@ -134,6 +164,24 @@ public class TableServiceTest{
 		tableService.delete(1L);
 		
 		verify(tableRepository, times(1)).delete(1L);
+	}
+	
+	@Test
+	public void deleteTableInfoWithZero() {
+		Long id = new Long(0);
+				
+		tableService.delete(id);
+		
+		verify(tableRepository, times(1)).delete(id);
+	}
+	
+	@Test
+	public void deleteServerInfoWithBoundaryLong() {
+		Long id = new Long(9223372036854775807L);
+				
+		tableService.delete(id);
+		
+		verify(tableRepository, times(1)).delete(id);
 	}
 	
 	@Test

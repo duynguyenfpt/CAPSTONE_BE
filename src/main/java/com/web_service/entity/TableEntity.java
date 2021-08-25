@@ -26,6 +26,9 @@ public class TableEntity extends BaseEntity{
 	@Column(name = "table_name")
 	private String tableName;
 	
+	@Column(name = "default_key")
+	private String defaultKey;
+	
 	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "database_info_id", nullable = false)
@@ -80,6 +83,14 @@ public class TableEntity extends BaseEntity{
 
 	public void setTableName(String tableName) {
 		this.tableName = tableName;
+	}
+
+	public String getDefaultKey() {
+		return defaultKey;
+	}
+
+	public void setDefaultKey(String defaultKey) {
+		this.defaultKey = defaultKey;
 	}
 
 //	public List<SyncTableRequestEntity> getSyncTableRequestEntities() {
