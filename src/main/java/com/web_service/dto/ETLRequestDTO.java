@@ -1,5 +1,7 @@
 package com.web_service.dto;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 
 public class ETLRequestDTO extends AbstractDTO<ETLRequestDTO>{
@@ -18,6 +20,8 @@ public class ETLRequestDTO extends AbstractDTO<ETLRequestDTO>{
 	private int numberRetries;
 		
 	private String status;
+	
+	private Date createdDate;
 
 	public String getQuery() {
 		return query;
@@ -81,5 +85,13 @@ public class ETLRequestDTO extends AbstractDTO<ETLRequestDTO>{
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
 	}
 }

@@ -11,6 +11,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
@@ -46,6 +47,7 @@ public class AccountEntity extends BaseEntity {
 	@Column(name = "phone")
 	private String phone;
 	
+	@NotNull
 	@Column(name = "role")
 	private String role;
 	

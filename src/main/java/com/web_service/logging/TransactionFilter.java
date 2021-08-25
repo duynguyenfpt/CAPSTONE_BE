@@ -51,10 +51,10 @@ public class TransactionFilter implements Filter {
 		
 		AccountEntity accountEntity = getCurrentAccount();
 		
-		List<RightEntity> rights = rightRepository.findRightByAccountId(accountEntity.getId());
-		boolean isPermission = checkPermission(uri, method, rights, accountEntity);
+		boolean isPermission = checkPermission(uri, method, accountEntity);
+//		boolean isPermission = true;
 		
-		if (accountEntity.getActive() == false || isPermission == false) {
+		if (isPermission == false) {
 			ObjectOuput<String> result = new ObjectOuput<>();
 			result.setData("");
 			result.setMessage("Access denied");
@@ -65,7 +65,6 @@ public class TransactionFilter implements Filter {
 		} else {
 			chain.doFilter(request, response);
 		}
-
 	}
 
 	@Override
@@ -87,19 +86,38 @@ public class TransactionFilter implements Filter {
 		return accountEntity;
 	}
 	
-	private boolean checkPermission(String uri, String method, List<RightEntity> rightEntities, AccountEntity accountEntity) {
+	private boolean checkPermission(String uri, String method, AccountEntity accountEntity) {
+		String object = getObject(uri);
+		
+		if(accountEntity == null) return true;
+				
+		if(accountEntity.getActive() == false) return false;
+		//role admin auto have permission with right and account
 		if(accountEntity.getRole().toLowerCase().trim().equals("admin")
 				&& (uri.contains("rights") || uri.contains("accounts"))) {
 			return true;
 		}
-		
-		if(uri.contains("api/me") || uri.contains("api/authenticate") || uri.contains("api/register")) {
+		//api don't need check permission
+		if(uri.contains("api/me") || uri.contains("api/authenticate") || uri.contains("api/register")
+			|| uri.contains("change_password") || uri.contains("test_connection") || uri.contains("job_log")){
 			return true;
 		}
 		
+		List<RightEntity> rightEntities = rightRepository.findRightByAccountId(accountEntity.getId());
+		
 		boolean isPermission =  rightEntities.stream()
-				.anyMatch(e -> uri.contains(e.getPath()) && method.equals(e.getMethod()));
+				.anyMatch(e -> (object.equals(e.getPath() + "s") || object.equals(e.getPath()))
+						&& method.equals(e.getMethod()));
 		
 		return isPermission;
 	}
+
+	private String getObject(String uri) {
+		uri = uri.replaceAll("/\\d+", "");
+		String last = "";
+		int lastIndex = uri.lastIndexOf("/");
+		last = uri.substring(lastIndex + 1);
+		return last;
+	}
+	
 }

@@ -71,54 +71,57 @@ public class RequestServiceTest{
 	}
 	
 	@Test
-	public void totalItem() {		
-//		Mockito.when(serverInfoRepository.countServerInfo("")).thenReturn(1);
-				
-		int totalItem = requestService.totalItemSearch("", "", "");
+	public void getRequestByIdWithBoundary() {
+		Long id = new Long(9223372036854775807L);
 		
-		assertTrue(totalItem == 1);
+		requestDTO.setId(id);
+		Mockito.when(requestRepository.findOne(id)).thenReturn(requestEntity);
+		
+		Mockito.when(requestConvertor.toDTO(requestEntity)).thenReturn(requestDTO);
+		
+		RequestDTO result = requestService.getById(id);
+		
+		assertTrue(result.getId() == 9223372036854775807L);
 	}
 	
-//	@Test
-//	public void createSearchQuery() {
-//		String searchQuery = requestService.
-//		assertEquals(result.getId(), 1);
-//	}
-//	
-//	@Test
-//	public void updateServerInfo() {
-//		serverInfoDTO.setId(1L);
-//		Mockito.when(serverInfoConverter.toEntity(serverInfoDTO, serverInfoEntity)).thenReturn(serverInfoEntity);
-//		
-//		Mockito.when(serverInfoRepository.findOne(1L)).thenReturn(serverInfoEntity);
-//		
-//		Mockito.when(serverInfoRepository.save(serverInfoEntity)).thenReturn(serverInfoEntity);
-//		
-//		Mockito.when(serverInfoConverter.toDTO(serverInfoEntity)).thenReturn(serverInfoDTO);
-//				
-//		ServerInfoDTO result = serverInfoService.save(serverInfoDTO);
-//		
-//		assertEquals(result.getId(), 1);
-//	}
-//	
-//	@Test
-//	public void deleteServerInfo() {
-//		Long id = new Long(1);
-//				
-//		serverInfoService.delete(id);
-//		
-//		verify(serverInfoRepository, times(1)).delete(id);
-//	}
-//	
-//	@Test
-//	public void findAllServerInfo() {
-//		int page = 0;
-//		int limit = 1;
-//		
-//        Pageable pageable = new PageRequest(page, limit);
-//        Page<ServerInfoEntity> serverPage = new PageImpl<>(Collections.singletonList(serverInfoEntity));
-//        Mockito.when(serverInfoRepository.findAll(pageable)).thenReturn(serverPage);
-//        Page<ServerInfoEntity> servers = serverInfoRepository.findAll(pageable);
-//        assertEquals(servers.getNumberOfElements(), 1);
-//	}
+	@Test
+	public void getRequestByIdWithZero() {
+		Long id = new Long(0);
+		
+		requestDTO.setId(id);
+		Mockito.when(requestRepository.findOne(id)).thenReturn(requestEntity);
+		
+		Mockito.when(requestConvertor.toDTO(requestEntity)).thenReturn(requestDTO);
+		
+		RequestDTO result = requestService.getById(id);
+		
+		assertTrue(result.getId() == 0);
+	}
+
+	@Test
+	public void deleteServerInfo() {
+		Long id = new Long(1);
+				
+		requestService.delete(id);
+		
+		verify(requestRepository, times(1)).delete(id);
+	}
+	
+	@Test
+	public void deleteServerInfoWithZero() {
+		Long id = new Long(0);
+				
+		requestService.delete(id);
+		
+		verify(requestRepository, times(1)).delete(id);
+	}
+	
+	@Test
+	public void deleteServerInfoWithBoundaryLong() {
+		Long id = new Long(9223372036854775807L);
+				
+		requestService.delete(id);
+		
+		verify(requestRepository, times(1)).delete(id);
+	}
 }

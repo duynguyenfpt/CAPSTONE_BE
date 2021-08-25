@@ -32,13 +32,14 @@ public class MergeRequestService implements IMergeRequestService{
 	@Transactional
 	public MergeRequestDTO save(MergeRequestDTO mergeRequestDTO) {
 		MergeRequestEntity mergeRequestEntity = new MergeRequestEntity();
-
+		
+		//create request
 		RequestEntity requestEntity = new RequestEntity();
 		requestEntity.setRequestType("MergeRequest");
 		requestEntity = requestRepository.save(requestEntity);
-
+		
+		//create merge request
 		mergeRequestEntity = mergeRequestConverter.toEntity(mergeRequestDTO);
-		mergeRequestEntity.setLatestMetadata(mergeRequestDTO.getCurrentMetadata());
 		mergeRequestEntity.setRequest(requestEntity);
 
 		mergeRequestEntity = mergeRequestRepository.save(mergeRequestEntity);
@@ -48,6 +49,7 @@ public class MergeRequestService implements IMergeRequestService{
 	@Override
 	@Transactional
 	public MergeRequestDTO update(MergeRequestDTO mergeRequestDTO) {
+		//update merge request
 		MergeRequestEntity mergeRequestEntity = new MergeRequestEntity();
 		MergeRequestEntity oldMergeRequestEntity = mergeRequestRepository.findByRequestId(mergeRequestDTO.getRequestId());
 		mergeRequestEntity = mergeRequestConverter.toEntity(mergeRequestDTO, oldMergeRequestEntity);
@@ -64,6 +66,7 @@ public class MergeRequestService implements IMergeRequestService{
 	@Override
 	public List<MergeRequestDTO> findAll(Pageable pageable) {
 		List<MergeRequestDTO> results = new ArrayList<>();
+		//get merge request from db
 		List<MergeRequestEntity> entities;
 		entities = mergeRequestRepository.findAll(pageable).getContent();
 		

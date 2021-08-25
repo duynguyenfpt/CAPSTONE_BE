@@ -29,6 +29,10 @@ public class RightEntity extends BaseEntity{
 	@Column(name = "method")
 	private String method;
 	
+	@NotBlank
+	@Column(name = "description")
+	private String description;
+	
 	@Column
 	private boolean deleted = Boolean.FALSE;
 	
@@ -58,5 +62,21 @@ public class RightEntity extends BaseEntity{
 
 	public void setMethod(String method) {
 		this.method = method;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 }

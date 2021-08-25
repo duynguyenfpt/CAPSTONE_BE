@@ -34,6 +34,7 @@ public class ColumnService implements IColumnService{
 		ServerInfoEntity serverInfoEntity = databaseInfoEntity.getServerInfo();
 		String databaseType = databaseInfoEntity.getDatabaseType().trim();
 		ArrayList<String> result = new ArrayList<>();
+		//Get column with mysql
 		if(databaseType.equals("mysql")) {
 			Connection connection = getConnectionMySql(getConnectionMySqlString(serverInfoEntity.getServerHost(),
 					databaseInfoEntity.getPort(), databaseInfoEntity.getDatabaseName(),
@@ -54,6 +55,7 @@ public class ColumnService implements IColumnService{
 				e.printStackTrace();
 			}
 		}else if(databaseType.equals("postgresql")) {
+			//Get column with postgresql
 			Connection connection = getConnectionPostgreSql(getConnectionPostgreSqlString(serverInfoEntity.getServerHost(),
 					databaseInfoEntity.getPort(), databaseInfoEntity.getDatabaseName(),
 					databaseInfoEntity.getUsername() , databaseInfoEntity.getPassword()));
@@ -74,7 +76,7 @@ public class ColumnService implements IColumnService{
 				e.printStackTrace();
 			}
 		}else if (databaseType.equals("oracal")) {
-			
+			//Get column with oracal
 			Connection connection = getConnectionOracle(getConnectionOracleString(databaseInfoEntity.getUsername(),
 					databaseInfoEntity.getPassword(), serverInfoEntity.getServerHost(),
 					databaseInfoEntity.getPort(), databaseInfoEntity.getSid()));
@@ -117,21 +119,6 @@ public class ColumnService implements IColumnService{
 		return String.format(
 				"jdbc:oracle:thin:%s/%s@%s:%s:%s", username, password, host, port, sid);
 	}
-	
-//	public static Connection getConnectionOracle(String username, String password, String host, String port, String SID) {
-//        SID = "oracle";
-//        Connection conn = null;
-//        try {
-////            Class.forName("com.mysql.cj.jdbc.Driver");
-//            Class.forName("oracle.jdbc.driver.OracleDriver");
-//            conn = DriverManager.getConnection("jdbc:oracle:thin:system/capstone@localhost:1521:oracle");
-////            conn = DriverManager.getConnection(String.format("jdbc:oracle:thin:@%s:%s:%s", host, port, SID), username, password);
-//            System.out.println("connected successfully");
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//        }
-//        return conn;
-//    }
 	
 	public static Connection getConnectionMySql(String dbURL) {
         Connection conn = null;

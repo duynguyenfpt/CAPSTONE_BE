@@ -1,5 +1,6 @@
 package com.web_service.entity;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -14,6 +15,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.springframework.data.annotation.CreatedDate;
 
 @Entity
 @Table(name = "etl_request")
@@ -43,6 +46,10 @@ public class ETLEntity{
 	
 	@Column(name="message_fail")
 	private String messageFail;
+	
+	@Column(name="created_date")
+	@CreatedDate
+	private Date createdDate;
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinTable(name = "share_etl_requests", joinColumns = {
@@ -119,5 +126,13 @@ public class ETLEntity{
 
 	public void setMessageFail(String messageFail) {
 		this.messageFail = messageFail;
+	}
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
 	}
 }

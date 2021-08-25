@@ -20,6 +20,7 @@ import org.springframework.data.domain.*;
 import com.web_service.converter.DatabaseInfoConverter;
 import com.web_service.dto.DatabaseInfoDTO;
 import com.web_service.dto.ServerInfoDTO;
+import com.web_service.dto.TableDTO;
 import com.web_service.entity.DatabaseInfoEntity;
 import com.web_service.entity.ServerInfoEntity;
 import com.web_service.repository.DatabaseInfoRepository;
@@ -96,6 +97,34 @@ public class DatabaseInfoServiceTest{
 	}
 	
 	@Test
+	public void getDatabaseByIdWithBoundary() {
+		Long id = new Long(9223372036854775807L);
+		
+		databaseInfoDTO.setId(id);
+		Mockito.when(databaseInfoRepository.findOne(id)).thenReturn(databaseInfoEntity);
+		
+		Mockito.when(databaseInfoConverter.toDTO(databaseInfoEntity)).thenReturn(databaseInfoDTO);
+		
+		DatabaseInfoDTO result = databaseInfoService.getById(id);
+		
+		assertTrue(result.getId() == 9223372036854775807L);
+	}
+	
+	@Test
+	public void getDatabaseByIdWithZero() {
+		Long id = new Long(0);
+		
+		databaseInfoDTO.setId(id);
+		Mockito.when(databaseInfoRepository.findOne(id)).thenReturn(databaseInfoEntity);
+		
+		Mockito.when(databaseInfoConverter.toDTO(databaseInfoEntity)).thenReturn(databaseInfoDTO);
+		
+		DatabaseInfoDTO result = databaseInfoService.getById(id);
+		
+		assertTrue(result.getId() == 0);
+	}
+	
+	@Test
 	public void testTotalItemWithoutKeyword() {		
 		Mockito.when(databaseInfoRepository.count()).thenReturn(1L);
 				
@@ -126,8 +155,230 @@ public class DatabaseInfoServiceTest{
 	}
 	
 	@Test
+	public void testCreateDatabaseMysqlWithoutPort() {
+		Long id = new Long(1);
+		databaseInfoDTO.setUsername("root");
+		databaseInfoDTO.setPassword("123456");
+		databaseInfoDTO.setDatabaseName("webservice");
+		databaseInfoDTO.setDatabaseType("postgresql");
+		databaseInfoDTO.setAlias("a");
+		databaseInfoDTO.setHost("localhost");
+		databaseInfoDTO.setServerInforId(id);
+		
+		
+		Mockito.when(serverInfoRepository.findOne(id)).thenReturn(serverInfoEntity);
+				
+		DatabaseInfoDTO databaseInfoResult = databaseInfoService.save(databaseInfoDTO);
+		
+		assertNull(databaseInfoResult);
+	}
+	
+	@Test
+	public void testCreateDatabaseMysqlWithoutUsername() {
+		Long id = new Long(1);
+		databaseInfoDTO.setPort("8080");
+		databaseInfoDTO.setPassword("123456");
+		databaseInfoDTO.setDatabaseName("webservice");
+		databaseInfoDTO.setDatabaseType("mysql");
+		databaseInfoDTO.setAlias("a");
+		databaseInfoDTO.setHost("localhost");
+		databaseInfoDTO.setServerInforId(id);
+		
+		
+		Mockito.when(serverInfoRepository.findOne(id)).thenReturn(serverInfoEntity);
+				
+		DatabaseInfoDTO databaseInfoResult = databaseInfoService.save(databaseInfoDTO);
+		
+		assertNull(databaseInfoResult);
+	}
+	
+	@Test
+	public void testCreateDatabaseMysqlWithoutPassword() {
+		Long id = new Long(1);
+		databaseInfoDTO.setPort("8080");
+		databaseInfoDTO.setUsername("root");
+		databaseInfoDTO.setDatabaseName("webservice");
+		databaseInfoDTO.setDatabaseType("mysql");
+		databaseInfoDTO.setAlias("a");
+		databaseInfoDTO.setHost("localhost");
+		databaseInfoDTO.setServerInforId(id);
+		
+		
+		Mockito.when(serverInfoRepository.findOne(id)).thenReturn(serverInfoEntity);
+				
+		DatabaseInfoDTO databaseInfoResult = databaseInfoService.save(databaseInfoDTO);
+		
+		assertNull(databaseInfoResult);
+	}
+	
+	@Test
+	public void testCreateDatabaseMysqlWithoutDatabasename() {
+		Long id = new Long(1);
+		databaseInfoDTO.setPort("8080");
+		databaseInfoDTO.setUsername("root");
+		databaseInfoDTO.setPassword("123456");
+		databaseInfoDTO.setDatabaseType("mysql");
+		databaseInfoDTO.setAlias("a");
+		databaseInfoDTO.setHost("localhost");
+		databaseInfoDTO.setServerInforId(id);
+		
+		
+		Mockito.when(serverInfoRepository.findOne(id)).thenReturn(serverInfoEntity);
+				
+		DatabaseInfoDTO databaseInfoResult = databaseInfoService.save(databaseInfoDTO);
+		
+		assertNull(databaseInfoResult);
+	}
+	
+	@Test
+	public void testCreateDatabaseMysqlWithoutDatabasetype() {
+		Long id = new Long(1);
+		databaseInfoDTO.setPort("8080");
+		databaseInfoDTO.setUsername("root");
+		databaseInfoDTO.setPassword("123456");
+		databaseInfoDTO.setAlias("a");
+		databaseInfoDTO.setHost("localhost");
+		databaseInfoDTO.setServerInforId(id);
+		
+		
+		Mockito.when(serverInfoRepository.findOne(id)).thenReturn(serverInfoEntity);
+				
+		DatabaseInfoDTO databaseInfoResult = databaseInfoService.save(databaseInfoDTO);
+		
+		assertNull(databaseInfoResult);
+	}
+	
+	@Test
+	public void testCreateDatabaseMysqlWithoutHost() {
+		Long id = new Long(1);
+		databaseInfoDTO.setPort("8080");
+		databaseInfoDTO.setUsername("root");
+		databaseInfoDTO.setPassword("123456");
+		databaseInfoDTO.setAlias("a");
+		databaseInfoDTO.setServerInforId(id);
+		databaseInfoDTO.setDatabaseType("mysql");
+		
+		Mockito.when(serverInfoRepository.findOne(id)).thenReturn(serverInfoEntity);
+				
+		DatabaseInfoDTO databaseInfoResult = databaseInfoService.save(databaseInfoDTO);
+		
+		assertNull(databaseInfoResult);
+	}
+	
+	@Test
 	public void testCreateDatabasePostgresql() {
 		Long id = new Long(1);
+		databaseInfoDTO.setDatabaseType("postgresql");
+		
+		Mockito.when(serverInfoRepository.findOne(id)).thenReturn(serverInfoEntity);
+				
+		DatabaseInfoDTO databaseInfoResult = databaseInfoService.save(databaseInfoDTO);
+		
+		assertNull(databaseInfoResult);
+	}
+	
+	@Test
+	public void testCreateDatabasePostgresqlWithoutPort() {
+		Long id = new Long(1);
+		databaseInfoDTO.setUsername("root");
+		databaseInfoDTO.setPassword("123456");
+		databaseInfoDTO.setDatabaseName("webservice");
+		databaseInfoDTO.setDatabaseType("postgresql");
+		databaseInfoDTO.setAlias("a");
+		databaseInfoDTO.setHost("localhost");
+		databaseInfoDTO.setServerInforId(id);
+		
+		
+		Mockito.when(serverInfoRepository.findOne(id)).thenReturn(serverInfoEntity);
+				
+		DatabaseInfoDTO databaseInfoResult = databaseInfoService.save(databaseInfoDTO);
+		
+		assertNull(databaseInfoResult);
+	}
+	
+	@Test
+	public void testCreateDatabasePostgresqlWithoutUsername() {
+		Long id = new Long(1);
+		databaseInfoDTO.setPort("8080");
+		databaseInfoDTO.setPassword("123456");
+		databaseInfoDTO.setDatabaseName("webservice");
+		databaseInfoDTO.setDatabaseType("postgresql");
+		databaseInfoDTO.setAlias("a");
+		databaseInfoDTO.setHost("localhost");
+		databaseInfoDTO.setServerInforId(id);
+		
+		
+		Mockito.when(serverInfoRepository.findOne(id)).thenReturn(serverInfoEntity);
+				
+		DatabaseInfoDTO databaseInfoResult = databaseInfoService.save(databaseInfoDTO);
+		
+		assertNull(databaseInfoResult);
+	}
+	
+	@Test
+	public void testCreateDatabasePostgresqlWithoutPassword() {
+		Long id = new Long(1);
+		databaseInfoDTO.setPort("8080");
+		databaseInfoDTO.setUsername("root");
+		databaseInfoDTO.setDatabaseName("webservice");
+		databaseInfoDTO.setDatabaseType("postgresql");
+		databaseInfoDTO.setAlias("a");
+		databaseInfoDTO.setHost("localhost");
+		databaseInfoDTO.setServerInforId(id);
+		
+		
+		Mockito.when(serverInfoRepository.findOne(id)).thenReturn(serverInfoEntity);
+				
+		DatabaseInfoDTO databaseInfoResult = databaseInfoService.save(databaseInfoDTO);
+		
+		assertNull(databaseInfoResult);
+	}
+	
+	@Test
+	public void testCreateDatabasePostgresqlWithoutDatabasename() {
+		Long id = new Long(1);
+		databaseInfoDTO.setPort("8080");
+		databaseInfoDTO.setUsername("root");
+		databaseInfoDTO.setPassword("123456");
+		databaseInfoDTO.setDatabaseType("postgresql");
+		databaseInfoDTO.setAlias("a");
+		databaseInfoDTO.setHost("localhost");
+		databaseInfoDTO.setServerInforId(id);
+		
+		
+		Mockito.when(serverInfoRepository.findOne(id)).thenReturn(serverInfoEntity);
+				
+		DatabaseInfoDTO databaseInfoResult = databaseInfoService.save(databaseInfoDTO);
+		
+		assertNull(databaseInfoResult);
+	}
+	
+	@Test
+	public void testCreateDatabasePostgresqlWithoutDatabasetype() {
+		Long id = new Long(1);
+		databaseInfoDTO.setPort("8080");
+		databaseInfoDTO.setUsername("root");
+		databaseInfoDTO.setPassword("123456");
+		databaseInfoDTO.setAlias("a");
+		databaseInfoDTO.setHost("localhost");
+		databaseInfoDTO.setServerInforId(id);
+		
+		
+		Mockito.when(serverInfoRepository.findOne(id)).thenReturn(serverInfoEntity);
+				
+		DatabaseInfoDTO databaseInfoResult = databaseInfoService.save(databaseInfoDTO);
+		
+		assertNull(databaseInfoResult);
+	}
+	
+	@Test
+	public void testCreateDatabasePostgresqlWithoutHost() {
+		Long id = new Long(1);
+		databaseInfoDTO.setPort("8080");
+		databaseInfoDTO.setUsername("root");
+		databaseInfoDTO.setPassword("123456");
+		databaseInfoDTO.setAlias("a");
+		databaseInfoDTO.setServerInforId(id);
 		databaseInfoDTO.setDatabaseType("postgresql");
 		
 		Mockito.when(serverInfoRepository.findOne(id)).thenReturn(serverInfoEntity);
@@ -150,8 +401,137 @@ public class DatabaseInfoServiceTest{
 	}
 	
 	@Test
+	public void testCreateDatabaseOracleWithoutPort() {
+		Long id = new Long(1);
+		databaseInfoDTO.setUsername("root");
+		databaseInfoDTO.setPassword("123456");
+		databaseInfoDTO.setDatabaseName("webservice");
+		databaseInfoDTO.setDatabaseType("oracle");
+		databaseInfoDTO.setAlias("a");
+		databaseInfoDTO.setHost("localhost");
+		databaseInfoDTO.setServerInforId(id);
+		
+		
+		Mockito.when(serverInfoRepository.findOne(id)).thenReturn(serverInfoEntity);
+				
+		DatabaseInfoDTO databaseInfoResult = databaseInfoService.save(databaseInfoDTO);
+		
+		assertNull(databaseInfoResult);
+	}
+	
+	@Test
+	public void testCreateDatabaseOracleWithoutUsername() {
+		Long id = new Long(1);
+		databaseInfoDTO.setPort("8080");
+		databaseInfoDTO.setPassword("123456");
+		databaseInfoDTO.setDatabaseName("webservice");
+		databaseInfoDTO.setDatabaseType("oracle");
+		databaseInfoDTO.setAlias("a");
+		databaseInfoDTO.setHost("localhost");
+		databaseInfoDTO.setServerInforId(id);
+		
+		
+		Mockito.when(serverInfoRepository.findOne(id)).thenReturn(serverInfoEntity);
+				
+		DatabaseInfoDTO databaseInfoResult = databaseInfoService.save(databaseInfoDTO);
+		
+		assertNull(databaseInfoResult);
+	}
+	
+	@Test
+	public void testCreateDatabaseOracleWithoutPassword() {
+		Long id = new Long(1);
+		databaseInfoDTO.setPort("8080");
+		databaseInfoDTO.setUsername("root");
+		databaseInfoDTO.setDatabaseName("webservice");
+		databaseInfoDTO.setDatabaseType("oracle");
+		databaseInfoDTO.setAlias("a");
+		databaseInfoDTO.setHost("localhost");
+		databaseInfoDTO.setServerInforId(id);
+		
+		
+		Mockito.when(serverInfoRepository.findOne(id)).thenReturn(serverInfoEntity);
+				
+		DatabaseInfoDTO databaseInfoResult = databaseInfoService.save(databaseInfoDTO);
+		
+		assertNull(databaseInfoResult);
+	}
+	
+	@Test
+	public void testCreateDatabaseOracleWithoutDatabasename() {
+		Long id = new Long(1);
+		databaseInfoDTO.setPort("8080");
+		databaseInfoDTO.setUsername("root");
+		databaseInfoDTO.setPassword("123456");
+		databaseInfoDTO.setDatabaseType("oracle");
+		databaseInfoDTO.setAlias("a");
+		databaseInfoDTO.setHost("localhost");
+		databaseInfoDTO.setServerInforId(id);
+		
+		
+		Mockito.when(serverInfoRepository.findOne(id)).thenReturn(serverInfoEntity);
+				
+		DatabaseInfoDTO databaseInfoResult = databaseInfoService.save(databaseInfoDTO);
+		
+		assertNull(databaseInfoResult);
+	}
+	
+	@Test
+	public void testCreateDatabaseOracleWithoutDatabasetype() {
+		Long id = new Long(1);
+		databaseInfoDTO.setPort("8080");
+		databaseInfoDTO.setUsername("root");
+		databaseInfoDTO.setPassword("123456");
+		databaseInfoDTO.setAlias("a");
+		databaseInfoDTO.setHost("localhost");
+		databaseInfoDTO.setServerInforId(id);
+		
+		
+		Mockito.when(serverInfoRepository.findOne(id)).thenReturn(serverInfoEntity);
+				
+		DatabaseInfoDTO databaseInfoResult = databaseInfoService.save(databaseInfoDTO);
+		
+		assertNull(databaseInfoResult);
+	}
+	
+	@Test
+	public void testCreateDatabaseOracleWithoutHost() {
+		Long id = new Long(1);
+		databaseInfoDTO.setPort("8080");
+		databaseInfoDTO.setUsername("root");
+		databaseInfoDTO.setPassword("123456");
+		databaseInfoDTO.setAlias("a");
+		databaseInfoDTO.setServerInforId(id);
+		databaseInfoDTO.setDatabaseType("oracle");
+		
+		Mockito.when(serverInfoRepository.findOne(id)).thenReturn(serverInfoEntity);
+				
+		DatabaseInfoDTO databaseInfoResult = databaseInfoService.save(databaseInfoDTO);
+		
+		assertNull(databaseInfoResult);
+	}
+	
+	@Test
 	public void deleteDatabase() {
 		Long id = new Long(1);
+				
+		databaseInfoService.delete(id);
+		
+		verify(databaseInfoRepository, times(1)).delete(id);
+	}
+	
+	@Test
+	public void deleteDatabaseInfoWithZero() {
+		Long id = new Long(0);
+				
+		databaseInfoService.delete(id);
+		
+		verify(databaseInfoRepository, times(1)).delete(id);
+	}
+	
+	@Test
+	public void deleteServerInfoWithBoundaryLong() {
+		Long id = new Long(9223372036854775807L);
 				
 		databaseInfoService.delete(id);
 		

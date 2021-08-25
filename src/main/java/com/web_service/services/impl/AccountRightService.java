@@ -40,6 +40,7 @@ public class AccountRightService implements IAccountRightService{
 		for (long rightId : accountRightDTO.getRightIds()) {
 			RightEntity rightEntity = rightRepository.findOne(rightId);
 			AccountEntity accountEntity = accountRepository.findOne(accountRightDTO.getAccountId());
+			//Check right and account is exist
 			if(rightEntity != null && accountEntity != null) {
 				AccountRightEntity accountRightEntity = new AccountRightEntity();
 				accountRightEntity.setAccount(accountEntity);

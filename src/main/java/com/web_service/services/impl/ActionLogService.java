@@ -1,6 +1,10 @@
+
 package com.web_service.services.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +29,12 @@ public class ActionLogService  implements IActionLogService{
 	private MongoTemplate mongoTemplate;
 	
 	@Override
-	public List<ActionLogEntity> findAll(String username, String path,
-			String bodyRequest, String requestMethod,
-			Integer statusCode, Pageable pageable) {
-		Query query = new Query().with(pageable).with(new Sort(Sort.Direction.DESC, "create_time"));
+	public List<ActionLogEntity> findAll(String username, String startDate, String endDate, Pageable pageable) {
+		//Create query
+		Query query = new Query().with(pageable).with(new Sort(Sort.Direction.DESC, "created_at"));
 		
-		final List<Criteria> criteria = createFilter(username, path, bodyRequest, requestMethod, statusCode);		
+		//Add condition for query
+		final List<Criteria> criteria = createFilter(username, startDate, endDate);		
 
 		if(!criteria.isEmpty()) {
 			query.addCriteria(new Criteria().andOperator(criteria.toArray(new Criteria[0])));
@@ -42,10 +46,11 @@ public class ActionLogService  implements IActionLogService{
 	}
 
 	@Override
-	public int totalItem(String username, String path, String bodyRequest, String requestMethod, Integer statusCode) {
+	public int totalItem(String username, String startDate, String endDate) {
 		Query query = new Query();
-		final List<Criteria> criteria = createFilter(username, path, bodyRequest, requestMethod, statusCode);
+		final List<Criteria> criteria = createFilter(username, startDate, endDate);
 		
+		//Add condition for query
 		if(!criteria.isEmpty()) {
 			query.addCriteria(new Criteria().andOperator(criteria.toArray(new Criteria[0])));
 		}
@@ -55,27 +60,31 @@ public class ActionLogService  implements IActionLogService{
 		return totalItem;
 	}
 	
-	private List<Criteria> createFilter(String username, String path, String bodyRequest,
-			String requestMethod, Integer statusCode){
-		final List<Criteria> criteria = new ArrayList<>();		
+	private List<Criteria> createFilter(String username, String startDate, String endDate){
+		final List<Criteria> criteria = new ArrayList<>();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		if(username != null) {
 			criteria.add(Criteria.where("user_name").regex(username, "i"));
 		}
 		
-		if(path != null) {
-			criteria.add(Criteria.where("path").regex(path, "i"));
+		if(startDate != null) {
+			try {
+				Date startDateConvert = format.parse(startDate);
+				criteria.add(Criteria.where("created_at").gte(startDateConvert));
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
-		if(requestMethod != null) {
-			criteria.add(Criteria.where("request_method").regex(requestMethod, "i"));
-		}
-		
-		if(bodyRequest != null) {
-			criteria.add(Criteria.where("body_request").regex(bodyRequest, "i"));
-		}
-		
-		if(statusCode != null) {
-			criteria.add(Criteria.where("status_code").is(statusCode));
+		if(endDate != null) {
+			try {
+				Date endDateConvert = format.parse(endDate);
+				criteria.add(Criteria.where("created_at").lt(endDateConvert));
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		return criteria;

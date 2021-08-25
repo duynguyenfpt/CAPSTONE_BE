@@ -57,14 +57,17 @@ public class ETLService implements IETLService{
 		ETLEntity etlEntity = etlRequestRepository.findByRequestId(requestId);
 		contentETLRequestDTO.setContent("");
 		
+		//if query is processing
 		if(etlEntity.getStatus().equals("pending")){
 			contentETLRequestDTO.setContent("Executing query ...");
 		}
 		
+		//if query fail
 		if(etlEntity.getStatus().equals("failed")){
 			contentETLRequestDTO.setContent(etlEntity.getMessageFail());
 		}
 		
+		//if query success
 		if(etlEntity.getStatus().equals("successed")){
 			if(etlEntity.getResultPath() == null || etlEntity.getResultPath().isEmpty()) {
 				return contentETLRequestDTO;
@@ -88,15 +91,18 @@ public class ETLService implements IETLService{
 	public ETLRequestDTO save(ETLRequestDTO etlRequestDTO) {
 		ETLEntity etlEntity = new ETLEntity();
 		if (etlRequestDTO.getId() != null) {
+			//update etl request
 			ETLEntity oldEtlEntity = etlRequestRepository.findOne(etlRequestDTO.getId());
 			etlEntity = etlRequestConverter.toEntity(etlRequestDTO, oldEtlEntity);
 		} else {
 			final int MAX_RETRIES = 10;
 			
+			//create request
 			RequestEntity requestEntity = new RequestEntity();
 			requestEntity.setRequestType("ETLRequest");
 			requestEntity =  requestRepository.save(requestEntity);
 			
+			//create job
 			JobEntity jobEntity = new JobEntity();
 			jobEntity.setMaxRetries(MAX_RETRIES);
 			jobEntity.setRequest(requestEntity);
@@ -107,6 +113,7 @@ public class ETLService implements IETLService{
 			etlEntity = etlRequestConverter.toEntity(etlRequestDTO);
 			etlEntity.setRequest(requestEntity);
 		}
+		//create etl request
 		etlEntity = etlRequestRepository.save(etlEntity);
 		return etlRequestConverter.toDTO(etlEntity);
 	}
@@ -120,6 +127,7 @@ public class ETLService implements IETLService{
 	public List<ETLRequestDTO> findAll(Pageable pageable) {
 		List<ETLRequestDTO> results = new ArrayList<>();
 		List<ETLEntity> entities;
+		//get all etl request
 		entities = etlRequestRepository.findAll(pageable).getContent();
 		
 		for (ETLEntity item: entities) {
@@ -144,7 +152,7 @@ public class ETLService implements IETLService{
 	@Override
 	public void shareETLRequest(ShareETLRequestDTO shareETLRequestDTO) {
 		ETLEntity etlEntity = etlRequestRepository.findOne(shareETLRequestDTO.getRequestId());
-		
+		//Share etl request
 		for (Long accountId : shareETLRequestDTO.getAccountIds()) {
 			AccountEntity accountEntity = accountRepository.findOne(accountId);
 			
@@ -155,6 +163,7 @@ public class ETLService implements IETLService{
 
 	@Override
 	public List<ETLRequestDTO> getShareETLRequest(Long accountId) {
+		//get list share etl request
 		List<ETLRequestDTO> results = new ArrayList<>();
 		AccountEntity accountEntity = accountRepository.findOne(accountId);
 		List<ETLEntity> entities = accountEntity.getEtlRequest();
@@ -183,6 +192,7 @@ public class ETLService implements IETLService{
 			return false;
 		}
 		try {
+			//get file of etl request
 			hdfsService.getFile(etlEntity.getResultPath());
 		} catch (IOException e) {
 			return false;

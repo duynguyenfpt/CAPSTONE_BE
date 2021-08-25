@@ -22,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.web_service.converter.CurrentTableSchemaConverter;
 import com.web_service.dto.CurrentTableSchemaDTO;
+import com.web_service.dto.TableDTO;
 import com.web_service.entity.CurrentTableSchemaEntity;
 import com.web_service.repository.CurrentTableSchemaRepository;
 import com.web_service.services.impl.CurrentTableSchemaService;
@@ -94,4 +95,33 @@ public class CurrentTableSchemaServiceTest {
 		
 		assertTrue(result.getId() == 1);
 	}
+	
+	@Test
+	public void getCurrentTableSchemaByIdWithBoundary() {
+		Long id = new Long(9223372036854775807L);
+		
+		currentTableSchemaDTO.setId(id);
+		Mockito.when(currentTableSchemaRepository.findOne(id)).thenReturn(currentTableSchemaEntity);
+		
+		Mockito.when(currentTableSchemaConverter.toDTO(currentTableSchemaEntity)).thenReturn(currentTableSchemaDTO);
+		
+		CurrentTableSchemaDTO result = currentTableSchemaService.getById(id);
+		
+		assertTrue(result.getId() == 9223372036854775807L);
+	}
+	
+	@Test
+	public void getCurrentTableSchemaByIdWithZero() {
+		Long id = new Long(0);
+		
+		currentTableSchemaDTO.setId(id);
+		Mockito.when(currentTableSchemaRepository.findOne(id)).thenReturn(currentTableSchemaEntity);
+		
+		Mockito.when(currentTableSchemaConverter.toDTO(currentTableSchemaEntity)).thenReturn(currentTableSchemaDTO);
+		
+		CurrentTableSchemaDTO result = currentTableSchemaService.getById(id);
+		
+		assertTrue(result.getId() == 0);
+	}
+
 }

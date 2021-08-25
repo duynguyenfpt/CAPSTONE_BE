@@ -13,6 +13,7 @@ public class RightConverter {
 		RightEntity entity = new RightEntity();
 		entity.setMethod(dto.getMethod());
 		entity.setPath(dto.getPath());
+		entity.setDescription(dto.getDescription());
 		return entity;
 	}
 	
@@ -22,12 +23,14 @@ public class RightConverter {
 		dto.setId(entity.getId());
 		dto.setPath(entity.getPath());
 		dto.setMethod(entity.getMethod());
+		dto.setDescription(entity.getDescription());
 		return dto;
 	}
 	
 	public RightEntity toEntity(RightDTO dto, RightEntity entity) {
 		entity.setPath(dto.getPath());
 		entity.setMethod(dto.getMethod());
+		entity.setDescription(dto.getDescription());
 		return entity;
 	}
 }

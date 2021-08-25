@@ -44,4 +44,13 @@ public interface RightRepository extends JpaRepository<RightEntity, Long> {
 						+ "and r.deleted = false ",
 			nativeQuery = true)
     List<RightEntity> findRightByAccountId(long accountId);
+	
+	@Query(value = "SELECT * FROM rights "
+			+ "where path like %?1% "
+			+ "and deleted = false",
+			 countQuery = "SELECT * FROM rights "
+						+ "where path like %?1% "
+						+ "and deleted = false",
+			nativeQuery = true)
+    List<RightEntity> findRightByPath(String path);
 }

@@ -27,15 +27,13 @@ public class ActionLogAPI {
 	public ResponseEntity<ListObjOutput<ActionLogEntity>> getAllNotes(@RequestParam("page") int page,
 			@RequestParam("limit") int limit,
 			@RequestParam(required = false) String username, 
-			@RequestParam(required = false) String path,
-			@RequestParam(required = false) String bodyRequest,
-			@RequestParam(required = false) String requestMethod,
-			@RequestParam(required = false) Integer statusCode) {
+			@RequestParam(required = false) String startDate,
+			@RequestParam(required = false) String endDate) {
 		ListObjOutput<ActionLogEntity> result = new ListObjOutput<ActionLogEntity>();
 		try {
 			Pageable pageable = new PageRequest(page - 1, limit);
-			result.setData(actionLogService.findAll(username, path, bodyRequest, requestMethod, statusCode, pageable));
-			int totalItem = actionLogService.totalItem(username, path, bodyRequest, requestMethod, statusCode);
+			result.setData(actionLogService.findAll(username, startDate, endDate, pageable));
+			int totalItem = actionLogService.totalItem(username, startDate, endDate);
 			int totalPage = (int) Math.ceil((double) (totalItem) / limit);
 			result.setMetaData(new PagingOutput(totalPage, totalItem));
 			result.setCode("200");

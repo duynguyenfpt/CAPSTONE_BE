@@ -40,10 +40,14 @@ public class DatabaseInfoService implements IDatabaseInfoService {
 	public DatabaseInfoDTO save(DatabaseInfoDTO databaseInfoDTO ) {
 		DatabaseInfoEntity databaseInfoEntity = new DatabaseInfoEntity();
 		if (databaseInfoDTO.getId() != null) {
+			//Update database infor
 			DatabaseInfoEntity oldDatabaseInfoEntity = databaseInfoRepository.findOne(databaseInfoDTO.getId());
 			databaseInfoEntity = databaseInfoConverter.toEntity(databaseInfoDTO, oldDatabaseInfoEntity);
 		} else {
+			//Create database infor
 			boolean trackingConnection = trackingConnection(databaseInfoDTO);
+			
+			//If connection success to create
 			if(trackingConnection) {
 				databaseInfoEntity = databaseInfoConverter.toEntity(databaseInfoDTO);
 			}else {
@@ -69,8 +73,10 @@ public class DatabaseInfoService implements IDatabaseInfoService {
 		List<DatabaseInfoDTO> results = new ArrayList<>();
 		List<DatabaseInfoEntity> entities;
 		if(keyword.isEmpty()) {
+			//Get all database
 			entities = databaseInfoRepository.findAll(pageable).getContent();
 		}else {
+			//Search database
 			entities = databaseInfoRepository.search(keyword, pageable).getContent();
 		}
 		for (DatabaseInfoEntity item: entities) {
@@ -91,6 +97,7 @@ public class DatabaseInfoService implements IDatabaseInfoService {
 
 	@Override
 	public DatabaseInfoDTO getById(long id) {
+		//Get database infor by id
 		DatabaseInfoEntity databaseInfoEntity = databaseInfoRepository.findOne(id);
 		DatabaseInfoDTO databaseInfoDTO = databaseInfoConverter.toDTO(databaseInfoEntity);
 		return databaseInfoDTO;
@@ -111,21 +118,25 @@ public class DatabaseInfoService implements IDatabaseInfoService {
 		try {
 			switch (databaseInfoDTO.getDatabaseType()) {
 			case "mysql":
+				//check connection with mysql
 				URL = "jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASENAME +"?useSSL=false&serverTimezone=UTC";
 				conn = DriverManager.getConnection(URL, USER, PASS);
 
 				break;
 			case "postgresql":
+				//check connection with postgresql
 				URL = "jdbc:postgresql://" + HOST + ":" + PORT + "/" + DATABASENAME;
 				conn = DriverManager.getConnection(URL, USER, PASS);
 
 				break;
 			case "oracle":
+				//check connection with oracle
 				Class.forName("oracle.jdbc.driver.OracleDriver");
 	            conn = DriverManager.getConnection(String.format("jdbc:oracle:thin:%s/%s@%s:%s:%s", USER, PASS, HOST, PORT, SID));
 
 				break;
 			default:
+				
 				trackingConnection = false;
 			}
 			
@@ -139,6 +150,8 @@ public class DatabaseInfoService implements IDatabaseInfoService {
 			trackingConnection = false;
 		} catch (Exception e) {
 			trackingConnection = false;
+		} finally {
+			
 		}
 		
 		return trackingConnection;

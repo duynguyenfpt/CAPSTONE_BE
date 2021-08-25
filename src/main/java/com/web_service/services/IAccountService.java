@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import com.web_service.dto.AccountDTO;
 import com.web_service.dto.AccountRightDTO;
 import com.web_service.dto.ServerInfoDTO;
+import com.web_service.entity.AccountEntity;
 
 public interface IAccountService {
 	List<AccountDTO> findAll(String keyword, Pageable pageable);
@@ -17,4 +18,5 @@ public interface IAccountService {
 	AccountDTO findByUserName(String username);
 	void createAccountWithRights(AccountRightDTO accountRightDTO);
 	void forgotPassword(String username);
+	AccountEntity findByUserNameEntity(String username);
 }

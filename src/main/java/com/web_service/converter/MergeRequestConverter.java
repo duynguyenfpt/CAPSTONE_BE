@@ -9,7 +9,7 @@ import com.web_service.entity.MergeRequestEntity;
 public class MergeRequestConverter {
 	public MergeRequestEntity toEntity(MergeRequestDTO dto) {
 		MergeRequestEntity entity = new MergeRequestEntity();
-		entity.setCurrentMetadata(dto.getCurrentMetadata());
+		entity.setLatestMetadata(dto.getLatestMetadata());
 		entity.setMergeTableName(dto.getMergeTableName());
 		
 		return entity;
@@ -31,7 +31,7 @@ public class MergeRequestConverter {
 	}
 	
 	public MergeRequestEntity toEntity(MergeRequestDTO dto, MergeRequestEntity entity) {
-		entity.setCurrentMetadata(dto.getCurrentMetadata());
+		entity.setLatestMetadata(dto.getLatestMetadata());
 		
 		return entity;
 	}

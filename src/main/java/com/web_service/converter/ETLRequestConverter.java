@@ -25,6 +25,7 @@ public class ETLRequestConverter {
 		dto.setQuery(entity.getQuery());
 		dto.setQueryType(entity.getQueryType());
 		dto.setRequest(requestConvertor.toDTO(entity.getRequest()));
+		dto.setCreatedDate(entity.getCreatedDate());
 		
 		return dto;
 	}

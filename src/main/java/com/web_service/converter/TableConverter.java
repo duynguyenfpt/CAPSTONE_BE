@@ -10,6 +10,7 @@ public class TableConverter {
 	public TableEntity toEntity(TableDTO dto) {
 		TableEntity entity = new TableEntity();
 		entity.setTableName(dto.getTableName());
+		entity.setDefaultKey(dto.getDefaultKey());
 		return entity;
 	}
 	
@@ -19,6 +20,7 @@ public class TableConverter {
 		if(entity.getId() != null) {
 			dto.setId(entity.getId());
 		}
+		dto.setDefaultKey(entity.getDefaultKey());
 		dto.setDatabaseInforId(entity.getDatabaseInfo().getId());
 		dto.setTableName(entity.getTableName());
 		dto.setCurrentTableSchemas(entity.getCurrentTableSchemaEntities());
@@ -31,6 +33,7 @@ public class TableConverter {
 	}
 	public TableEntity toEntity(TableDTO dto, TableEntity entity) {
 		entity.setTableName(dto.getTableName());
+		entity.setDefaultKey(dto.getDefaultKey());
 		return entity;
 	}
 }

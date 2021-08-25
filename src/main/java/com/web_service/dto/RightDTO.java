@@ -3,6 +3,7 @@ package com.web_service.dto;
 public class RightDTO extends AbstractDTO<RightDTO>{
 	private String path;
 	private String method;
+	private String description;
 	
 	public String getPath() {
 		return path;
@@ -15,5 +16,11 @@ public class RightDTO extends AbstractDTO<RightDTO>{
 	}
 	public void setMethod(String method) {
 		this.method = method;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }

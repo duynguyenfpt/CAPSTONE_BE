@@ -33,12 +33,15 @@ public class NoteService implements INoteService{
 	public NoteDTO save(NoteDTO noteDTO) {
 		NoteEntity noteEntity = new NoteEntity();
 		if (noteDTO.getId() != null) {
+			//update note for request
 			NoteEntity oldNoteEntity = noteRepository.findById(noteDTO.getId());
 			noteEntity = noteConvertor.toEntity(noteDTO, oldNoteEntity);
 		} else {
+			//create note for request
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			noteEntity = noteConvertor.toEntity(noteDTO);
 			noteEntity.setCreatedBy(auth.getName());
+			noteEntity.setCreatedAt(new Date());
 		}
 
 		noteEntity = noteRepository.save(noteEntity);
@@ -47,6 +50,7 @@ public class NoteService implements INoteService{
 
 	@Override
 	public List<NoteDTO> findAll(Pageable pageable) {
+		//get all note
 		List<NoteDTO> results = new ArrayList<>();
 		List<NoteEntity> entities = noteRepository.findAll(pageable).getContent();
 		for (NoteEntity item: entities) {
@@ -63,6 +67,7 @@ public class NoteService implements INoteService{
 
 	@Override
 	public NoteDTO getById(ObjectId id) {
+		//get note by id
 		NoteEntity noteEntity = noteRepository.findById(id);
 		NoteDTO noteDTO = noteConvertor.toDTO(noteEntity);
 		return noteDTO;
@@ -76,6 +81,7 @@ public class NoteService implements INoteService{
 
 	@Override
 	public List<NoteDTO> findAllByRequestId(long requestId, Pageable pageable) {
+		//get note by request
 		List<NoteDTO> results = new ArrayList<>();
 		List<NoteEntity> entities = noteRepository.findByRequestId(requestId, pageable).getContent();
 		for (NoteEntity item: entities) {
