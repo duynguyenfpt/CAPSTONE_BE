@@ -48,8 +48,7 @@ public class ETLEntity{
 	private String messageFail;
 	
 	@Column(name="created_date")
-	@CreatedDate
-	private Date createdDate;
+	private Date createdDate = new Date();
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinTable(name = "share_etl_requests", joinColumns = {

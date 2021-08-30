@@ -29,7 +29,6 @@ public class DatabaseInfoService implements IDatabaseInfoService {
 	@Autowired
 	private DatabaseInfoRepository databaseInfoRepository;
 	
-	
 	@Autowired
 	private ServerInfoRepository serverInfoRepository;
 	
@@ -157,4 +156,49 @@ public class DatabaseInfoService implements IDatabaseInfoService {
 		return trackingConnection;
 	}
 
+	@Override
+	public String getAlias(DatabaseInfoDTO databaseInfoDTO) {		
+		DatabaseInfoEntity databaseInfoEntity = databaseInfoRepository.getByServerInforAndPort(databaseInfoDTO.getServerInforId(), databaseInfoDTO.getPort());
+		
+		if(databaseInfoEntity == null) {
+			return "";
+		}
+		return databaseInfoEntity.getAlias();
+	}
+
+	@Override
+	public boolean isExistAlias(DatabaseInfoDTO databaseInfoDTO) {
+		List<DatabaseInfoEntity> listDatabaseInfoEntity = databaseInfoRepository.getByAlias(databaseInfoDTO.getAlias());
+		
+		boolean existAlias = false;
+		if(databaseInfoDTO.getId() != null) {
+			existAlias =  listDatabaseInfoEntity.stream()
+					.anyMatch(e -> (databaseInfoDTO.getAlias().equals(e.getAlias()) && !e.getId().equals(databaseInfoDTO.getId())));
+			
+		} else {
+			if(listDatabaseInfoEntity.size() > 0) existAlias = true;
+		}
+		
+		return existAlias;
+	}
+	
+	@Override
+	public boolean checkExistPort(DatabaseInfoDTO databaseInfoDTO) {
+		boolean existPort = false;
+		if(databaseInfoDTO.getId() != null) {
+			DatabaseInfoEntity databaseInfoEntity = databaseInfoRepository.findOne(databaseInfoDTO.getId());
+			ServerInfoEntity serverInfoEntity = databaseInfoEntity.getServerInfo();
+			List<DatabaseInfoEntity> listDatabaseInfoEntity = serverInfoEntity.getDatabaseInfoes();
+			existPort =  listDatabaseInfoEntity.stream()
+					.anyMatch(e -> (databaseInfoDTO.getPort().equals(e.getPort()) && !e.getId().equals(databaseInfoDTO.getId())));
+			
+		} else {
+			ServerInfoEntity serverInfoEntity = serverInfoRepository.findOne(databaseInfoDTO.getServerInforId());
+			List<DatabaseInfoEntity> listDatabaseInfoEntity = serverInfoEntity.getDatabaseInfoes();
+			existPort =  listDatabaseInfoEntity.stream()
+					.anyMatch(e -> (databaseInfoDTO.getPort().equals(e.getPort())));
+		}
+		
+		return existPort;
+	}
 }

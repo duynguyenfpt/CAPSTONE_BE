@@ -14,4 +14,5 @@ public interface IServerInfoService {
 //	List<NewDTO> findAll();
 	int totalItem(String keyword);
 	ServerInfoDTO getById(long id);
+	boolean isDuplicateHostAndDomain(ServerInfoDTO serverInfoDTO);
 }

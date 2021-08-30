@@ -81,18 +81,26 @@ public class ServerInfoAPI {
 	public ResponseEntity<ObjectOuput<ServerInfoDTO>> createServerInfo(@RequestBody ServerInfoDTO model) {
 		ObjectOuput<ServerInfoDTO> result = new ObjectOuput<ServerInfoDTO>();
 		try {
-			serverInfoService.save(model);
-			
-			result.setCode("201");
-			
-			return new ResponseEntity<ObjectOuput<ServerInfoDTO>>(result, HttpStatus.CREATED);
+			boolean isDuplicateHostAndDomain = serverInfoService.isDuplicateHostAndDomain(model);
+			if(!isDuplicateHostAndDomain) {
+				serverInfoService.save(model);
+				
+				result.setCode("201");
+				result.setMessage("Create server infor successfully");
+				
+				return new ResponseEntity<ObjectOuput<ServerInfoDTO>>(result, HttpStatus.CREATED);
+			}else {
+				result.setCode("422");
+				result.setMessage("Host or port is exist");
+				
+				return new ResponseEntity<ObjectOuput<ServerInfoDTO>>(result, HttpStatus.UNPROCESSABLE_ENTITY);
+			}
 		}catch (Exception e) {
 			result.setMessage("Can not create data");
 			result.setCode("500");
 			
 			return new ResponseEntity<ObjectOuput<ServerInfoDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-				
+		}				
 	}
 
 	@PutMapping(value = "/api/server_infors/{id}")
@@ -100,10 +108,19 @@ public class ServerInfoAPI {
 		ObjectOuput<ServerInfoDTO> result = new ObjectOuput<ServerInfoDTO>();
 		try {
 			model.setId(id);
-			serverInfoService.save(model);
-			result.setCode("200");
-			
-			return new ResponseEntity<ObjectOuput<ServerInfoDTO>>(result, HttpStatus.OK);
+			boolean isDuplicateHostAndDomain = serverInfoService.isDuplicateHostAndDomain(model);
+			if(isDuplicateHostAndDomain) {
+				result.setCode("422");
+				result.setMessage("Host or port is exist");
+				
+				return new ResponseEntity<ObjectOuput<ServerInfoDTO>>(result, HttpStatus.UNPROCESSABLE_ENTITY);
+			}else {
+				serverInfoService.save(model);
+				result.setCode("200");
+				result.setMessage("Update server infor successfully");
+				
+				return new ResponseEntity<ObjectOuput<ServerInfoDTO>>(result, HttpStatus.OK);
+			}
 		}catch (NullPointerException e) {
 			result.setMessage("Not found record");
 			result.setCode("404");
@@ -115,8 +132,6 @@ public class ServerInfoAPI {
 			
 			return new ResponseEntity<ObjectOuput<ServerInfoDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
-		
 	}
 	
 	@DeleteMapping(value = "/api/server_infors/{id}")

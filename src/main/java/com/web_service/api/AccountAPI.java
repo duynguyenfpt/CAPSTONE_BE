@@ -146,6 +146,21 @@ public class AccountAPI {
 		return new ResponseEntity<ListObjOutput<AccountDTO>>(result, HttpStatus.OK);
 	}
 	
+	@GetMapping(value = "/api/list_account")
+	public ResponseEntity<ListObjOutput<AccountDTO>> showAccountOnlyName(@RequestParam("page") int page,
+								@RequestParam("limit") int limit) {
+		
+		ListObjOutput<AccountDTO> result = new ListObjOutput<AccountDTO>();
+		Pageable pageable = new PageRequest(page - 1, limit);
+		result.setData(accountService.getAccountActive(pageable));
+		int totalPage = (int) Math.ceil((double) (accountService.totalItemAccountActive()) / limit);
+		int totalItem = accountService.totalItemAccountActive();
+		result.setMetaData(new PagingOutput(totalPage, totalItem));
+		result.setCode("200");
+
+		return new ResponseEntity<ListObjOutput<AccountDTO>>(result, HttpStatus.OK);
+	}
+	
 	@PostMapping(value = "/api/accounts/{id}/reset_password")
 	public ResponseEntity<ObjectOuput<AccountDTO>> resetPassword(@PathVariable("id") long id) {
 		ObjectOuput<AccountDTO> result = new ObjectOuput<AccountDTO>();

@@ -133,7 +133,7 @@ public class TableAPI {
 		try {
 			model.setId(id);
 			tableService.save(model);
-			
+			result.setMessage("Update data success");
 			result.setCode("200");
 			
 			return new ResponseEntity<ObjectOuput<TableDTO>>(result, HttpStatus.OK);	

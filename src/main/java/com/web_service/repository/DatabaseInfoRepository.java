@@ -1,5 +1,7 @@
 package com.web_service.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -44,5 +46,27 @@ public interface DatabaseInfoRepository extends JpaRepository<DatabaseInfoEntity
 	        nativeQuery = true
 	)
     int search(String keyword);
+	
+	@Query(value = "select * from database_infos " +
+			"where (deleted = false ) " +
+	        "and server_info_id = ?1  " +
+	        "and port = ?2",
+	        countQuery =  "select * from database_infos " +
+	    			"where (deleted = false ) " +
+	    	        "and server_info_id = ?1  " +
+	    	        "and port = ?2",
+	        nativeQuery = true
+	)
+    DatabaseInfoEntity getByServerInforAndPort(Long serverInfoId, String port);
+	
+	@Query(value = "select * from database_infos " +
+			"where (deleted = false ) " +
+	        "and alias = ?1 ",
+	        countQuery = "select * from database_infos " +
+	    			"where (deleted = false ) " +
+	    	        "and alias = ?1",
+	        nativeQuery = true
+	)
+    List<DatabaseInfoEntity> getByAlias(String alias);
 }
 	

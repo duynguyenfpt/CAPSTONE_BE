@@ -17,4 +17,7 @@ public interface IDatabaseInfoService {
 	int totalItem(String keyword);
 	DatabaseInfoDTO getById(long id);
 	boolean trackingConnection(DatabaseInfoDTO databaseInfoDTO);
+	String getAlias(DatabaseInfoDTO databaseInfoDTO);
+	boolean isExistAlias(DatabaseInfoDTO databaseInfoDTO);
+	boolean checkExistPort(DatabaseInfoDTO databaseInfoDTO);
 }

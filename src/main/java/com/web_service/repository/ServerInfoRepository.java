@@ -1,5 +1,7 @@
 package com.web_service.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -30,4 +32,18 @@ public interface ServerInfoRepository extends JpaRepository<ServerInfoEntity, Lo
 	)
     int countServerInfo(String keyword);
 	
+	
+	@Query(value ="select * from server_infos " +
+	        "where server_domain LIKE ?1 " +
+	        "and deleted = false ",
+	        nativeQuery = true
+	)
+    List<ServerInfoEntity> findByServerDomain(String serverDomain);
+	
+	@Query(value ="select * from server_infos " +
+	        "where server_host LIKE ?1 " +
+	        "and deleted = false ",
+	        nativeQuery = true
+	)
+	List<ServerInfoEntity> findByServerHost(String serverHost);
 }

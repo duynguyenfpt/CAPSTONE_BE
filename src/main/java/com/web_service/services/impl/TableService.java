@@ -36,9 +36,9 @@ public class TableService implements ITableService {
 		} else {
 			//create table infor
 			tableEntity = tableConverter.toEntity(tableDTO);
+			DatabaseInfoEntity databaseInfoEntity = databaseInfoRepository.findOne(tableDTO.getDatabaseInforId());
+			tableEntity.setDatabaseInfo(databaseInfoEntity);
 		}
-		DatabaseInfoEntity databaseInfoEntity = databaseInfoRepository.findOne(tableDTO.getDatabaseInforId());
-		tableEntity.setDatabaseInfo(databaseInfoEntity);
 		tableEntity = tableRepository.save(tableEntity);
 		return tableConverter.toDTO(tableEntity);
 	}

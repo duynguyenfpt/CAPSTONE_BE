@@ -14,6 +14,7 @@ public class RequestDTO extends AbstractDTO<RequestDTO>{
 	private String partitionBy;
 	private String identityId;
 	private long[] columnIds;
+	private String description;
 
 	
 	public long[] getColumnIds() {
@@ -84,5 +85,11 @@ public class RequestDTO extends AbstractDTO<RequestDTO>{
 	}
 	public void setIdentityId(String identityId) {
 		this.identityId = identityId;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }

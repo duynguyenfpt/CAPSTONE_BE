@@ -19,4 +19,6 @@ public interface IAccountService {
 	void createAccountWithRights(AccountRightDTO accountRightDTO);
 	void forgotPassword(String username);
 	AccountEntity findByUserNameEntity(String username);
+	List<AccountDTO> getAccountActive(Pageable pageable);
+	int totalItemAccountActive();
 }

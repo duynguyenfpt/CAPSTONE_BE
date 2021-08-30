@@ -68,4 +68,32 @@ public class ServerInfoService implements IServerInfoService {
 		ServerInfoDTO serverInfoDTO = serverInfoConverter.toDTO(serverInfoEntity);
 		return serverInfoDTO;
 	}
+
+	@Override
+	public boolean isDuplicateHostAndDomain(ServerInfoDTO serverInfoDTO) {
+		List<ServerInfoEntity> hostEntity = serverInfoRepository.findByServerHost(serverInfoDTO.getServerHost());
+		List<ServerInfoEntity> domainEntity = serverInfoRepository.findByServerDomain(serverInfoDTO.getServerDomain());
+		
+		if(serverInfoDTO.getId() == null && (hostEntity.size() > 0 || domainEntity.size() > 0)) {
+			return true;
+		}
+		
+		if(serverInfoDTO.getId() != null) {
+			if(hostEntity.size() > 0) {
+				for (ServerInfoEntity serverInfoEntity : hostEntity) {
+					if(!serverInfoEntity.getId().equals(serverInfoDTO.getId()) && serverInfoEntity.getServerHost().equals(serverInfoDTO.getServerHost())) {
+						return true;
+					}
+				}
+			}
+			
+			if(domainEntity.size() > 0) {
+				for (ServerInfoEntity serverInfoEntity : domainEntity) {
+					if(!serverInfoEntity.getId().equals(serverInfoDTO.getId()) && 
+							serverInfoEntity.getServerDomain().equals(serverInfoDTO.getServerDomain())) return true;
+				}
+			}
+		}
+		return false;
+	}
 }

@@ -27,6 +27,9 @@ public class RequestEntity extends BaseEntity {
 	@Column
 	private String requestType;
 	
+	@Column
+	private String description;
+	
     @JoinColumn(name = "approved_by")
     private String approvedBy;
 	
@@ -76,6 +79,12 @@ public class RequestEntity extends BaseEntity {
 	public void setRequestType(String requestType) {
 		this.requestType = requestType;
 	}
-	
-	
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 }

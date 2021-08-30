@@ -15,4 +15,5 @@ public interface IRightService {
 	int totalItemSearch(String keyword);
 	RightDTO getById(Long id);
 	void delete(Long id);
+	boolean checkPermission(RightDTO rightDTO);
 }

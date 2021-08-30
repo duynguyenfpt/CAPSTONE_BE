@@ -14,5 +14,9 @@ public interface AccountRightRepository extends JpaRepository<AccountRightEntity
 			nativeQuery = true)
 	void deleteRight(Long accountId, Long rightId);
 	
+	@Query(value = "select account_right.* from account_right inner join "
+			+ "rights on rights.id = account_right.right_id "
+			+ "where rights.deleted = false and account_right.account_id = ?1",
+			nativeQuery = true)
 	List<AccountRightEntity> findAllByAccountId(Long accountId);
 }
