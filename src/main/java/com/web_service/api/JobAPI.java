@@ -128,7 +128,6 @@ public class JobAPI {
 			
 			return new ResponseEntity<ObjectOuput<JobDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
 	}
 	
 	@GetMapping(value = "/api/jobs/{job_id}/job_detail")
@@ -145,6 +144,27 @@ public class JobAPI {
 			result.setMessage("Can not get job detail");
 
 			return new ResponseEntity<ListObjOutput<JobDetailDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@PostMapping(value = "/api/jobs/{job_id}/reset_job")
+	public ResponseEntity<ObjectOuput<JobDTO>> resetJob(@PathVariable("job_id") Long jobId) {
+		ObjectOuput<JobDTO> result = new ObjectOuput<JobDTO>();
+		try {
+			jobService.resetJob(jobId);
+			result.setCode("200");
+			
+			return new ResponseEntity<ObjectOuput<JobDTO>>(result, HttpStatus.CREATED);
+		}catch (NullPointerException e) {
+			result.setMessage("Not found record");
+			result.setCode("404");
+			
+			return new ResponseEntity<ObjectOuput<JobDTO>>(result, HttpStatus.NOT_FOUND);
+		}catch (Exception e) {
+			result.setMessage("Can not create data");
+			result.setCode("500");
+			
+			return new ResponseEntity<ObjectOuput<JobDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }

@@ -75,19 +75,19 @@ public class ColumnService implements IColumnService{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}else if (databaseType.equals("oracal")) {
-			//Get column with oracal
-			Connection connection = getConnectionOracle(getConnectionOracleString(databaseInfoEntity.getUsername(),
-					databaseInfoEntity.getPassword(), serverInfoEntity.getServerHost(),
-					databaseInfoEntity.getPort(), databaseInfoEntity.getSid()));
+		}else if (databaseType.equals("oracle")) {
+			//Get column with oracle
+			Connection connection = getConnectionOracle(getConnectionOracleString(serverInfoEntity.getServerHost(),
+					databaseInfoEntity.getPort(), databaseInfoEntity.getUsername(),
+					databaseInfoEntity.getPassword(), databaseInfoEntity.getSid()));
 			
 			try {
 				Statement statement = connection.createStatement();
-				ResultSet rs = statement.executeQuery(String.format("select COLUMN_NAME from ALL_TAB_COLUMNS where TABLE_NAME = '%s';", 
-						tableEntity.getTableName()));
+				ResultSet rs = statement.executeQuery(String.format("select COLUMN_NAME from ALL_TAB_COLUMNS where TABLE_NAME = '%s'", 
+						tableEntity.getTableName().toUpperCase()));
 				
 				while (rs.next()) {
-					result.add(rs.getString("COLUMN_NAME"));
+					result.add(rs.getString("COLUMN_NAME").toLowerCase());
 				}
 				
 				connection.close();
@@ -116,6 +116,7 @@ public class ColumnService implements IColumnService{
 	
 	public static String getConnectionOracleString(String host, String port, String username,
 			String password, String sid) {
+
 		return String.format(
 				"jdbc:oracle:thin:%s/%s@%s:%s:%s", username, password, host, port, sid);
 	}

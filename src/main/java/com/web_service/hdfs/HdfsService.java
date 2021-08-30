@@ -67,19 +67,23 @@ public class HdfsService {
 		try {
 			FileSystem fs = FileSystem.get(conf);
 			// Input file path
-			Path inFile = new Path(path);			
+			Path inFile = new Path(path);
+			System.out.println("path:" + path);
 			// Check if file exists at the given location
 			if (!fs.exists(inFile)) {
+				System.out.println("Input file not found:" + path);
+
 				throw new IOException("Input file not found");
 			}
 			OutputStream os = new ByteArrayOutputStream();
+			System.out.println("Start open file");
+
 			in = fs.open(inFile);
+			System.out.println("Open file oke");
 
 			IOUtils.copyBytes(in, os, 512, false);
 			String content = os.toString();
 			
-			System.out.println("1");
-
 			// Check if file exists at the given location
 			String fileName = "/home/public/data.txt";
 			File targetFile = new File(fileName);
@@ -89,6 +93,7 @@ public class HdfsService {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(targetFile));
 			
 			writer.write(content);
+			System.out.println("write content success");
 			writer.flush();
 			writer.close();
 		} catch (IOException e) {

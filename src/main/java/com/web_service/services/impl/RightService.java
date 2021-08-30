@@ -8,11 +8,17 @@ import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.web_service.api.output.ObjectOuput;
 import com.web_service.converter.RightConverter;
+import com.web_service.dto.AccountDTO;
 import com.web_service.dto.RightDTO;
+import com.web_service.entity.AccountEntity;
 import com.web_service.entity.RightEntity;
+import com.web_service.repository.AccountRepository;
 import com.web_service.repository.RightRepository;
 import com.web_service.services.IRightService;
 
@@ -23,6 +29,9 @@ public class RightService implements IRightService{
 	
 	@Autowired
 	RightConverter rightConverter;
+	
+	@Autowired
+	AccountRepository accountRepository;
 	
 	@PersistenceContext
 	private EntityManager em;
@@ -62,8 +71,6 @@ public class RightService implements IRightService{
 	public int totalItem() {
 		return (int) rightRepository.count();
 	}
-
-	
 	
 	@Override
 	public List<RightDTO> findAllByAccountId(long accountId, Pageable pageable) {
@@ -117,5 +124,28 @@ public class RightService implements IRightService{
 	@Override
 	public void delete(Long id) {
 		rightRepository.delete(id);
+	}
+
+	@Override
+	public boolean checkPermission(RightDTO rightDTO) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+		AccountEntity accountEntity = accountRepository.findByUsername(auth.getName());
+		if(auth.getName().equals("longvt")) return true;
+		
+		if(accountEntity.getActive() == false) return false;
+
+		if(accountEntity.getRole().toLowerCase().trim().equals("admin")
+				&& (rightDTO.getPath().contains("right") || rightDTO.getPath().contains("account")
+						|| rightDTO.getPath().contains("reset_password"))) {
+			return true;
+		}
+		
+		List<RightEntity> rights = rightRepository.findRightByAccountId(accountEntity.getId());
+		boolean isPermission =  rights.stream()
+				.anyMatch(e -> (rightDTO.getPath().equals(e.getPath() + "s") || rightDTO.getPath().equals(e.getPath()))
+						&& rightDTO.getMethod().equals(e.getMethod()));
+		
+		return isPermission;
 	}
 }

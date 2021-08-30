@@ -1,5 +1,7 @@
 package com.web_service.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -34,4 +36,20 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Long> {
 	        nativeQuery = true
 	)
     int countAccount(String keyword);
+	
+	@Query(value = "select * from accounts " +
+	        "where active = true " +
+	        "ORDER BY username ASC \n#pageable\n" ,
+	        countQuery = "select * from accounts " +
+	    	        "wher active = true " +
+	    	        "ORDER BY username ASC \n#pageable\n" ,
+	        nativeQuery = true
+	)
+    Page<AccountEntity> getAllAccountActive(Pageable pageable);
+	
+	@Query(value = "select COUNT(*) from accounts " +
+	        "where active = true ",
+	        nativeQuery = true
+	)
+    int countAccountActive();
 }

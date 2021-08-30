@@ -38,4 +38,19 @@ public interface JobRepository extends JpaRepository<JobEntity, Long>{
 	        nativeQuery = true
 	)
     int countJob(String keyword);
+	
+	@Query(value ="select COUNT(*) from jobs " +
+	        "where status = ?1  " +
+	        "and deleted = false ",
+	        nativeQuery = true
+	)
+    int countJobByStatus(String status);
+	
+	@Query(value = "select COUNT(*) from jobs " +
+	        "where created_date LIKE %?1% " +
+	        "and status LIKE %?2% " +
+	        "and deleted = false ",
+	        nativeQuery = true
+	)
+    int countJobByCreatedDate(String createdDate, String status);
 }

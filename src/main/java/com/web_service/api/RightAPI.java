@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.web_service.api.output.ListObjOutput;
 import com.web_service.api.output.ObjectOuput;
 import com.web_service.api.output.PagingOutput;
+import com.web_service.dto.BooleanDTO;
 import com.web_service.dto.DatabaseInfoDTO;
 import com.web_service.dto.RightDTO;
 import com.web_service.dto.ServerInfoDTO;
@@ -164,6 +165,30 @@ public class RightAPI {
 			result.setCode("500");
 			
 			return new ResponseEntity<ObjectOuput<RightDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@PostMapping(value = "/api/check_permission")
+	public ResponseEntity<ObjectOuput<BooleanDTO>> checkPermission(@RequestBody RightDTO model) {
+		ObjectOuput<BooleanDTO> result = new ObjectOuput<BooleanDTO>();
+		try {
+			boolean isPermission = rightService.checkPermission(model);
+			BooleanDTO booleanDTO = new BooleanDTO();
+			booleanDTO.setSuccess(isPermission);
+			
+			result.setData(booleanDTO);
+			if(isPermission) {
+				result.setMessage("Success");
+			} else {
+				result.setMessage("Permission denied");
+			}
+			result.setCode("200");
+			
+			return new ResponseEntity<ObjectOuput<BooleanDTO>>(result, HttpStatus.OK);
+		}catch (Exception e) {
+			result.setCode("500");
+			result.setMessage("Can not check permision");
+			return new ResponseEntity<ObjectOuput<BooleanDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }

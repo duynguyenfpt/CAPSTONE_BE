@@ -133,6 +133,7 @@ public class RequestService implements IRequestService {
 		syncTableRequestEntity.setTableInfo(tableEntity);
 		syncTableRequestEntity.setIdentityId(requestDTO.getIdentityId());
 		syncTableRequestEntity.setPartitionBy(requestDTO.getPartitionBy());
+		syncTableRequestEntity.setIsProcess(false);
 		
 		syncTableRequestRepository.save(syncTableRequestEntity);
 	}
@@ -174,6 +175,8 @@ public class RequestService implements IRequestService {
 		if(approvedBy != null) {
 			query += " and approved_by LIKE '%"+ approvedBy +"%'" ;
 		}
+		
+		query += " ORDER BY id DESC";
 
 		return query;
 	}

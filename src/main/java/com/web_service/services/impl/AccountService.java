@@ -197,16 +197,24 @@ public class AccountService implements IAccountService {
 		if(accountEntity.getRole().equals("viewer")) {
 			createAccountRight("GET", "server_infor", accountEntity);
 			createAccountRight("POSTPUTDELETEGET", "database_infor", accountEntity);
+			createAccountRight("POST", "test_connection", accountEntity);
 			createAccountRight("POSTPUTDELETEGET", "table", accountEntity);
-			createAccountRight("POSTPUTDELETEGET", "request", accountEntity);
+			createAccountRight("PUT", "merge_request", accountEntity);
+			createAccountRight("POSTDELETEGET", "request", accountEntity);
+			createAccountRight("GET", "download_csv", accountEntity);
 			createAccountRight("GET", "job", accountEntity);
 			createAccountRight("GET", "column", accountEntity);
+			createAccountRight("GET", "schema_change_history", accountEntity);
+			createAccountRight("POST", "share", accountEntity);
+			createAccountRight("GETPOST", "note", accountEntity);
 		}else if(accountEntity.getRole().equals("engineer")) {
 			createAccountRight("POSTPUTDELETEGET", "server_infor", accountEntity);
 			createAccountRight("POSTPUTDELETEGET", "database_infor", accountEntity);
+			createAccountRight("POST", "test_connection", accountEntity);
 			createAccountRight("POSTPUTDELETEGET", "table", accountEntity);
 			createAccountRight("GET", "action_log", accountEntity);
-			createAccountRight("GET", "request", accountEntity);
+			createAccountRight("GETPUT", "request", accountEntity);
+			createAccountRight("GET", "download_csv", accountEntity);
 			createAccountRight("GETPOST", "note", accountEntity);
 			createAccountRight("POSTPUTDELETEGET", "job", accountEntity);
 			createAccountRight("GET", "column", accountEntity);
@@ -222,10 +230,31 @@ public class AccountService implements IAccountService {
 					AccountRightEntity accountRightEntity = new AccountRightEntity();
 					accountRightEntity.setAccount(accountEntity);
 					accountRightEntity.setRight(rightEntity);
-					accountRightEntity = accountRightRepository.save(accountRightEntity);
+					try {
+						accountRightEntity = accountRightRepository.save(accountRightEntity);
+					}catch (Exception e) {
+						// TODO: handle exception
+					}
 				}
 			}
 		}
 
+	}
+
+	@Override
+	public List<AccountDTO> getAccountActive(Pageable pageable) {
+		List<AccountDTO> results = new ArrayList<>();
+		//Get all account
+		List<AccountEntity> entities = accountRepository.getAllAccountActive(pageable).getContent();
+		for (AccountEntity item: entities) {
+			AccountDTO accountDTO = accountConvertor.toDTO(item);
+			results.add(accountDTO);
+		}
+		return results;
+	}
+
+	@Override
+	public int totalItemAccountActive() {
+		return accountRepository.countAccountActive();
 	}
 }

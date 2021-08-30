@@ -14,6 +14,7 @@ public class RequestConvertor {
 			entity.setStatus(dto.getStatus());
 		}
 		entity.setApprovedBy(dto.getApprovedBy());
+		entity.setDescription(dto.getDescription());
 		
 		return entity;
 	}
@@ -27,6 +28,7 @@ public class RequestConvertor {
 		dto.setStatus(entity.getStatus());
 		dto.setApprovedBy(entity.getApprovedBy());
 		dto.setRequestType(entity.getRequestType());
+		dto.setDescription(entity.getDescription());
 		dto.setCreatedDate(entity.getCreatedDate());
 		dto.setCreatedBy(entity.getCreatedBy());
 		dto.setModifiedDate(entity.getModifiedDate());
@@ -37,6 +39,7 @@ public class RequestConvertor {
 	public RequestEntity toEntity(RequestDTO dto, RequestEntity entity) {
 		entity.setStatus(dto.getStatus());
 		entity.setApprovedBy(dto.getApprovedBy());
+		entity.setDescription(dto.getDescription());
 		
 		return entity;
 	}

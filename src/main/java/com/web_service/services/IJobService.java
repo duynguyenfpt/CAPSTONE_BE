@@ -15,4 +15,5 @@ public interface IJobService {
 	void delete(long id);
 	List<JobDetailDTO> getJobDetail(long jobId);
 	int totalItemJobDetails(long jobId);
+	void resetJob(Long jobId);
 }

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.web_service.api.output.ListObjOutput;
 import com.web_service.api.output.ObjectOuput;
 import com.web_service.api.output.PagingOutput;
+import com.web_service.dto.AliasDTO;
 import com.web_service.dto.BooleanDTO;
 import com.web_service.dto.DatabaseInfoDTO;
 import com.web_service.services.IDatabaseInfoService;
@@ -78,6 +79,24 @@ public class DatabaseInfoAPI {
 	public ResponseEntity<ObjectOuput<DatabaseInfoDTO>> createDatabaseInfo(@RequestBody DatabaseInfoDTO model) {
 		ObjectOuput<DatabaseInfoDTO> result = new ObjectOuput<DatabaseInfoDTO>();
 		try {
+			boolean isExistAlias = databaseInfoService.isExistAlias(model);
+			
+			if(isExistAlias) {
+				result.setMessage("Alias exist");
+				result.setCode("422");
+				
+				return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.UNPROCESSABLE_ENTITY);
+			}
+			
+			boolean checkExistPort = databaseInfoService.checkExistPort(model);
+			
+			if(checkExistPort) {
+				result.setMessage("Port exist");
+				result.setCode("422");
+				
+				return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.UNPROCESSABLE_ENTITY);
+			}
+			
 			DatabaseInfoDTO databaseInfoDTO = databaseInfoService.save(model);
 			if(databaseInfoDTO != null) {
 				result.setData(databaseInfoDTO);
@@ -87,7 +106,7 @@ public class DatabaseInfoAPI {
 				return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.CREATED);
 			} else {
 				result.setData(databaseInfoDTO);
-				result.setMessage("Database not exist`aaaq");
+				result.setMessage("Database not exist");
 				result.setCode("400");
 				
 				return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.BAD_REQUEST);
@@ -105,11 +124,30 @@ public class DatabaseInfoAPI {
 		ObjectOuput<DatabaseInfoDTO> result = new ObjectOuput<DatabaseInfoDTO>();
 		try {
 			model.setId(id);
-			databaseInfoService.save(model);
-			result.setCode("200");
-			result.setMessage("Update database info successfully");
 			
-			return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.OK);
+			boolean isExistAlias = databaseInfoService.isExistAlias(model);
+			
+			if(isExistAlias) {
+				result.setMessage("Alias exist");
+				result.setCode("422");
+				
+				return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.UNPROCESSABLE_ENTITY);
+			}
+			
+			boolean checkExistPort = databaseInfoService.checkExistPort(model);
+			
+			if(checkExistPort) {
+				result.setMessage("Port exist");
+				result.setCode("422");
+				
+				return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.UNPROCESSABLE_ENTITY);
+			} else {
+				databaseInfoService.save(model);
+				result.setCode("200");
+				result.setMessage("Update database info successfully");
+				
+				return new ResponseEntity<ObjectOuput<DatabaseInfoDTO>>(result, HttpStatus.OK);
+			}
 		}catch (NullPointerException e) {
 			result.setMessage("Not found record");
 			result.setCode("404");
@@ -167,6 +205,31 @@ public class DatabaseInfoAPI {
 			result.setCode("500");
 			
 			return new ResponseEntity<ObjectOuput<BooleanDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping(value = "/api/database_infors/get_alias")
+	public ResponseEntity<ObjectOuput<AliasDTO>> getAlias(@RequestBody DatabaseInfoDTO model) {
+		ObjectOuput<AliasDTO> result = new ObjectOuput<AliasDTO>();
+		try {
+			AliasDTO aliasDTO = new AliasDTO();
+			
+			aliasDTO.setAlias(databaseInfoService.getAlias(model));
+			result.setCode("200");
+			result.setData(aliasDTO);
+			result.setMessage("Get data successfully");
+			
+			return new ResponseEntity<ObjectOuput<AliasDTO>>(result, HttpStatus.OK);
+		}catch (NullPointerException e) {
+			result.setMessage("Not found server");
+			result.setCode("404");
+			
+			return new ResponseEntity<ObjectOuput<AliasDTO>>(result, HttpStatus.NOT_FOUND);
+		}catch (Exception e) {
+			result.setMessage("Can not get data");
+			result.setCode("500");
+			
+			return new ResponseEntity<ObjectOuput<AliasDTO>>(result, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }

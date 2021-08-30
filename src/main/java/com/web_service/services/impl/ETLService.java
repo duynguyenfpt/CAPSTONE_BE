@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.collections.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Pageable;
@@ -100,6 +101,7 @@ public class ETLService implements IETLService{
 			//create request
 			RequestEntity requestEntity = new RequestEntity();
 			requestEntity.setRequestType("ETLRequest");
+			requestEntity.setStatus("1");
 			requestEntity =  requestRepository.save(requestEntity);
 			
 			//create job
@@ -126,11 +128,15 @@ public class ETLService implements IETLService{
 	@Override
 	public List<ETLRequestDTO> findAll(Pageable pageable) {
 		List<ETLRequestDTO> results = new ArrayList<>();
-		List<ETLEntity> entities;
+		List<ETLEntity> entities = new ArrayList<>();
 		//get all etl request
-		entities = etlRequestRepository.findAll(pageable).getContent();
-		
-		for (ETLEntity item: entities) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		entities = etlRequestRepository.findAllByCreator(auth.getName(), pageable).getContent();
+		AccountEntity accountEntity = accountRepository.findByUsername(auth.getName());
+		List<ETLEntity> etlRequestShare = accountEntity.getEtlRequest();
+		List<ETLEntity> listResult = ListUtils.union(entities, etlRequestShare);
+
+		for (ETLEntity item: listResult) {
 			ETLRequestDTO etlRequestDTO = etlRequestConverter.toDTO(item);
 			results.add(etlRequestDTO);
 		}
@@ -139,7 +145,9 @@ public class ETLService implements IETLService{
 
 	@Override
 	public int totalItem() {
-		return (int) etlRequestRepository.count();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+		return (int) etlRequestRepository.countAllByCreator(auth.getName());
 	}
 
 	@Override

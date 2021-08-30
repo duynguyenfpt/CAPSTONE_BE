@@ -242,4 +242,12 @@ public class JobService implements IJobService {
 		return results.size();
 	}
 
+	@Override
+	public void resetJob(Long jobId) {
+		JobEntity jobEntity = jobRepository.findOne(jobId);
+		jobEntity.setNumberRetries(0);
+		
+		jobRepository.save(jobEntity);
+	}
+
 }
